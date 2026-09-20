@@ -18,6 +18,9 @@ namespace Airtist.Prototype.Editor
     {
         private const string BackgroundPath = "Assets/Art/Prototype/LouvreGalleryBackground.png";
         private const string PortraitPath = "Assets/Art/Prototype/PortraitOfAmelie.png";
+        private const string MonaLisaPath = "Assets/Art/Prototype/Louvre/MonaLisa.jpg";
+        private const string LibertyLeadingThePeoplePath = "Assets/Art/Prototype/Louvre/LibertyLeadingThePeople.jpg";
+        private const string RaftOfTheMedusaPath = "Assets/Art/Prototype/Louvre/RaftOfTheMedusa.jpg";
         private const string ScenePath = "Assets/Scenes/AirtistLandscapePrototype.unity";
         private const string FallbackFontPath = "Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset";
 
@@ -25,11 +28,20 @@ namespace Airtist.Prototype.Editor
         {
             AssetDatabase.ImportAsset(BackgroundPath, ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset(PortraitPath, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(MonaLisaPath, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(LibertyLeadingThePeoplePath, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(RaftOfTheMedusaPath, ImportAssetOptions.ForceUpdate);
 
             Sprite background = AssetDatabase.LoadAssetAtPath<Sprite>(BackgroundPath);
             Sprite portrait = AssetDatabase.LoadAssetAtPath<Sprite>(PortraitPath);
+            Sprite[] louvrePaintings =
+            {
+                LoadSprite(MonaLisaPath),
+                LoadSprite(LibertyLeadingThePeoplePath),
+                LoadSprite(RaftOfTheMedusaPath)
+            };
             TMP_FontAsset uiFont = TMP_Settings.defaultFontAsset ?? AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FallbackFontPath);
-            if (background == null || portrait == null || uiFont == null)
+            if (background == null || portrait == null || louvrePaintings[0] == null || louvrePaintings[1] == null || louvrePaintings[2] == null || uiFont == null)
             {
                 throw new InvalidOperationException("AIrtist prototype art or TextMeshPro resources are not available.");
             }
@@ -69,7 +81,7 @@ namespace Airtist.Prototype.Editor
             eventSystemObject.transform.SetParent(root.transform, false);
 
             AirtistLandscapePrototypeController controller = safeAreaObject.AddComponent<AirtistLandscapePrototypeController>();
-            controller.Configure(background, portrait, uiFont);
+            controller.Configure(background, portrait, louvrePaintings, uiFont);
 
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
             PlayerSettings.allowedAutorotateToPortrait = false;
@@ -88,6 +100,20 @@ namespace Airtist.Prototype.Editor
             };
             AssetDatabase.SaveAssets();
             return ScenePath;
+        }
+
+        private static Sprite LoadSprite(string assetPath)
+        {
+            TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+            if (importer != null && (importer.textureType != TextureImporterType.Sprite || importer.mipmapEnabled))
+            {
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spriteImportMode = SpriteImportMode.Single;
+                importer.mipmapEnabled = false;
+                importer.SaveAndReimport();
+            }
+
+            return AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
         }
     }
 }

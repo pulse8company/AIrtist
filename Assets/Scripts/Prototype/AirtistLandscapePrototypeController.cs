@@ -36,27 +36,28 @@ namespace Airtist.Prototype
         private static readonly ChapterData[] Chapters =
         {
             new ChapterData(
-                "Портрет Амели",
-                "Найди инородную деталь",
-                "Инородный декоративный штрих не относится к композиции. Ты вернула картине её настоящую историю.",
-                "Амели — собирательный герой. В финальной игре реальные факты будут проверяться с музейными и академическими источниками.",
-                "Смотри на неестественный контур у силуэта."),
+                "Мона Лиза",
+                "Найди AI-усик",
+                "Чужой усик нарушал едва заметные переходы лица. Ты вернула портрету его подлинное выражение.",
+                "Лувр показывает «Мону Лизу» Леонардо да Винчи в зале 711. Её мягкие переходы светотени называют сфумато.",
+                "Проверь лицо: у сфумато нет жёстких, чужеродных контуров."),
             new ChapterData(
-                "Зал света",
-                "Проверь свет и отражения",
-                "AI-след повторяет блик, но нарушает направление света в картине.",
-                "Свет в живописи направляет взгляд зрителя. Даже маленькая несогласованность может изменить всю композицию.",
-                "Сравни направление бликов на двух соседних деталях."),
+                "Свобода, ведущая народ",
+                "Найди чужой значок",
+                "Современный значок выбивался из исторической сцены. Ты вернула картине её драматический ритм.",
+                "Делакруа написал картину после Июльской революции 1830 года. В Лувре она находится в зале 700, Salle Mollien.",
+                "Ищи современный символ там, где художник использовал только исторические детали."),
             new ChapterData(
-                "Тайная рама",
-                "Найди чужой орнамент",
-                "Новый орнамент выглядит нарядно, но его ритм не поддерживает работу художника.",
-                "Рама и оформление могут быть частью музейной истории, но не должны подменять авторскую композицию.",
-                "Ищи повторяющийся узор, которому нет пары.")
+                "Плот «Медузы»",
+                "Найди AI-деталь на горизонте",
+                "На горизонте появился предмет, которого здесь быть не должно. Ты вернула сцене напряжение и надежду.",
+                "Жерико показал эту картину на Салоне 1819 года: она рассказывает о крушении фрегата «Медуза», после которого выжили пятнадцать человек.",
+                "Проследи за жестами фигур: взгляд ведёт к дальнему силуэту на горизонте.")
         };
 
         [SerializeField] private Sprite galleryBackground;
         [SerializeField] private Sprite portrait;
+        [SerializeField] private Sprite[] louvrePaintings;
         [SerializeField] private TMP_FontAsset font;
 
         private readonly Dictionary<Page, GameObject> pages = new();
@@ -74,10 +75,13 @@ namespace Airtist.Prototype
         private bool rewardedHintClaimed;
         private bool initialized;
         private TextMeshProUGUI collectionProgress;
+        private UnityEngine.UI.Button collectionNextButton;
+        private TextMeshProUGUI collectionNextButtonLabel;
         private TextMeshProUGUI mapProgress;
         private TextMeshProUGUI galleryTitle;
         private TextMeshProUGUI galleryDescription;
         private TextMeshProUGUI galleryHint;
+        private UnityEngine.UI.Image galleryPainting;
         private UnityEngine.UI.Button galleryClueButton;
         private TextMeshProUGUI galleryClueButtonLabel;
         private UnityEngine.UI.Button galleryHintButton;
@@ -100,10 +104,11 @@ namespace Airtist.Prototype
         private TextMeshProUGUI rewardedHintButtonLabel;
         private TextMeshProUGUI rewardedHintState;
 
-        public void Configure(Sprite backdrop, Sprite featuredPortrait, TMP_FontAsset uiFont)
+        public void Configure(Sprite backdrop, Sprite featuredPortrait, Sprite[] featuredPaintings, TMP_FontAsset uiFont)
         {
             galleryBackground = backdrop;
             portrait = featuredPortrait;
+            louvrePaintings = featuredPaintings;
             font = uiFont;
 
             if (Application.isPlaying)
@@ -223,7 +228,8 @@ namespace Airtist.Prototype
 
             RectTransform frame = CreatePanel(page, "GoldFrame", Gold, Anchor.Center, new Vector2(0, -20), new Vector2(620, 690));
             CreatePanel(frame, "FrameInset", DeepTeal, Anchor.Center, Vector2.zero, new Vector2(570, 640));
-            CreateImage(frame, "Painting", portrait, Color.white, Anchor.Center, Vector2.zero, new Vector2(530, 600), true);
+            RectTransform painting = CreateImage(frame, "Painting", GetChapterArtwork(selectedChapter), Color.white, Anchor.Center, Vector2.zero, new Vector2(530, 600), true);
+            galleryPainting = painting.GetComponent<UnityEngine.UI.Image>();
 
             galleryClueButton = CreateButton(frame, "AI-след", Coral, Cream, Anchor.Center, new Vector2(80, -18), new Vector2(165, 58), OpenFoundForCurrentChapter, 18);
             galleryClueButtonLabel = GetButtonLabel(galleryClueButton);
@@ -279,6 +285,8 @@ namespace Airtist.Prototype
             CreateCollectionCard(page, 1, new Vector2(0, -42));
             CreateCollectionCard(page, 2, new Vector2(520, -42));
             CreateLabel(page, "Учебная глава хранит три картины. В полной игре появятся серии, факты и тематические альбомы.", 22, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.Bottom, new Vector2(0, 90), new Vector2(1300, 34), TextAlignmentOptions.Center);
+            collectionNextButton = CreateButton(page, "К следующей картине", Coral, Cream, Anchor.Bottom, new Vector2(0, 26), new Vector2(380, 64), OpenNextUncollectedChapterFromCollection, 19);
+            collectionNextButtonLabel = GetButtonLabel(collectionNextButton);
         }
 
         private void BuildStore()
@@ -423,6 +431,7 @@ namespace Airtist.Prototype
 
             UpdateChapterCards();
             UpdateCollectionCards();
+            UpdateCollectionNextAction();
             UpdateDailyBonusLabels();
             UpdateRewardedHintState();
             UpdateGalleryContent();
@@ -438,7 +447,7 @@ namespace Airtist.Prototype
                 ChapterCardView view = chapterCards[i];
                 view.Card.color = unlocked ? new Color(1f, 1f, 1f, 0.88f) : new Color(0.94f, 0.88f, 0.78f, 0.76f);
                 view.Frame.color = unlocked ? Gold : Sand;
-                view.Art.sprite = unlocked ? portrait ?? whiteSprite : whiteSprite;
+                view.Art.sprite = unlocked ? GetChapterArtwork(i) : whiteSprite;
                 view.Art.color = unlocked ? Color.white : new Color(0f, 0f, 0f, 0f);
                 view.Number.text = $"{i + 1:00}";
                 view.Number.color = collected ? Teal : unlocked ? Coral : Ink * new Color(1f, 1f, 1f, 0.45f);
@@ -456,11 +465,49 @@ namespace Airtist.Prototype
                 bool collected = chapterCollected[i];
                 CollectionCardView view = collectionCards[i];
                 view.Frame.color = collected ? Gold : Sand;
-                view.Art.sprite = collected ? portrait ?? whiteSprite : whiteSprite;
+                view.Art.sprite = collected ? GetChapterArtwork(i) : whiteSprite;
                 view.Art.color = collected ? Color.white : new Color(0f, 0f, 0f, 0f);
                 view.State.text = collected ? "ВОССТАНОВЛЕНА" : "НЕ НАЙДЕНА";
                 view.State.color = collected ? Teal : Ink * new Color(1f, 1f, 1f, 0.45f);
                 view.Hint.text = collected ? "Факт разблокирован" : "Продолжай путешествие";
+            }
+        }
+
+        private void UpdateCollectionNextAction()
+        {
+            if (collectionNextButton == null)
+            {
+                return;
+            }
+
+            int nextChapter = GetNextUncollectedChapter();
+            bool hasNextChapter = nextChapter >= 0;
+            collectionNextButton.gameObject.SetActive(hasNextChapter);
+            if (hasNextChapter && collectionNextButtonLabel != null)
+            {
+                collectionNextButtonLabel.text = $"К картине {nextChapter + 1:00}";
+            }
+        }
+
+        private int GetNextUncollectedChapter()
+        {
+            for (int i = 0; i < Chapters.Length; i++)
+            {
+                if (!chapterCollected[i] && IsChapterUnlocked(i))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        private void OpenNextUncollectedChapterFromCollection()
+        {
+            int nextChapter = GetNextUncollectedChapter();
+            if (nextChapter >= 0)
+            {
+                OpenChapter(nextChapter);
             }
         }
 
@@ -522,6 +569,11 @@ namespace Airtist.Prototype
             ChapterData chapter = Chapters[selectedChapter];
             bool collected = chapterCollected[selectedChapter];
             bool hintUsed = hintUsedForChapter[selectedChapter];
+            if (galleryPainting != null)
+            {
+                galleryPainting.sprite = GetChapterArtwork(selectedChapter);
+            }
+
             galleryTitle.text = collected ? $"{chapter.Title} восстановлена" : $"{chapter.Title}: найди AI-дорисовку";
             galleryDescription.text = collected ? "Эта картина уже в коллекции. Вернись в музей, чтобы открыть следующий зал." : chapter.Objective;
             galleryHint.text = hintUsed ? $"Подсказка: {chapter.Hint}" : "Подсказка доступна, когда нужно чуть-чуть помочь взгляду.";
@@ -529,6 +581,16 @@ namespace Airtist.Prototype
             galleryClueButtonLabel.text = collected ? "Найдено" : "AI-след";
             galleryHintButton.interactable = !collected && !hintUsed && hintCount > 0;
             galleryHintButtonLabel.text = hintUsed ? "Подсказка дана" : hintCount > 0 ? "Подсказка" : "Нет подсказок";
+        }
+
+        private Sprite GetChapterArtwork(int chapterIndex)
+        {
+            if (louvrePaintings != null && chapterIndex >= 0 && chapterIndex < louvrePaintings.Length && louvrePaintings[chapterIndex] != null)
+            {
+                return louvrePaintings[chapterIndex];
+            }
+
+            return whiteSprite;
         }
 
         private void UpdateFoundContent()
@@ -668,8 +730,9 @@ namespace Airtist.Prototype
             RectTransform card = CreatePanel(parent, "Chapter" + (chapterIndex + 1), new Color(1f, 1f, 1f, 0.88f), Anchor.Center, position, new Vector2(480, 430));
             TextMeshProUGUI number = CreateLabel(card, (chapterIndex + 1).ToString("00"), 29, Coral, Anchor.TopLeft, new Vector2(38, -34), new Vector2(80, 40), TextAlignmentOptions.Left, FontStyles.Bold);
             RectTransform frame = CreatePanel(card, "MiniFrame", Gold, Anchor.Top, new Vector2(0, -150), new Vector2(272, 185));
-            RectTransform art = CreateImage(card, "MiniPortrait", portrait, Color.white, Anchor.Top, new Vector2(0, -150), new Vector2(242, 154), true);
-            CreateLabel(card, chapter.Title, 30, Ink, Anchor.Center, new Vector2(0, -70), new Vector2(400, 40), TextAlignmentOptions.Center, FontStyles.Bold);
+            RectTransform art = CreateImage(card, "MiniArtwork", GetChapterArtwork(chapterIndex), Color.white, Anchor.Top, new Vector2(0, -150), new Vector2(242, 154), true);
+            int titleSize = chapter.Title.Length > 19 ? 23 : 30;
+            CreateLabel(card, chapter.Title, titleSize, Ink, Anchor.Center, new Vector2(0, -70), new Vector2(400, 48), TextAlignmentOptions.Center, FontStyles.Bold);
             TextMeshProUGUI subtitle = CreateLabel(card, chapter.Objective, 20, Ink * new Color(1f, 1f, 1f, 0.66f), Anchor.Center, new Vector2(0, -116), new Vector2(400, 52), TextAlignmentOptions.Center);
             UnityEngine.UI.Button button = CreateButton(card, "Играть", Teal, Cream, Anchor.Bottom, new Vector2(0, 36), new Vector2(230, 58), () => OpenChapter(chapterIndex), 19);
             chapterCards.Add(new ChapterCardView
@@ -691,7 +754,8 @@ namespace Airtist.Prototype
             RectTransform frame = CreatePanel(card, "Frame", Sand, Anchor.Top, new Vector2(0, -92), new Vector2(270, 210));
             RectTransform art = CreateImage(card, "Art", null, new Color(0f, 0f, 0f, 0f), Anchor.Top, new Vector2(0, -92), new Vector2(236, 176), true);
             TextMeshProUGUI state = CreateLabel(card, "НЕ НАЙДЕНА", 16, Ink * new Color(1f, 1f, 1f, 0.45f), Anchor.Center, new Vector2(0, -112), new Vector2(300, 26), TextAlignmentOptions.Center, FontStyles.Bold);
-            CreateLabel(card, chapter.Title, 28, Ink, Anchor.Center, new Vector2(0, -151), new Vector2(360, 38), TextAlignmentOptions.Center, FontStyles.Bold);
+            int titleSize = chapter.Title.Length > 19 ? 22 : 28;
+            CreateLabel(card, chapter.Title, titleSize, Ink, Anchor.Center, new Vector2(0, -151), new Vector2(360, 45), TextAlignmentOptions.Center, FontStyles.Bold);
             TextMeshProUGUI hint = CreateLabel(card, "Продолжай путешествие", 19, Ink * new Color(1f, 1f, 1f, 0.64f), Anchor.Center, new Vector2(0, -191), new Vector2(340, 28), TextAlignmentOptions.Center);
             collectionCards.Add(new CollectionCardView
             {
