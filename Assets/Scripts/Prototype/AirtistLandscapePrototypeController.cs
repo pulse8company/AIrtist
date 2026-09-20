@@ -65,6 +65,7 @@ namespace Airtist.Prototype
         private readonly List<TextMeshProUGUI> hintBonusLabels = new();
         private readonly List<ChapterCardView> chapterCards = new();
         private readonly List<CollectionCardView> collectionCards = new();
+        private readonly List<ArtifactTargetView> galleryArtifactTargets = new();
         private Sprite roundedSprite;
         private Sprite whiteSprite;
         private readonly bool[] chapterCollected = new bool[3];
@@ -80,10 +81,10 @@ namespace Airtist.Prototype
         private TextMeshProUGUI mapProgress;
         private TextMeshProUGUI galleryTitle;
         private TextMeshProUGUI galleryDescription;
+        private TextMeshProUGUI galleryFeedback;
         private TextMeshProUGUI galleryHint;
         private UnityEngine.UI.Image galleryPainting;
-        private UnityEngine.UI.Button galleryClueButton;
-        private TextMeshProUGUI galleryClueButtonLabel;
+        private PanZoomArtwork galleryPanZoom;
         private UnityEngine.UI.Button galleryHintButton;
         private TextMeshProUGUI galleryHintButtonLabel;
         private TextMeshProUGUI foundNumber;
@@ -225,15 +226,37 @@ namespace Airtist.Prototype
             BuildHeader(page, "Учебная глава · 3 картины");
             galleryTitle = CreateLabel(page, "Найди AI-дорисовку", 39, Cream, Anchor.TopLeft, new Vector2(84, -160), new Vector2(620, 52), TextAlignmentOptions.Left, FontStyles.Bold);
             galleryDescription = CreateLabel(page, "Смотри на картину внимательно: инородная деталь часто прячется на самом видном месте.", 21, Cream * new Color(1f, 1f, 1f, 0.83f), Anchor.TopLeft, new Vector2(86, -214), new Vector2(960, 32), TextAlignmentOptions.Left);
+            galleryFeedback = CreateLabel(page, "Тапни по детали, которая выглядит чужой для этой картины.", 19, Gold, Anchor.TopLeft, new Vector2(86, -256), new Vector2(960, 30), TextAlignmentOptions.Left, FontStyles.Bold);
 
             RectTransform frame = CreatePanel(page, "GoldFrame", Gold, Anchor.Center, new Vector2(0, -20), new Vector2(620, 690));
-            CreatePanel(frame, "FrameInset", DeepTeal, Anchor.Center, Vector2.zero, new Vector2(570, 640));
-            RectTransform painting = CreateImage(frame, "Painting", GetChapterArtwork(selectedChapter), Color.white, Anchor.Center, Vector2.zero, new Vector2(530, 600), true);
-            galleryPainting = painting.GetComponent<UnityEngine.UI.Image>();
+            RectTransform viewport = CreatePanel(frame, "ArtworkViewport", DeepTeal, Anchor.Center, Vector2.zero, new Vector2(570, 640));
+            viewport.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+            viewport.gameObject.AddComponent<UnityEngine.UI.RectMask2D>();
 
-            galleryClueButton = CreateButton(frame, "AI-след", Coral, Cream, Anchor.Center, new Vector2(80, -18), new Vector2(165, 58), OpenFoundForCurrentChapter, 18);
-            galleryClueButtonLabel = GetButtonLabel(galleryClueButton);
-            galleryHint = CreateLabel(page, "Подсказка: неестественный контур?", 21, Cream, Anchor.Bottom, new Vector2(-160, 56), new Vector2(780, 32), TextAlignmentOptions.Center, FontStyles.Bold);
+            GameObject artworkContentObject = new GameObject("ArtworkContent", typeof(RectTransform));
+            artworkContentObject.transform.SetParent(viewport, false);
+            RectTransform artworkContent = artworkContentObject.GetComponent<RectTransform>();
+            SetAnchor(artworkContent, Anchor.Center, Vector2.zero, new Vector2(530, 600));
+
+            RectTransform painting = CreateImage(artworkContent, "Painting", GetChapterArtwork(selectedChapter), Color.white, Anchor.Stretch, Vector2.zero, Vector2.zero, false);
+            galleryPainting = painting.GetComponent<UnityEngine.UI.Image>();
+            galleryPainting.raycastTarget = true;
+            UnityEngine.UI.Button tapSurface = painting.gameObject.AddComponent<UnityEngine.UI.Button>();
+            tapSurface.targetGraphic = galleryPainting;
+            tapSurface.transition = UnityEngine.UI.Selectable.Transition.None;
+            tapSurface.onClick.AddListener(RegisterIncorrectTap);
+
+            galleryPanZoom = viewport.gameObject.AddComponent<PanZoomArtwork>();
+            galleryPanZoom.Configure(viewport, artworkContent);
+            galleryPanZoom.SetArtworkSize(CalculateArtworkDisplaySize(GetChapterArtwork(selectedChapter)));
+
+            galleryArtifactTargets.Add(CreateArtifactTarget(artworkContent, 0, new Vector2(0.5f, 0.68f), new Vector2(132f, 68f)));
+            galleryArtifactTargets.Add(CreateArtifactTarget(artworkContent, 1, new Vector2(0.48f, 0.61f), new Vector2(92f, 92f)));
+            galleryArtifactTargets.Add(CreateArtifactTarget(artworkContent, 2, new Vector2(0.75f, 0.72f), new Vector2(104f, 78f)));
+
+            galleryHint = CreateLabel(page, "Увеличивай картину кнопками + / − и перетаскивай её пальцем или мышью.", 20, Cream, Anchor.Bottom, new Vector2(-160, 56), new Vector2(780, 32), TextAlignmentOptions.Center, FontStyles.Bold);
+            CreateButton(page, "−", Sand, DeepTeal, Anchor.BottomRight, new Vector2(-380, 46), new Vector2(64, 58), galleryPanZoom.ZoomOut, 30);
+            CreateButton(page, "+", Sand, DeepTeal, Anchor.BottomRight, new Vector2(-302, 46), new Vector2(64, 58), galleryPanZoom.ZoomIn, 30);
             galleryHintButton = CreateButton(page, "Подсказка", Gold, DeepTeal, Anchor.BottomRight, new Vector2(-80, 46), new Vector2(230, 58), UseHintForCurrentChapter, 18);
             galleryHintButtonLabel = GetButtonLabel(galleryHintButton);
         }
@@ -569,18 +592,117 @@ namespace Airtist.Prototype
             ChapterData chapter = Chapters[selectedChapter];
             bool collected = chapterCollected[selectedChapter];
             bool hintUsed = hintUsedForChapter[selectedChapter];
+            Sprite artwork = GetChapterArtwork(selectedChapter);
             if (galleryPainting != null)
             {
-                galleryPainting.sprite = GetChapterArtwork(selectedChapter);
+                bool artworkChanged = galleryPainting.sprite != artwork;
+                galleryPainting.sprite = artwork;
+                if (artworkChanged && galleryPanZoom != null)
+                {
+                    galleryPanZoom.SetArtworkSize(CalculateArtworkDisplaySize(artwork));
+                }
             }
 
             galleryTitle.text = collected ? $"{chapter.Title} восстановлена" : $"{chapter.Title}: найди AI-дорисовку";
-            galleryDescription.text = collected ? "Эта картина уже в коллекции. Вернись в музей, чтобы открыть следующий зал." : chapter.Objective;
-            galleryHint.text = hintUsed ? $"Подсказка: {chapter.Hint}" : "Подсказка доступна, когда нужно чуть-чуть помочь взгляду.";
-            galleryClueButton.interactable = !collected;
-            galleryClueButtonLabel.text = collected ? "Найдено" : "AI-след";
+            galleryDescription.text = collected ? "Эта картина уже в коллекции. Вернись в музей, чтобы открыть следующий зал." : $"{chapter.Objective} Увеличивай картину и изучай детали.";
+            galleryFeedback.text = collected ? "Эта работа уже восстановлена." : hintUsed ? "Подсказка мягко выделила область, которую стоит рассмотреть." : "Тапни по детали, которая выглядит чужой для этой картины.";
+            galleryHint.text = hintUsed ? $"Подсказка: {chapter.Hint}" : "Увеличивай картину кнопками + / − и перетаскивай её пальцем или мышью.";
+            UpdateArtifactTargets(collected, hintUsed);
             galleryHintButton.interactable = !collected && !hintUsed && hintCount > 0;
             galleryHintButtonLabel.text = hintUsed ? "Подсказка дана" : hintCount > 0 ? "Подсказка" : "Нет подсказок";
+        }
+
+        private void RegisterIncorrectTap()
+        {
+            if (galleryFeedback != null && !chapterCollected[selectedChapter])
+            {
+                galleryFeedback.text = "Пока нет. Ищи то, что выглядит слишком современным или чужим для стиля художника.";
+            }
+        }
+
+        private void FindArtworkArtifact(int chapterIndex)
+        {
+            if (chapterIndex == selectedChapter && !chapterCollected[selectedChapter])
+            {
+                OpenFoundForCurrentChapter();
+            }
+        }
+
+        private void UpdateArtifactTargets(bool paintingCollected, bool hintUsed)
+        {
+            for (int i = 0; i < galleryArtifactTargets.Count; i++)
+            {
+                ArtifactTargetView target = galleryArtifactTargets[i];
+                bool visible = i == selectedChapter && !paintingCollected;
+                target.Root.SetActive(visible);
+                target.HitArea.color = visible && hintUsed
+                    ? new Color(Gold.r, Gold.g, Gold.b, 0.34f)
+                    : new Color(0f, 0f, 0f, 0f);
+            }
+        }
+
+        private ArtifactTargetView CreateArtifactTarget(RectTransform parent, int chapterIndex, Vector2 normalizedPosition, Vector2 hitSize)
+        {
+            GameObject targetObject = new GameObject($"ArtifactTarget{chapterIndex + 1}", typeof(RectTransform), typeof(UnityEngine.UI.Image));
+            targetObject.transform.SetParent(parent, false);
+            RectTransform target = targetObject.GetComponent<RectTransform>();
+            target.anchorMin = normalizedPosition;
+            target.anchorMax = normalizedPosition;
+            target.pivot = new Vector2(0.5f, 0.5f);
+            target.anchoredPosition = Vector2.zero;
+            target.sizeDelta = hitSize;
+
+            UnityEngine.UI.Image hitArea = targetObject.GetComponent<UnityEngine.UI.Image>();
+            hitArea.sprite = roundedSprite;
+            hitArea.type = UnityEngine.UI.Image.Type.Sliced;
+            hitArea.color = new Color(0f, 0f, 0f, 0f);
+            hitArea.raycastTarget = true;
+
+            UnityEngine.UI.Button button = targetObject.AddComponent<UnityEngine.UI.Button>();
+            button.targetGraphic = hitArea;
+            button.transition = UnityEngine.UI.Selectable.Transition.None;
+            button.onClick.AddListener(() => FindArtworkArtifact(chapterIndex));
+
+            if (chapterIndex == 0)
+            {
+                RectTransform leftCurl = CreatePanel(target, "MoustacheLeft", new Color(0.16f, 0.09f, 0.06f, 0.9f), Anchor.Center, new Vector2(-28f, 1f), new Vector2(62f, 13f));
+                leftCurl.localRotation = Quaternion.Euler(0f, 0f, -18f);
+                leftCurl.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                RectTransform rightCurl = CreatePanel(target, "MoustacheRight", new Color(0.16f, 0.09f, 0.06f, 0.9f), Anchor.Center, new Vector2(28f, 1f), new Vector2(62f, 13f));
+                rightCurl.localRotation = Quaternion.Euler(0f, 0f, 18f);
+                rightCurl.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+            }
+            else if (chapterIndex == 1)
+            {
+                RectTransform badge = CreatePanel(target, "AnachronisticBadge", new Color(0.25f, 0.92f, 0.84f, 0.96f), Anchor.Center, Vector2.zero, new Vector2(58f, 58f));
+                badge.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                CreateLabel(badge, "AI", 18, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(44f, 30f), TextAlignmentOptions.Center, FontStyles.Bold);
+            }
+            else
+            {
+                RectTransform signal = CreatePanel(target, "AlienHorizonSignal", Coral, Anchor.Center, Vector2.zero, new Vector2(74f, 44f));
+                signal.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                CreateLabel(signal, "AI", 17, Cream, Anchor.Center, Vector2.zero, new Vector2(56f, 28f), TextAlignmentOptions.Center, FontStyles.Bold);
+            }
+
+            targetObject.SetActive(false);
+            return new ArtifactTargetView(targetObject, hitArea);
+        }
+
+        private static Vector2 CalculateArtworkDisplaySize(Sprite artwork)
+        {
+            const float maximumWidth = 530f;
+            const float maximumHeight = 600f;
+            if (artwork == null || artwork.rect.height <= 0f)
+            {
+                return new Vector2(maximumWidth, maximumHeight);
+            }
+
+            float artworkAspect = artwork.rect.width / artwork.rect.height;
+            float frameAspect = maximumWidth / maximumHeight;
+            return artworkAspect >= frameAspect
+                ? new Vector2(maximumWidth, maximumWidth / artworkAspect)
+                : new Vector2(maximumHeight * artworkAspect, maximumHeight);
         }
 
         private Sprite GetChapterArtwork(int chapterIndex)
@@ -939,6 +1061,18 @@ namespace Airtist.Prototype
             Bottom,
             BottomRight,
             Stretch
+        }
+
+        private readonly struct ArtifactTargetView
+        {
+            public readonly GameObject Root;
+            public readonly UnityEngine.UI.Image HitArea;
+
+            public ArtifactTargetView(GameObject root, UnityEngine.UI.Image hitArea)
+            {
+                Root = root;
+                HitArea = hitArea;
+            }
         }
 
         private readonly struct ChapterData
