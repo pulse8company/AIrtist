@@ -38,6 +38,7 @@ namespace Airtist.Prototype
         [SerializeField] private TMP_FontAsset font;
 
         private readonly Dictionary<Page, GameObject> pages = new();
+        private readonly List<TextMeshProUGUI> discoveryBonusLabels = new();
         private Sprite roundedSprite;
         private Sprite whiteSprite;
         private bool clueCollected;
@@ -258,6 +259,11 @@ namespace Airtist.Prototype
                 firstCollectionState.color = Teal;
                 firstCollectionHint.text = "Факт разблокирован";
             }
+
+            foreach (TextMeshProUGUI bonusLabel in discoveryBonusLabels)
+            {
+                bonusLabel.text = clueCollected ? "★ 1" : "★ 0";
+            }
         }
 
         private void Show(Page target)
@@ -287,10 +293,24 @@ namespace Airtist.Prototype
             RectTransform header = CreatePanel(page, "Header", new Color(1f, 0.96f, 0.87f, 0.96f), Anchor.Top, new Vector2(0, -42), new Vector2(1920, 86));
             CreateLabel(header, "AIrtist", 37, DeepTeal, Anchor.Left, new Vector2(56, 0), new Vector2(180, 50), TextAlignmentOptions.Left, FontStyles.Bold);
             CreateLabel(header, location, 20, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.Left, new Vector2(250, 0), new Vector2(500, 32), TextAlignmentOptions.Left);
+            CreateBonusTray(header);
             CreateButton(header, "Карта", Teal, Cream, Anchor.Right, new Vector2(-466, 0), new Vector2(120, 48), () => Show(Page.WorldMap), 18);
             CreateButton(header, "Коллекция", Teal, Cream, Anchor.Right, new Vector2(-325, 0), new Vector2(140, 48), () => Show(Page.Collection), 18);
             CreateButton(header, "Магазин", Gold, DeepTeal, Anchor.Right, new Vector2(-184, 0), new Vector2(118, 48), () => Show(Page.Store), 18);
             CreateButton(header, "Профиль", Coral, Cream, Anchor.Right, new Vector2(-62, 0), new Vector2(100, 48), () => Show(Page.Profile), 18);
+        }
+
+        private void CreateBonusTray(RectTransform header)
+        {
+            RectTransform tray = CreatePanel(header, "BonusTray", new Color(0.89f, 0.84f, 0.74f, 0.96f), Anchor.Right, new Vector2(-602, 0), new Vector2(255, 48));
+            CreateLabel(tray, "БОНУСЫ", 11, DeepTeal, Anchor.Left, new Vector2(16, 0), new Vector2(68, 22), TextAlignmentOptions.Left, FontStyles.Bold);
+
+            RectTransform discovery = CreatePanel(tray, "DiscoveryBonus", Cream, Anchor.Right, new Vector2(-89, 0), new Vector2(67, 34));
+            TextMeshProUGUI discoveryLabel = CreateLabel(discovery, "★ 0", 17, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(58, 24), TextAlignmentOptions.Center, FontStyles.Bold);
+            discoveryBonusLabels.Add(discoveryLabel);
+
+            RectTransform hint = CreatePanel(tray, "HintBonus", Gold, Anchor.Right, new Vector2(-14, 0), new Vector2(67, 34));
+            CreateLabel(hint, "✦ 3", 17, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(58, 24), TextAlignmentOptions.Center, FontStyles.Bold);
         }
 
         private void CreateMuseumNode(RectTransform parent, string title, string city, Vector2 position, bool unlocked, Action click)

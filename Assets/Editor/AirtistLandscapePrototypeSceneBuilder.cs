@@ -44,13 +44,31 @@ namespace Airtist.Prototype.Editor
             scaler.uiScaleMode = UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
             scaler.screenMatchMode = UnityEngine.UI.CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            scaler.matchWidthOrHeight = 0.5f;
+            scaler.matchWidthOrHeight = 1f;
             root.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+
+            GameObject previewCameraObject = new GameObject("AirtistPreviewCamera", typeof(Camera));
+            Camera previewCamera = previewCameraObject.GetComponent<Camera>();
+            previewCamera.clearFlags = CameraClearFlags.SolidColor;
+            previewCamera.backgroundColor = new Color(1f, 0.956f, 0.875f, 1f);
+            previewCamera.orthographic = true;
+            previewCamera.depth = -100f;
+
+            GameObject safeAreaObject = new GameObject("SafeArea", typeof(RectTransform));
+            safeAreaObject.transform.SetParent(root.transform, false);
+            RectTransform safeArea = safeAreaObject.GetComponent<RectTransform>();
+            safeArea.anchorMin = Vector2.zero;
+            safeArea.anchorMax = Vector2.one;
+            safeArea.offsetMin = Vector2.zero;
+            safeArea.offsetMax = Vector2.zero;
+
+            AirtistResponsiveLayout responsiveLayout = root.AddComponent<AirtistResponsiveLayout>();
+            responsiveLayout.Configure(scaler, safeArea);
 
             GameObject eventSystemObject = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
             eventSystemObject.transform.SetParent(root.transform, false);
 
-            AirtistLandscapePrototypeController controller = root.AddComponent<AirtistLandscapePrototypeController>();
+            AirtistLandscapePrototypeController controller = safeAreaObject.AddComponent<AirtistLandscapePrototypeController>();
             controller.Configure(background, portrait, uiFont);
 
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
