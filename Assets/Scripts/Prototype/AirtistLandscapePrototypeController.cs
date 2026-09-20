@@ -19,6 +19,7 @@ namespace Airtist.Prototype
             Museum,
             Gallery,
             Found,
+            DailyBonus,
             Collection,
             Store,
             Profile
@@ -32,6 +33,27 @@ namespace Airtist.Prototype
         private static readonly Color Coral = Hex("F87964");
         private static readonly Color Sand = Hex("E8D6BD");
         private static readonly Color Moss = Hex("7BAA73");
+        private static readonly ChapterData[] Chapters =
+        {
+            new ChapterData(
+                "Портрет Амели",
+                "Найди инородную деталь",
+                "Инородный декоративный штрих не относится к композиции. Ты вернула картине её настоящую историю.",
+                "Амели — собирательный герой. В финальной игре реальные факты будут проверяться с музейными и академическими источниками.",
+                "Смотри на неестественный контур у силуэта."),
+            new ChapterData(
+                "Зал света",
+                "Проверь свет и отражения",
+                "AI-след повторяет блик, но нарушает направление света в картине.",
+                "Свет в живописи направляет взгляд зрителя. Даже маленькая несогласованность может изменить всю композицию.",
+                "Сравни направление бликов на двух соседних деталях."),
+            new ChapterData(
+                "Тайная рама",
+                "Найди чужой орнамент",
+                "Новый орнамент выглядит нарядно, но его ритм не поддерживает работу художника.",
+                "Рама и оформление могут быть частью музейной истории, но не должны подменять авторскую композицию.",
+                "Ищи повторяющийся узор, которому нет пары.")
+        };
 
         [SerializeField] private Sprite galleryBackground;
         [SerializeField] private Sprite portrait;
@@ -39,16 +61,41 @@ namespace Airtist.Prototype
 
         private readonly Dictionary<Page, GameObject> pages = new();
         private readonly List<TextMeshProUGUI> discoveryBonusLabels = new();
+        private readonly List<TextMeshProUGUI> hintBonusLabels = new();
+        private readonly List<ChapterCardView> chapterCards = new();
+        private readonly List<CollectionCardView> collectionCards = new();
         private Sprite roundedSprite;
         private Sprite whiteSprite;
-        private bool clueCollected;
+        private readonly bool[] chapterCollected = new bool[3];
+        private readonly bool[] hintUsedForChapter = new bool[3];
+        private int selectedChapter;
+        private int hintCount = 3;
+        private bool dailyBonusClaimed;
+        private bool rewardedHintClaimed;
         private bool initialized;
         private TextMeshProUGUI collectionProgress;
         private TextMeshProUGUI mapProgress;
-        private UnityEngine.UI.Image firstCollectionFrame;
-        private UnityEngine.UI.Image firstCollectionArt;
-        private TextMeshProUGUI firstCollectionState;
-        private TextMeshProUGUI firstCollectionHint;
+        private TextMeshProUGUI galleryTitle;
+        private TextMeshProUGUI galleryDescription;
+        private TextMeshProUGUI galleryHint;
+        private UnityEngine.UI.Button galleryClueButton;
+        private TextMeshProUGUI galleryClueButtonLabel;
+        private UnityEngine.UI.Button galleryHintButton;
+        private TextMeshProUGUI galleryHintButtonLabel;
+        private TextMeshProUGUI foundNumber;
+        private TextMeshProUGUI foundTitle;
+        private TextMeshProUGUI foundDescription;
+        private TextMeshProUGUI foundFact;
+        private TextMeshProUGUI foundReward;
+        private TextMeshProUGUI foundRewardCaption;
+        private UnityEngine.UI.Button dailyHomeButton;
+        private TextMeshProUGUI dailyHomeButtonLabel;
+        private TextMeshProUGUI dailyHomeState;
+        private UnityEngine.UI.Button dailyClaimButton;
+        private TextMeshProUGUI dailyClaimButtonLabel;
+        private UnityEngine.UI.Button rewardedHintButton;
+        private TextMeshProUGUI rewardedHintButtonLabel;
+        private TextMeshProUGUI rewardedHintState;
 
         public void Configure(Sprite backdrop, Sprite featuredPortrait, TMP_FontAsset uiFont)
         {
@@ -93,9 +140,11 @@ namespace Airtist.Prototype
             BuildMuseum();
             BuildGallery();
             BuildFound();
+            BuildDailyBonus();
             BuildCollection();
             BuildStore();
             BuildProfile();
+            UpdateProgressLabels();
         }
 
         private void BuildHome()
@@ -109,8 +158,11 @@ namespace Airtist.Prototype
             RectTransform routeCard = CreatePanel(page, "TodayRoute", new Color(1f, 1f, 1f, 0.78f), Anchor.BottomLeft, new Vector2(84, 84), new Vector2(780, 260));
             CreateLabel(routeCard, "СЕГОДНЯШНИЙ МАРШРУТ", 18, Teal, Anchor.TopLeft, new Vector2(34, -28), new Vector2(360, 32), TextAlignmentOptions.Left, FontStyles.Bold);
             CreateLabel(routeCard, "Музей у Сены", 37, Ink, Anchor.TopLeft, new Vector2(34, -78), new Vector2(430, 52), TextAlignmentOptions.Left, FontStyles.Bold);
-            CreateLabel(routeCard, "1 новая картина · 1 AI-след", 23, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.TopLeft, new Vector2(34, -132), new Vector2(450, 34), TextAlignmentOptions.Left);
+            CreateLabel(routeCard, "3 картины · 3 AI-следа · 1 коллекция", 21, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.TopLeft, new Vector2(34, -132), new Vector2(520, 34), TextAlignmentOptions.Left);
             CreateButton(routeCard, "Продолжить поиск", Coral, Cream, Anchor.BottomLeft, new Vector2(34, 30), new Vector2(330, 70), () => Show(Page.Museum));
+            dailyHomeState = CreateLabel(routeCard, "Ежедневный бонус: +1 подсказка", 16, Teal, Anchor.BottomRight, new Vector2(-40, 111), new Vector2(330, 28), TextAlignmentOptions.Right, FontStyles.Bold);
+            dailyHomeButton = CreateButton(routeCard, "Забрать", Gold, DeepTeal, Anchor.BottomRight, new Vector2(-34, 30), new Vector2(190, 62), OpenDailyBonus, 18);
+            dailyHomeButtonLabel = GetButtonLabel(dailyHomeButton);
 
             RectTransform artCard = CreatePanel(page, "AmelieCard", Gold, Anchor.Right, new Vector2(-150, 0), new Vector2(570, 650));
             CreateLabel(artCard, "АМЕЛИ\nстудентка живописи", 23, DeepTeal, Anchor.TopLeft, new Vector2(32, -32), new Vector2(300, 65), TextAlignmentOptions.Left, FontStyles.Bold);
@@ -148,9 +200,9 @@ namespace Airtist.Prototype
             CreateLabel(page, "Глава 1. След в галерее", 47, Ink, Anchor.TopLeft, new Vector2(84, -164), new Vector2(720, 62), TextAlignmentOptions.Left, FontStyles.Bold);
             CreateLabel(page, "Собирай карточки картин и открывай короткие истории о художниках.", 23, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.TopLeft, new Vector2(86, -226), new Vector2(900, 34), TextAlignmentOptions.Left);
 
-            CreateChapterCard(page, "01", "Портрет Амели", "Найди инородную деталь", new Vector2(-560, -82), true, () => Show(Page.Gallery));
-            CreateChapterCard(page, "02", "Зал света", "Откроется после находки", new Vector2(0, -82), false, null);
-            CreateChapterCard(page, "03", "Тайная рама", "Откроется после 5 картин", new Vector2(560, -82), false, null);
+            CreateChapterCard(page, 0, new Vector2(-560, -82));
+            CreateChapterCard(page, 1, new Vector2(0, -82));
+            CreateChapterCard(page, 2, new Vector2(560, -82));
 
             RectTransform fact = CreatePanel(page, "MuseumFact", new Color(1f, 1f, 1f, 0.76f), Anchor.Bottom, new Vector2(0, 82), new Vector2(1450, 118));
             CreateLabel(fact, "ФАКТ", 17, Coral, Anchor.Left, new Vector2(42, 0), new Vector2(90, 34), TextAlignmentOptions.Left, FontStyles.Bold);
@@ -162,16 +214,19 @@ namespace Airtist.Prototype
             RectTransform page = CreatePage(Page.Gallery, "Gallery");
             CreateImage(page, "GalleryBackdrop", galleryBackground, new Color(0.24f, 0.36f, 0.39f, 1f), Anchor.Stretch, Vector2.zero, Vector2.zero, false);
             CreatePanel(page, "GalleryVeil", new Color(0.08f, 0.18f, 0.21f, 0.38f), Anchor.Stretch, Vector2.zero, Vector2.zero);
-            BuildHeader(page, "Глава 1 · Портрет Амели");
-            CreateLabel(page, "Найди AI-дорисовку", 39, Cream, Anchor.TopLeft, new Vector2(84, -160), new Vector2(560, 52), TextAlignmentOptions.Left, FontStyles.Bold);
-            CreateLabel(page, "Смотри на картину внимательно: инородная деталь часто прячется на самом видном месте.", 21, Cream * new Color(1f, 1f, 1f, 0.83f), Anchor.TopLeft, new Vector2(86, -214), new Vector2(900, 32), TextAlignmentOptions.Left);
+            BuildHeader(page, "Учебная глава · 3 картины");
+            galleryTitle = CreateLabel(page, "Найди AI-дорисовку", 39, Cream, Anchor.TopLeft, new Vector2(84, -160), new Vector2(620, 52), TextAlignmentOptions.Left, FontStyles.Bold);
+            galleryDescription = CreateLabel(page, "Смотри на картину внимательно: инородная деталь часто прячется на самом видном месте.", 21, Cream * new Color(1f, 1f, 1f, 0.83f), Anchor.TopLeft, new Vector2(86, -214), new Vector2(960, 32), TextAlignmentOptions.Left);
 
             RectTransform frame = CreatePanel(page, "GoldFrame", Gold, Anchor.Center, new Vector2(0, -20), new Vector2(620, 690));
             CreatePanel(frame, "FrameInset", DeepTeal, Anchor.Center, Vector2.zero, new Vector2(570, 640));
             CreateImage(frame, "Painting", portrait, Color.white, Anchor.Center, Vector2.zero, new Vector2(530, 600), true);
 
-            CreateButton(frame, "✦  AI-след", Coral, Cream, Anchor.Center, new Vector2(80, -18), new Vector2(165, 58), () => Show(Page.Found));
-            CreateLabel(page, "Подсказка: неестественный контур?", 21, Cream, Anchor.Bottom, new Vector2(0, 56), new Vector2(520, 32), TextAlignmentOptions.Center, FontStyles.Bold);
+            galleryClueButton = CreateButton(frame, "AI-след", Coral, Cream, Anchor.Center, new Vector2(80, -18), new Vector2(165, 58), OpenFoundForCurrentChapter, 18);
+            galleryClueButtonLabel = GetButtonLabel(galleryClueButton);
+            galleryHint = CreateLabel(page, "Подсказка: неестественный контур?", 21, Cream, Anchor.Bottom, new Vector2(-160, 56), new Vector2(780, 32), TextAlignmentOptions.Center, FontStyles.Bold);
+            galleryHintButton = CreateButton(page, "Подсказка", Gold, DeepTeal, Anchor.BottomRight, new Vector2(-80, 46), new Vector2(230, 58), UseHintForCurrentChapter, 18);
+            galleryHintButtonLabel = GetButtonLabel(galleryHintButton);
         }
 
         private void BuildFound()
@@ -179,18 +234,33 @@ namespace Airtist.Prototype
             RectTransform page = CreatePage(Page.Found, "Found");
             BuildHeader(page, "Находка!");
             RectTransform card = CreatePanel(page, "FoundCard", new Color(1f, 1f, 1f, 0.92f), Anchor.Center, new Vector2(0, -24), new Vector2(1280, 690));
-            CreateLabel(card, "НАХОДКА №01", 21, Coral, Anchor.Top, new Vector2(0, -50), new Vector2(380, 32), TextAlignmentOptions.Center, FontStyles.Bold);
-            CreateLabel(card, "AI-дорисовка обнаружена", 55, Ink, Anchor.Top, new Vector2(0, -111), new Vector2(990, 70), TextAlignmentOptions.Center, FontStyles.Bold);
-            CreateLabel(card, "Инородный декоративный штрих не относится к композиции.\nТы вернула картине её настоящую историю.", 26, Ink * new Color(1f, 1f, 1f, 0.73f), Anchor.Top, new Vector2(0, -202), new Vector2(980, 72), TextAlignmentOptions.Center);
+            foundNumber = CreateLabel(card, "НАХОДКА №01", 21, Coral, Anchor.Top, new Vector2(0, -50), new Vector2(380, 32), TextAlignmentOptions.Center, FontStyles.Bold);
+            foundTitle = CreateLabel(card, "AI-дорисовка обнаружена", 55, Ink, Anchor.Top, new Vector2(0, -111), new Vector2(990, 70), TextAlignmentOptions.Center, FontStyles.Bold);
+            foundDescription = CreateLabel(card, string.Empty, 26, Ink * new Color(1f, 1f, 1f, 0.73f), Anchor.Top, new Vector2(0, -202), new Vector2(980, 72), TextAlignmentOptions.Center);
 
             RectTransform fact = CreatePanel(card, "ArtistFact", Sand, Anchor.Center, new Vector2(-230, -62), new Vector2(560, 245));
             CreateLabel(fact, "КАРТОЧКА ФАКТА", 17, Teal, Anchor.TopLeft, new Vector2(30, -28), new Vector2(300, 28), TextAlignmentOptions.Left, FontStyles.Bold);
-            CreateLabel(fact, "Амели — собирательный герой. В финальной игре реальные факты будут проверяться с музейными и академическими источниками.", 21, Ink, Anchor.Center, new Vector2(0, -14), new Vector2(486, 126), TextAlignmentOptions.Center);
+            foundFact = CreateLabel(fact, string.Empty, 21, Ink, Anchor.Center, new Vector2(0, -14), new Vector2(486, 126), TextAlignmentOptions.Center);
 
             CreatePanel(card, "Reward", Gold, Anchor.Center, new Vector2(330, -62), new Vector2(245, 245));
-            CreateLabel(card, "+1", 62, DeepTeal, Anchor.Center, new Vector2(330, -36), new Vector2(180, 72), TextAlignmentOptions.Center, FontStyles.Bold);
-            CreateLabel(card, "картина в\nколлекцию", 20, DeepTeal, Anchor.Center, new Vector2(330, -104), new Vector2(180, 62), TextAlignmentOptions.Center, FontStyles.Bold);
-            CreateButton(card, "Добавить в коллекцию", Teal, Cream, Anchor.Bottom, new Vector2(0, 48), new Vector2(390, 75), CollectAndOpenCollection);
+            foundReward = CreateLabel(card, "+1", 62, DeepTeal, Anchor.Center, new Vector2(330, -36), new Vector2(180, 72), TextAlignmentOptions.Center, FontStyles.Bold);
+            foundRewardCaption = CreateLabel(card, "картина в\nколлекцию", 20, DeepTeal, Anchor.Center, new Vector2(330, -104), new Vector2(180, 62), TextAlignmentOptions.Center, FontStyles.Bold);
+            CreateButton(card, "Добавить в коллекцию", Teal, Cream, Anchor.Bottom, new Vector2(0, 48), new Vector2(390, 75), CollectCurrentChapterAndOpenCollection);
+        }
+
+        private void BuildDailyBonus()
+        {
+            RectTransform page = CreatePage(Page.DailyBonus, "DailyBonus");
+            BuildHeader(page, "Ежедневный маршрут");
+            RectTransform card = CreatePanel(page, "DailyBonusCard", new Color(1f, 1f, 1f, 0.92f), Anchor.Center, new Vector2(0, -14), new Vector2(970, 590));
+            CreateLabel(card, "ЕЖЕДНЕВНЫЙ БОНУС", 22, Coral, Anchor.Top, new Vector2(0, -62), new Vector2(480, 34), TextAlignmentOptions.Center, FontStyles.Bold);
+            CreateLabel(card, "Небольшая помощь\nдля внимательного взгляда", 48, Ink, Anchor.Top, new Vector2(0, -136), new Vector2(800, 118), TextAlignmentOptions.Center, FontStyles.Bold);
+            CreatePanel(card, "DailyReward", Gold, Anchor.Center, new Vector2(0, -18), new Vector2(230, 170));
+            CreateLabel(card, "+1", 58, DeepTeal, Anchor.Center, new Vector2(0, 2), new Vector2(200, 72), TextAlignmentOptions.Center, FontStyles.Bold);
+            CreateLabel(card, "подсказка", 21, DeepTeal, Anchor.Center, new Vector2(0, -58), new Vector2(200, 32), TextAlignmentOptions.Center, FontStyles.Bold);
+            CreateLabel(card, "В прототипе награда выдаётся один раз за запуск.\nСерверный календарь появится позднее.", 20, Ink * new Color(1f, 1f, 1f, 0.68f), Anchor.Bottom, new Vector2(0, 126), new Vector2(700, 58), TextAlignmentOptions.Center);
+            dailyClaimButton = CreateButton(card, "Забрать бонус", Teal, Cream, Anchor.Bottom, new Vector2(0, 42), new Vector2(340, 70), ClaimDailyBonus);
+            dailyClaimButtonLabel = GetButtonLabel(dailyClaimButton);
         }
 
         private void BuildCollection()
@@ -198,12 +268,12 @@ namespace Airtist.Prototype
             RectTransform page = CreatePage(Page.Collection, "Collection");
             BuildHeader(page, "Моя коллекция");
             CreateLabel(page, "Картины с возвращённой историей", 45, Ink, Anchor.TopLeft, new Vector2(84, -164), new Vector2(860, 60), TextAlignmentOptions.Left, FontStyles.Bold);
-            collectionProgress = CreateLabel(page, "0 из 60 картин в этой музейной главе", 23, Ink * new Color(1f, 1f, 1f, 0.7f), Anchor.TopLeft, new Vector2(86, -226), new Vector2(620, 34), TextAlignmentOptions.Left);
+            collectionProgress = CreateLabel(page, "0 из 3 картин в учебной главе", 23, Ink * new Color(1f, 1f, 1f, 0.7f), Anchor.TopLeft, new Vector2(86, -226), new Vector2(620, 34), TextAlignmentOptions.Left);
 
-            CreateCollectionCard(page, "Портрет Амели", new Vector2(-520, -42), true);
-            CreateCollectionCard(page, "Зал света", new Vector2(0, -42), false);
-            CreateCollectionCard(page, "Тайная рама", new Vector2(520, -42), false);
-            CreateLabel(page, "В прототипе открыта одна картина. Полная игра будет добавлять факты, серии и тематические альбомы.", 22, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.Bottom, new Vector2(0, 90), new Vector2(1300, 34), TextAlignmentOptions.Center);
+            CreateCollectionCard(page, 0, new Vector2(-520, -42));
+            CreateCollectionCard(page, 1, new Vector2(0, -42));
+            CreateCollectionCard(page, 2, new Vector2(520, -42));
+            CreateLabel(page, "Учебная глава хранит три картины. В полной игре появятся серии, факты и тематические альбомы.", 22, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.Bottom, new Vector2(0, 90), new Vector2(1300, 34), TextAlignmentOptions.Center);
         }
 
         private void BuildStore()
@@ -213,9 +283,11 @@ namespace Airtist.Prototype
             CreateLabel(page, "Комфортный поиск, без давления", 46, Ink, Anchor.Top, new Vector2(0, -150), new Vector2(900, 62), TextAlignmentOptions.Center, FontStyles.Bold);
             CreateLabel(page, "Это макет монетизации: реальные покупки и реклама в прототип не подключены.", 22, Ink * new Color(1f, 1f, 1f, 0.7f), Anchor.Top, new Vector2(0, -215), new Vector2(1000, 34), TextAlignmentOptions.Center);
 
-            CreateStoreCard(page, "Подсказка", "Мягкая помощь в сложной картине", Gold, new Vector2(-520, -60), "Смотреть рекламу");
-            CreateStoreCard(page, "Без рекламы", "Спокойное путешествие по музеям", Teal, new Vector2(0, -60), "Подписка");
-            CreateStoreCard(page, "Коллекционер", "Дополнительные истории и альбомы", Coral, new Vector2(520, -60), "Скоро");
+            rewardedHintButton = CreateStoreCard(page, "Подсказка", "Мягкая помощь в сложной картине", Gold, new Vector2(-520, -60), "Смотреть рекламу", ClaimRewardedHint);
+            rewardedHintButtonLabel = GetButtonLabel(rewardedHintButton);
+            rewardedHintState = CreateLabel(page, "Демо: реклама не подключена", 18, Teal, Anchor.BottomLeft, new Vector2(220, 108), new Vector2(400, 28), TextAlignmentOptions.Center, FontStyles.Bold);
+            CreateStoreCard(page, "Без рекламы", "Спокойное путешествие по музеям", Teal, new Vector2(0, -60), "Подписка", null);
+            CreateStoreCard(page, "Коллекционер", "Дополнительные истории и альбомы", Coral, new Vector2(520, -60), "Скоро", null);
         }
 
         private void BuildProfile()
@@ -231,43 +303,266 @@ namespace Airtist.Prototype
             CreateLabel(card, "В следующей версии здесь появятся сохранение прогресса, настройки и доступ к коллекционным альбомам.", 22, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.Bottom, new Vector2(0, 62), new Vector2(1050, 34), TextAlignmentOptions.Center);
         }
 
-        private void CollectAndOpenCollection()
+        private void OpenDailyBonus()
         {
-            clueCollected = true;
+            if (!dailyBonusClaimed)
+            {
+                Show(Page.DailyBonus);
+            }
+        }
+
+        private void ClaimDailyBonus()
+        {
+            if (dailyBonusClaimed)
+            {
+                Show(Page.Home);
+                return;
+            }
+
+            dailyBonusClaimed = true;
+            hintCount++;
+            UpdateProgressLabels();
+            Show(Page.Home);
+        }
+
+        private void ClaimRewardedHint()
+        {
+            if (rewardedHintClaimed)
+            {
+                return;
+            }
+
+            rewardedHintClaimed = true;
+            hintCount++;
+            UpdateProgressLabels();
+        }
+
+        private void OpenChapter(int chapterIndex)
+        {
+            if (!IsChapterUnlocked(chapterIndex))
+            {
+                return;
+            }
+
+            selectedChapter = chapterIndex;
+            UpdateGalleryContent();
+            Show(Page.Gallery);
+        }
+
+        private void UseHintForCurrentChapter()
+        {
+            if (chapterCollected[selectedChapter] || hintUsedForChapter[selectedChapter] || hintCount <= 0)
+            {
+                return;
+            }
+
+            hintCount--;
+            hintUsedForChapter[selectedChapter] = true;
+            UpdateProgressLabels();
+        }
+
+        private void OpenFoundForCurrentChapter()
+        {
+            if (!chapterCollected[selectedChapter])
+            {
+                UpdateFoundContent();
+                Show(Page.Found);
+            }
+        }
+
+        private void CollectCurrentChapterAndOpenCollection()
+        {
+            chapterCollected[selectedChapter] = true;
             UpdateProgressLabels();
             Show(Page.Collection);
         }
 
         private void UpdateProgressLabels()
         {
+            int foundCount = FoundChapterCount;
             if (collectionProgress != null)
             {
-                collectionProgress.text = clueCollected ? "1 из 60 картин в этой музейной главе" : "0 из 60 картин в этой музейной главе";
+                collectionProgress.text = $"{foundCount} из {Chapters.Length} картин в учебной главе";
             }
 
             if (mapProgress != null)
             {
-                mapProgress.text = clueCollected ? "Открыто: 1 из 10 музеев · 1 картина" : "Открыто: 1 из 10 музеев";
-            }
-
-            if (clueCollected && firstCollectionArt != null)
-            {
-                firstCollectionArt.sprite = portrait ?? whiteSprite;
-                firstCollectionArt.color = Color.white;
-                firstCollectionFrame.color = Gold;
-                firstCollectionState.text = "ВОССТАНОВЛЕНА";
-                firstCollectionState.color = Teal;
-                firstCollectionHint.text = "Факт разблокирован";
+                mapProgress.text = $"Открыто: 1 из 10 музеев · {foundCount} из {Chapters.Length} картин";
             }
 
             foreach (TextMeshProUGUI bonusLabel in discoveryBonusLabels)
             {
-                bonusLabel.text = clueCollected ? "★ 1" : "★ 0";
+                bonusLabel.text = $"К {foundCount}";
             }
+
+            foreach (TextMeshProUGUI bonusLabel in hintBonusLabels)
+            {
+                bonusLabel.text = $"П {hintCount}";
+            }
+
+            UpdateChapterCards();
+            UpdateCollectionCards();
+            UpdateDailyBonusLabels();
+            UpdateRewardedHintState();
+            UpdateGalleryContent();
+            UpdateFoundContent();
+        }
+
+        private void UpdateChapterCards()
+        {
+            for (int i = 0; i < chapterCards.Count; i++)
+            {
+                bool unlocked = IsChapterUnlocked(i);
+                bool collected = chapterCollected[i];
+                ChapterCardView view = chapterCards[i];
+                view.Card.color = unlocked ? new Color(1f, 1f, 1f, 0.88f) : new Color(0.94f, 0.88f, 0.78f, 0.76f);
+                view.Frame.color = unlocked ? Gold : Sand;
+                view.Art.sprite = unlocked ? portrait ?? whiteSprite : whiteSprite;
+                view.Art.color = unlocked ? Color.white : new Color(0f, 0f, 0f, 0f);
+                view.Number.text = $"{i + 1:00}";
+                view.Number.color = collected ? Teal : unlocked ? Coral : Ink * new Color(1f, 1f, 1f, 0.45f);
+                view.Subtitle.text = collected ? "Картина восстановлена" : unlocked ? Chapters[i].Objective : $"Откроется после картины {i:00}";
+                view.Button.interactable = unlocked;
+                view.Button.image.color = unlocked ? Teal : new Color(0.55f, 0.60f, 0.58f);
+                view.ButtonLabel.text = collected ? "Пройдено" : unlocked ? "Играть" : "Закрыто";
+            }
+        }
+
+        private void UpdateCollectionCards()
+        {
+            for (int i = 0; i < collectionCards.Count; i++)
+            {
+                bool collected = chapterCollected[i];
+                CollectionCardView view = collectionCards[i];
+                view.Frame.color = collected ? Gold : Sand;
+                view.Art.sprite = collected ? portrait ?? whiteSprite : whiteSprite;
+                view.Art.color = collected ? Color.white : new Color(0f, 0f, 0f, 0f);
+                view.State.text = collected ? "ВОССТАНОВЛЕНА" : "НЕ НАЙДЕНА";
+                view.State.color = collected ? Teal : Ink * new Color(1f, 1f, 1f, 0.45f);
+                view.Hint.text = collected ? "Факт разблокирован" : "Продолжай путешествие";
+            }
+        }
+
+        private void UpdateDailyBonusLabels()
+        {
+            if (dailyHomeState != null)
+            {
+                dailyHomeState.text = dailyBonusClaimed ? "Ежедневный бонус получен" : "Ежедневный бонус: +1 подсказка";
+            }
+
+            if (dailyHomeButton != null)
+            {
+                dailyHomeButton.interactable = !dailyBonusClaimed;
+                dailyHomeButton.image.color = dailyBonusClaimed ? Sand : Gold;
+            }
+
+            if (dailyHomeButtonLabel != null)
+            {
+                dailyHomeButtonLabel.text = dailyBonusClaimed ? "Завтра снова" : "Забрать";
+            }
+
+            if (dailyClaimButton != null)
+            {
+                dailyClaimButton.interactable = !dailyBonusClaimed;
+                dailyClaimButton.image.color = dailyBonusClaimed ? Sand : Teal;
+            }
+
+            if (dailyClaimButtonLabel != null)
+            {
+                dailyClaimButtonLabel.text = dailyBonusClaimed ? "Бонус получен" : "Забрать бонус";
+            }
+        }
+
+        private void UpdateRewardedHintState()
+        {
+            if (rewardedHintButton != null)
+            {
+                rewardedHintButton.interactable = !rewardedHintClaimed;
+            }
+
+            if (rewardedHintButtonLabel != null)
+            {
+                rewardedHintButtonLabel.text = rewardedHintClaimed ? "Награда получена" : "Смотреть рекламу";
+            }
+
+            if (rewardedHintState != null)
+            {
+                rewardedHintState.text = rewardedHintClaimed ? "Демо-награда: +1 подсказка выдана" : "Демо: реклама не подключена";
+            }
+        }
+
+        private void UpdateGalleryContent()
+        {
+            if (galleryTitle == null)
+            {
+                return;
+            }
+
+            ChapterData chapter = Chapters[selectedChapter];
+            bool collected = chapterCollected[selectedChapter];
+            bool hintUsed = hintUsedForChapter[selectedChapter];
+            galleryTitle.text = collected ? $"{chapter.Title} восстановлена" : $"{chapter.Title}: найди AI-дорисовку";
+            galleryDescription.text = collected ? "Эта картина уже в коллекции. Вернись в музей, чтобы открыть следующий зал." : chapter.Objective;
+            galleryHint.text = hintUsed ? $"Подсказка: {chapter.Hint}" : "Подсказка доступна, когда нужно чуть-чуть помочь взгляду.";
+            galleryClueButton.interactable = !collected;
+            galleryClueButtonLabel.text = collected ? "Найдено" : "AI-след";
+            galleryHintButton.interactable = !collected && !hintUsed && hintCount > 0;
+            galleryHintButtonLabel.text = hintUsed ? "Подсказка дана" : hintCount > 0 ? "Подсказка" : "Нет подсказок";
+        }
+
+        private void UpdateFoundContent()
+        {
+            if (foundNumber == null)
+            {
+                return;
+            }
+
+            ChapterData chapter = Chapters[selectedChapter];
+            foundNumber.text = $"НАХОДКА №{selectedChapter + 1:00}";
+            foundTitle.text = $"{chapter.Title}: AI-дорисовка обнаружена";
+            foundDescription.text = chapter.FoundDescription;
+            foundFact.text = chapter.Fact;
+            foundReward.text = "+1";
+            foundRewardCaption.text = $"картина\n{FoundChapterCount + (chapterCollected[selectedChapter] ? 0 : 1)} из {Chapters.Length}";
+        }
+
+        private int FoundChapterCount
+        {
+            get
+            {
+                int count = 0;
+                foreach (bool collected in chapterCollected)
+                {
+                    if (collected)
+                    {
+                        count++;
+                    }
+                }
+
+                return count;
+            }
+        }
+
+        private bool IsChapterUnlocked(int chapterIndex)
+        {
+            return chapterIndex == 0 || chapterCollected[chapterIndex - 1];
         }
 
         private void Show(Page target)
         {
+            if (target == Page.Museum)
+            {
+                UpdateChapterCards();
+            }
+            else if (target == Page.Gallery)
+            {
+                UpdateGalleryContent();
+            }
+            else if (target == Page.Found)
+            {
+                UpdateFoundContent();
+            }
+
             foreach (KeyValuePair<Page, GameObject> pair in pages)
             {
                 pair.Value.SetActive(pair.Key == target);
@@ -306,18 +601,19 @@ namespace Airtist.Prototype
             CreateLabel(tray, "БОНУСЫ", 11, DeepTeal, Anchor.Left, new Vector2(16, 0), new Vector2(68, 22), TextAlignmentOptions.Left, FontStyles.Bold);
 
             RectTransform discovery = CreatePanel(tray, "DiscoveryBonus", Cream, Anchor.Right, new Vector2(-89, 0), new Vector2(67, 34));
-            TextMeshProUGUI discoveryLabel = CreateLabel(discovery, "★ 0", 17, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(58, 24), TextAlignmentOptions.Center, FontStyles.Bold);
+            TextMeshProUGUI discoveryLabel = CreateLabel(discovery, "К 0", 17, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(58, 24), TextAlignmentOptions.Center, FontStyles.Bold);
             discoveryBonusLabels.Add(discoveryLabel);
 
             RectTransform hint = CreatePanel(tray, "HintBonus", Gold, Anchor.Right, new Vector2(-14, 0), new Vector2(67, 34));
-            CreateLabel(hint, "✦ 3", 17, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(58, 24), TextAlignmentOptions.Center, FontStyles.Bold);
+            TextMeshProUGUI hintLabel = CreateLabel(hint, "П 3", 17, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(58, 24), TextAlignmentOptions.Center, FontStyles.Bold);
+            hintBonusLabels.Add(hintLabel);
         }
 
         private void CreateMuseumNode(RectTransform parent, string title, string city, Vector2 position, bool unlocked, Action click)
         {
             Color nodeColor = unlocked ? Coral : new Color(0.45f, 0.60f, 0.59f, 1f);
             RectTransform node = CreatePanel(parent, title.Replace(" ", string.Empty), nodeColor, Anchor.Center, position, new Vector2(270, 130));
-            CreateLabel(node, unlocked ? "✦ ОТКРЫТ" : "○ СКОРО", 15, unlocked ? Cream : new Color(1f, 1f, 1f, 0.72f), Anchor.Top, new Vector2(0, -24), new Vector2(180, 24), TextAlignmentOptions.Center, FontStyles.Bold);
+            CreateLabel(node, unlocked ? "ОТКРЫТ" : "СКОРО", 15, unlocked ? Cream : new Color(1f, 1f, 1f, 0.72f), Anchor.Top, new Vector2(0, -24), new Vector2(180, 24), TextAlignmentOptions.Center, FontStyles.Bold);
             CreateLabel(node, title, 23, Cream, Anchor.Center, new Vector2(0, 4), new Vector2(235, 34), TextAlignmentOptions.Center, FontStyles.Bold);
             CreateLabel(node, city, 18, Cream * new Color(1f, 1f, 1f, 0.82f), Anchor.Bottom, new Vector2(0, 19), new Vector2(180, 25), TextAlignmentOptions.Center);
             if (unlocked)
@@ -328,44 +624,54 @@ namespace Airtist.Prototype
             }
         }
 
-        private void CreateChapterCard(RectTransform parent, string number, string title, string subtitle, Vector2 position, bool unlocked, Action click)
+        private void CreateChapterCard(RectTransform parent, int chapterIndex, Vector2 position)
         {
-            RectTransform card = CreatePanel(parent, "Chapter" + number, unlocked ? new Color(1f, 1f, 1f, 0.88f) : new Color(0.94f, 0.88f, 0.78f, 0.76f), Anchor.Center, position, new Vector2(480, 430));
-            CreateLabel(card, number, 29, unlocked ? Coral : Ink * new Color(1f, 1f, 1f, 0.45f), Anchor.TopLeft, new Vector2(38, -34), new Vector2(80, 40), TextAlignmentOptions.Left, FontStyles.Bold);
-            CreatePanel(card, "MiniFrame", unlocked ? Gold : Sand, Anchor.Top, new Vector2(0, -150), new Vector2(272, 185));
-            CreateImage(card, "MiniPortrait", unlocked ? portrait : null, unlocked ? Color.white : new Color(0f, 0f, 0f, 0f), Anchor.Top, new Vector2(0, -150), new Vector2(242, 154), true);
-            CreateLabel(card, title, 30, Ink, Anchor.Center, new Vector2(0, -70), new Vector2(400, 40), TextAlignmentOptions.Center, FontStyles.Bold);
-            CreateLabel(card, subtitle, 20, Ink * new Color(1f, 1f, 1f, 0.66f), Anchor.Center, new Vector2(0, -116), new Vector2(400, 52), TextAlignmentOptions.Center);
-            CreateButton(card, unlocked ? "Играть" : "Закрыто", unlocked ? Teal : new Color(0.55f, 0.60f, 0.58f), Cream, Anchor.Bottom, new Vector2(0, 36), new Vector2(230, 58), () => click?.Invoke(), 19);
-        }
-
-        private void CreateCollectionCard(RectTransform parent, string title, Vector2 position, bool first)
-        {
-            bool unlocked = first && clueCollected;
-            RectTransform card = CreatePanel(parent, title.Replace(" ", string.Empty), new Color(1f, 1f, 1f, 0.88f), Anchor.Center, position, new Vector2(430, 440));
-            RectTransform frame = CreatePanel(card, "Frame", unlocked ? Gold : Sand, Anchor.Top, new Vector2(0, -92), new Vector2(270, 210));
-            RectTransform art = CreateImage(card, "Art", unlocked ? portrait : null, unlocked ? Color.white : new Color(0f, 0f, 0f, 0f), Anchor.Top, new Vector2(0, -92), new Vector2(236, 176), true);
-            TextMeshProUGUI state = CreateLabel(card, unlocked ? "ВОССТАНОВЛЕНА" : "НЕ НАЙДЕНА", 16, unlocked ? Teal : Ink * new Color(1f, 1f, 1f, 0.45f), Anchor.Center, new Vector2(0, -112), new Vector2(300, 26), TextAlignmentOptions.Center, FontStyles.Bold);
-            CreateLabel(card, title, 28, Ink, Anchor.Center, new Vector2(0, -151), new Vector2(360, 38), TextAlignmentOptions.Center, FontStyles.Bold);
-            TextMeshProUGUI hint = CreateLabel(card, unlocked ? "Факт разблокирован" : "Продолжай путешествие", 19, Ink * new Color(1f, 1f, 1f, 0.64f), Anchor.Center, new Vector2(0, -191), new Vector2(340, 28), TextAlignmentOptions.Center);
-
-            if (first)
+            ChapterData chapter = Chapters[chapterIndex];
+            RectTransform card = CreatePanel(parent, "Chapter" + (chapterIndex + 1), new Color(1f, 1f, 1f, 0.88f), Anchor.Center, position, new Vector2(480, 430));
+            TextMeshProUGUI number = CreateLabel(card, (chapterIndex + 1).ToString("00"), 29, Coral, Anchor.TopLeft, new Vector2(38, -34), new Vector2(80, 40), TextAlignmentOptions.Left, FontStyles.Bold);
+            RectTransform frame = CreatePanel(card, "MiniFrame", Gold, Anchor.Top, new Vector2(0, -150), new Vector2(272, 185));
+            RectTransform art = CreateImage(card, "MiniPortrait", portrait, Color.white, Anchor.Top, new Vector2(0, -150), new Vector2(242, 154), true);
+            CreateLabel(card, chapter.Title, 30, Ink, Anchor.Center, new Vector2(0, -70), new Vector2(400, 40), TextAlignmentOptions.Center, FontStyles.Bold);
+            TextMeshProUGUI subtitle = CreateLabel(card, chapter.Objective, 20, Ink * new Color(1f, 1f, 1f, 0.66f), Anchor.Center, new Vector2(0, -116), new Vector2(400, 52), TextAlignmentOptions.Center);
+            UnityEngine.UI.Button button = CreateButton(card, "Играть", Teal, Cream, Anchor.Bottom, new Vector2(0, 36), new Vector2(230, 58), () => OpenChapter(chapterIndex), 19);
+            chapterCards.Add(new ChapterCardView
             {
-                firstCollectionFrame = frame.GetComponent<UnityEngine.UI.Image>();
-                firstCollectionArt = art.GetComponent<UnityEngine.UI.Image>();
-                firstCollectionState = state;
-                firstCollectionHint = hint;
-            }
+                Card = card.GetComponent<UnityEngine.UI.Image>(),
+                Frame = frame.GetComponent<UnityEngine.UI.Image>(),
+                Art = art.GetComponent<UnityEngine.UI.Image>(),
+                Number = number,
+                Subtitle = subtitle,
+                Button = button,
+                ButtonLabel = GetButtonLabel(button)
+            });
         }
 
-        private void CreateStoreCard(RectTransform parent, string title, string subtitle, Color accent, Vector2 position, string cta)
+        private void CreateCollectionCard(RectTransform parent, int chapterIndex, Vector2 position)
+        {
+            ChapterData chapter = Chapters[chapterIndex];
+            RectTransform card = CreatePanel(parent, chapter.Title.Replace(" ", string.Empty), new Color(1f, 1f, 1f, 0.88f), Anchor.Center, position, new Vector2(430, 440));
+            RectTransform frame = CreatePanel(card, "Frame", Sand, Anchor.Top, new Vector2(0, -92), new Vector2(270, 210));
+            RectTransform art = CreateImage(card, "Art", null, new Color(0f, 0f, 0f, 0f), Anchor.Top, new Vector2(0, -92), new Vector2(236, 176), true);
+            TextMeshProUGUI state = CreateLabel(card, "НЕ НАЙДЕНА", 16, Ink * new Color(1f, 1f, 1f, 0.45f), Anchor.Center, new Vector2(0, -112), new Vector2(300, 26), TextAlignmentOptions.Center, FontStyles.Bold);
+            CreateLabel(card, chapter.Title, 28, Ink, Anchor.Center, new Vector2(0, -151), new Vector2(360, 38), TextAlignmentOptions.Center, FontStyles.Bold);
+            TextMeshProUGUI hint = CreateLabel(card, "Продолжай путешествие", 19, Ink * new Color(1f, 1f, 1f, 0.64f), Anchor.Center, new Vector2(0, -191), new Vector2(340, 28), TextAlignmentOptions.Center);
+            collectionCards.Add(new CollectionCardView
+            {
+                Frame = frame.GetComponent<UnityEngine.UI.Image>(),
+                Art = art.GetComponent<UnityEngine.UI.Image>(),
+                State = state,
+                Hint = hint
+            });
+        }
+
+        private UnityEngine.UI.Button CreateStoreCard(RectTransform parent, string title, string subtitle, Color accent, Vector2 position, string cta, Action click)
         {
             RectTransform card = CreatePanel(parent, title.Replace(" ", string.Empty), new Color(1f, 1f, 1f, 0.9f), Anchor.Center, position, new Vector2(420, 430));
             CreatePanel(card, "Accent", accent, Anchor.Top, new Vector2(0, -10), new Vector2(420, 20));
             CreateLabel(card, title, 34, Ink, Anchor.Top, new Vector2(0, -76), new Vector2(350, 46), TextAlignmentOptions.Center, FontStyles.Bold);
             CreateLabel(card, subtitle, 22, Ink * new Color(1f, 1f, 1f, 0.68f), Anchor.Top, new Vector2(0, -142), new Vector2(340, 60), TextAlignmentOptions.Center);
             CreateLabel(card, title == "Без рекламы" ? "Подписка на месяц" : title == "Подсказка" ? "Награда за просмотр" : "Будущая серия", 20, Teal, Anchor.Center, new Vector2(0, -58), new Vector2(320, 30), TextAlignmentOptions.Center, FontStyles.Bold);
-            CreateButton(card, cta, accent, accent == Gold ? DeepTeal : Cream, Anchor.Bottom, new Vector2(0, 36), new Vector2(280, 62), null, 19);
+            return CreateButton(card, cta, accent, accent == Gold ? DeepTeal : Cream, Anchor.Bottom, new Vector2(0, 36), new Vector2(280, 62), click, 19);
         }
 
         private void CreateProfileMetric(RectTransform parent, string value, string label, float x)
@@ -439,6 +745,11 @@ namespace Airtist.Prototype
 
             CreateLabel(rect, caption, fontSize, textColor, Anchor.Center, Vector2.zero, size - new Vector2(18, 10), TextAlignmentOptions.Center, FontStyles.Bold);
             return button;
+        }
+
+        private static TextMeshProUGUI GetButtonLabel(UnityEngine.UI.Button button)
+        {
+            return button != null ? button.GetComponentInChildren<TextMeshProUGUI>() : null;
         }
 
         private static Sprite CreateRoundedSprite()
@@ -526,6 +837,43 @@ namespace Airtist.Prototype
             Bottom,
             BottomRight,
             Stretch
+        }
+
+        private readonly struct ChapterData
+        {
+            public readonly string Title;
+            public readonly string Objective;
+            public readonly string FoundDescription;
+            public readonly string Fact;
+            public readonly string Hint;
+
+            public ChapterData(string title, string objective, string foundDescription, string fact, string hint)
+            {
+                Title = title;
+                Objective = objective;
+                FoundDescription = foundDescription;
+                Fact = fact;
+                Hint = hint;
+            }
+        }
+
+        private sealed class ChapterCardView
+        {
+            public UnityEngine.UI.Image Card;
+            public UnityEngine.UI.Image Frame;
+            public UnityEngine.UI.Image Art;
+            public TextMeshProUGUI Number;
+            public TextMeshProUGUI Subtitle;
+            public UnityEngine.UI.Button Button;
+            public TextMeshProUGUI ButtonLabel;
+        }
+
+        private sealed class CollectionCardView
+        {
+            public UnityEngine.UI.Image Frame;
+            public UnityEngine.UI.Image Art;
+            public TextMeshProUGUI State;
+            public TextMeshProUGUI Hint;
         }
     }
 }
