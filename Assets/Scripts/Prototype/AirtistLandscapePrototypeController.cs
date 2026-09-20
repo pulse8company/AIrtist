@@ -37,22 +37,40 @@ namespace Airtist.Prototype
         {
             new ChapterData(
                 "Мона Лиза",
-                "Найди AI-усик",
+                "Найди 3 AI-дорисовки",
                 "Чужой усик нарушал едва заметные переходы лица. Ты вернула портрету его подлинное выражение.",
                 "Лувр показывает «Мону Лизу» Леонардо да Винчи в зале 711. Её мягкие переходы светотени называют сфумато.",
-                "Проверь лицо: у сфумато нет жёстких, чужеродных контуров."),
+                "Начни с лица: у сфумато нет жёстких, чужеродных контуров.",
+                new[]
+                {
+                    new ArtifactData("AI-усик", "Проверь лицо: у сфумато нет жёстких, чужеродных контуров.", new Vector2(0.50f, 0.68f), new Vector2(132f, 68f), ArtifactVisual.Moustache),
+                    new ArtifactData("цифровая печать", "Посмотри на складки одежды: там не должно быть современной маркировки.", new Vector2(0.73f, 0.23f), new Vector2(86f, 60f), ArtifactVisual.TimeTag),
+                    new ArtifactData("чужая метка", "Проверь далёкий пейзаж за фигурой.", new Vector2(0.20f, 0.46f), new Vector2(84f, 60f), ArtifactVisual.Badge)
+                }),
             new ChapterData(
                 "Свобода, ведущая народ",
-                "Найди чужой значок",
+                "Найди 3 AI-дорисовки",
                 "Современный значок выбивался из исторической сцены. Ты вернула картине её драматический ритм.",
                 "Делакруа написал картину после Июльской революции 1830 года. В Лувре она находится в зале 700, Salle Mollien.",
-                "Ищи современный символ там, где художник использовал только исторические детали."),
+                "Ищи современные символы там, где художник использовал только исторические детали.",
+                new[]
+                {
+                    new ArtifactData("неоновый значок", "Посмотри на центральную фигуру: яркий цифровой цвет выбивается из палитры.", new Vector2(0.48f, 0.61f), new Vector2(92f, 92f), ArtifactVisual.Badge),
+                    new ArtifactData("стикер 2030", "Проверь левый край композиции.", new Vector2(0.18f, 0.43f), new Vector2(86f, 60f), ArtifactVisual.TimeTag),
+                    new ArtifactData("AI-сигнал", "Проверь правую часть полотна — там спрятана ещё одна современная деталь.", new Vector2(0.79f, 0.38f), new Vector2(88f, 60f), ArtifactVisual.Signal)
+                }),
             new ChapterData(
                 "Плот «Медузы»",
-                "Найди AI-деталь на горизонте",
+                "Найди 3 AI-дорисовки",
                 "На горизонте появился предмет, которого здесь быть не должно. Ты вернула сцене напряжение и надежду.",
                 "Жерико показал эту картину на Салоне 1819 года: она рассказывает о крушении фрегата «Медуза», после которого выжили пятнадцать человек.",
-                "Проследи за жестами фигур: взгляд ведёт к дальнему силуэту на горизонте.")
+                "Начни с горизонта: жесты фигур ведут к дальнему силуэту.",
+                new[]
+                {
+                    new ArtifactData("AI-сигнал", "Проследи за жестами фигур: взгляд ведёт к дальнему силуэту на горизонте.", new Vector2(0.75f, 0.72f), new Vector2(104f, 78f), ArtifactVisual.Signal),
+                    new ArtifactData("QR-метка", "Проверь фигуры слева: там не должно быть цифрового знака.", new Vector2(0.34f, 0.38f), new Vector2(86f, 60f), ArtifactVisual.Badge),
+                    new ArtifactData("цифровая подпись", "Посмотри в небо — там прячется последняя дорисовка.", new Vector2(0.55f, 0.20f), new Vector2(88f, 60f), ArtifactVisual.TimeTag)
+                })
         };
 
         [SerializeField] private Sprite galleryBackground;
@@ -68,8 +86,9 @@ namespace Airtist.Prototype
         private readonly List<ArtifactTargetView> galleryArtifactTargets = new();
         private Sprite roundedSprite;
         private Sprite whiteSprite;
-        private readonly bool[] chapterCollected = new bool[3];
-        private readonly bool[] hintUsedForChapter = new bool[3];
+        private readonly bool[] chapterCollected = new bool[Chapters.Length];
+        private readonly bool[] hintUsedForChapter = new bool[Chapters.Length];
+        private readonly bool[][] artifactFound = CreateArtifactState();
         private int selectedChapter;
         private int hintCount = 3;
         private bool dailyBonusClaimed;
@@ -80,6 +99,7 @@ namespace Airtist.Prototype
         private TextMeshProUGUI collectionNextButtonLabel;
         private TextMeshProUGUI mapProgress;
         private TextMeshProUGUI galleryTitle;
+        private TextMeshProUGUI galleryTargetProgress;
         private TextMeshProUGUI galleryDescription;
         private TextMeshProUGUI galleryFeedback;
         private TextMeshProUGUI galleryHint;
@@ -225,6 +245,7 @@ namespace Airtist.Prototype
             CreatePanel(page, "GalleryVeil", new Color(0.08f, 0.18f, 0.21f, 0.38f), Anchor.Stretch, Vector2.zero, Vector2.zero);
             BuildHeader(page, "Учебная глава · 3 картины");
             galleryTitle = CreateLabel(page, "Найди AI-дорисовку", 39, Cream, Anchor.TopLeft, new Vector2(84, -160), new Vector2(620, 52), TextAlignmentOptions.Left, FontStyles.Bold);
+            galleryTargetProgress = CreateLabel(page, "НАЙДЕНО 0 / 3", 20, Gold, Anchor.TopRight, new Vector2(-84, -160), new Vector2(250, 40), TextAlignmentOptions.Right, FontStyles.Bold);
             galleryDescription = CreateLabel(page, "Смотри на картину внимательно: инородная деталь часто прячется на самом видном месте.", 21, Cream * new Color(1f, 1f, 1f, 0.83f), Anchor.TopLeft, new Vector2(86, -214), new Vector2(960, 32), TextAlignmentOptions.Left);
             galleryFeedback = CreateLabel(page, "Тапни по детали, которая выглядит чужой для этой картины.", 19, Gold, Anchor.TopLeft, new Vector2(86, -256), new Vector2(960, 30), TextAlignmentOptions.Left, FontStyles.Bold);
 
@@ -250,9 +271,14 @@ namespace Airtist.Prototype
             galleryPanZoom.Configure(viewport, artworkContent);
             galleryPanZoom.SetArtworkSize(CalculateArtworkDisplaySize(GetChapterArtwork(selectedChapter)));
 
-            galleryArtifactTargets.Add(CreateArtifactTarget(artworkContent, 0, new Vector2(0.5f, 0.68f), new Vector2(132f, 68f)));
-            galleryArtifactTargets.Add(CreateArtifactTarget(artworkContent, 1, new Vector2(0.48f, 0.61f), new Vector2(92f, 92f)));
-            galleryArtifactTargets.Add(CreateArtifactTarget(artworkContent, 2, new Vector2(0.75f, 0.72f), new Vector2(104f, 78f)));
+            for (int chapterIndex = 0; chapterIndex < Chapters.Length; chapterIndex++)
+            {
+                ArtifactData[] artifacts = Chapters[chapterIndex].Artifacts;
+                for (int artifactIndex = 0; artifactIndex < artifacts.Length; artifactIndex++)
+                {
+                    galleryArtifactTargets.Add(CreateArtifactTarget(artworkContent, chapterIndex, artifactIndex, artifacts[artifactIndex]));
+                }
+            }
 
             galleryHint = CreateLabel(page, "Увеличивай картину кнопками + / − и перетаскивай её пальцем или мышью.", 20, Cream, Anchor.Bottom, new Vector2(-160, 56), new Vector2(780, 32), TextAlignmentOptions.Center, FontStyles.Bold);
             CreateButton(page, "−", Sand, DeepTeal, Anchor.BottomRight, new Vector2(-380, 46), new Vector2(64, 58), galleryPanZoom.ZoomOut, 30);
@@ -387,7 +413,7 @@ namespace Airtist.Prototype
 
         private void UseHintForCurrentChapter()
         {
-            if (chapterCollected[selectedChapter] || hintUsedForChapter[selectedChapter] || hintCount <= 0)
+            if (chapterCollected[selectedChapter] || IsChapterComplete(selectedChapter) || hintUsedForChapter[selectedChapter] || hintCount <= 0)
             {
                 return;
             }
@@ -399,7 +425,7 @@ namespace Airtist.Prototype
 
         private void OpenFoundForCurrentChapter()
         {
-            if (!chapterCollected[selectedChapter])
+            if (!chapterCollected[selectedChapter] && IsChapterComplete(selectedChapter))
             {
                 UpdateFoundContent();
                 Show(Page.Found);
@@ -408,6 +434,12 @@ namespace Airtist.Prototype
 
         private void CollectCurrentChapterAndOpenCollection()
         {
+            if (!IsChapterComplete(selectedChapter))
+            {
+                Show(Page.Gallery);
+                return;
+            }
+
             chapterCollected[selectedChapter] = true;
             UpdateProgressLabels();
             Show(Page.Collection);
@@ -415,6 +447,12 @@ namespace Airtist.Prototype
 
         private void CollectCurrentChapterAndOpenNextChapter()
         {
+            if (!IsChapterComplete(selectedChapter))
+            {
+                Show(Page.Gallery);
+                return;
+            }
+
             chapterCollected[selectedChapter] = true;
             UpdateProgressLabels();
 
@@ -603,12 +641,22 @@ namespace Airtist.Prototype
                 }
             }
 
-            galleryTitle.text = collected ? $"{chapter.Title} восстановлена" : $"{chapter.Title}: найди AI-дорисовку";
-            galleryDescription.text = collected ? "Эта картина уже в коллекции. Вернись в музей, чтобы открыть следующий зал." : $"{chapter.Objective} Увеличивай картину и изучай детали.";
-            galleryFeedback.text = collected ? "Эта работа уже восстановлена." : hintUsed ? "Подсказка мягко выделила область, которую стоит рассмотреть." : "Тапни по детали, которая выглядит чужой для этой картины.";
+            int foundArtifacts = FoundArtifactCount(selectedChapter);
+            int totalArtifacts = chapter.Artifacts.Length;
+            bool allArtifactsFound = IsChapterComplete(selectedChapter);
+            galleryTitle.text = collected
+                ? $"{chapter.Title} восстановлена"
+                : allArtifactsFound ? $"{chapter.Title}: все дорисовки найдены" : $"{chapter.Title}: найди AI-дорисовки";
+            galleryTargetProgress.text = $"НАЙДЕНО {foundArtifacts} / {totalArtifacts}";
+            galleryDescription.text = collected
+                ? "Эта картина уже в коллекции. Вернись в музей, чтобы открыть следующий зал."
+                : allArtifactsFound ? "Все чужеродные детали найдены. Картина готова к восстановлению." : $"{chapter.Objective} Увеличивай картину и изучай детали.";
+            galleryFeedback.text = collected
+                ? "Эта работа уже восстановлена."
+                : allArtifactsFound ? "Все три AI-дорисовки найдены!" : hintUsed ? "Подсказка мягко выделила область, которую стоит рассмотреть." : "Тапни по детали, которая выглядит чужой для этой картины.";
             galleryHint.text = hintUsed ? $"Подсказка: {chapter.Hint}" : "Увеличивай картину кнопками + / − и перетаскивай её пальцем или мышью.";
             UpdateArtifactTargets(collected, hintUsed);
-            galleryHintButton.interactable = !collected && !hintUsed && hintCount > 0;
+            galleryHintButton.interactable = !collected && !allArtifactsFound && !hintUsed && hintCount > 0;
             galleryHintButtonLabel.text = hintUsed ? "Подсказка дана" : hintCount > 0 ? "Подсказка" : "Нет подсказок";
         }
 
@@ -620,37 +668,53 @@ namespace Airtist.Prototype
             }
         }
 
-        private void FindArtworkArtifact(int chapterIndex)
+        private void FindArtworkArtifact(int chapterIndex, int artifactIndex)
         {
-            if (chapterIndex == selectedChapter && !chapterCollected[selectedChapter])
+            if (chapterIndex != selectedChapter || chapterCollected[selectedChapter] || artifactFound[chapterIndex][artifactIndex])
+            {
+                return;
+            }
+
+            artifactFound[chapterIndex][artifactIndex] = true;
+            UpdateProgressLabels();
+
+            if (IsChapterComplete(selectedChapter))
             {
                 OpenFoundForCurrentChapter();
+                return;
             }
+
+            ArtifactData artifact = Chapters[chapterIndex].Artifacts[artifactIndex];
+            int remaining = Chapters[chapterIndex].Artifacts.Length - FoundArtifactCount(chapterIndex);
+            galleryFeedback.text = $"Найдено: {artifact.Name}. Осталось дорисовок: {remaining}.";
         }
 
         private void UpdateArtifactTargets(bool paintingCollected, bool hintUsed)
         {
+            int highlightedArtifact = hintUsed ? GetNextUnfoundArtifactIndex(selectedChapter) : -1;
             for (int i = 0; i < galleryArtifactTargets.Count; i++)
             {
                 ArtifactTargetView target = galleryArtifactTargets[i];
-                bool visible = i == selectedChapter && !paintingCollected;
+                bool visible = target.ChapterIndex == selectedChapter
+                    && !paintingCollected
+                    && !artifactFound[target.ChapterIndex][target.ArtifactIndex];
                 target.Root.SetActive(visible);
-                target.HitArea.color = visible && hintUsed
+                target.HitArea.color = visible && target.ArtifactIndex == highlightedArtifact
                     ? new Color(Gold.r, Gold.g, Gold.b, 0.34f)
                     : new Color(0f, 0f, 0f, 0f);
             }
         }
 
-        private ArtifactTargetView CreateArtifactTarget(RectTransform parent, int chapterIndex, Vector2 normalizedPosition, Vector2 hitSize)
+        private ArtifactTargetView CreateArtifactTarget(RectTransform parent, int chapterIndex, int artifactIndex, ArtifactData artifact)
         {
-            GameObject targetObject = new GameObject($"ArtifactTarget{chapterIndex + 1}", typeof(RectTransform), typeof(UnityEngine.UI.Image));
+            GameObject targetObject = new GameObject($"ArtifactTarget{chapterIndex + 1}_{artifactIndex + 1}", typeof(RectTransform), typeof(UnityEngine.UI.Image));
             targetObject.transform.SetParent(parent, false);
             RectTransform target = targetObject.GetComponent<RectTransform>();
-            target.anchorMin = normalizedPosition;
-            target.anchorMax = normalizedPosition;
+            target.anchorMin = artifact.NormalizedPosition;
+            target.anchorMax = artifact.NormalizedPosition;
             target.pivot = new Vector2(0.5f, 0.5f);
             target.anchoredPosition = Vector2.zero;
-            target.sizeDelta = hitSize;
+            target.sizeDelta = artifact.HitSize;
 
             UnityEngine.UI.Image hitArea = targetObject.GetComponent<UnityEngine.UI.Image>();
             hitArea.sprite = roundedSprite;
@@ -661,9 +725,9 @@ namespace Airtist.Prototype
             UnityEngine.UI.Button button = targetObject.AddComponent<UnityEngine.UI.Button>();
             button.targetGraphic = hitArea;
             button.transition = UnityEngine.UI.Selectable.Transition.None;
-            button.onClick.AddListener(() => FindArtworkArtifact(chapterIndex));
+            button.onClick.AddListener(() => FindArtworkArtifact(chapterIndex, artifactIndex));
 
-            if (chapterIndex == 0)
+            if (artifact.Visual == ArtifactVisual.Moustache)
             {
                 RectTransform leftCurl = CreatePanel(target, "MoustacheLeft", new Color(0.16f, 0.09f, 0.06f, 0.9f), Anchor.Center, new Vector2(-28f, 1f), new Vector2(62f, 13f));
                 leftCurl.localRotation = Quaternion.Euler(0f, 0f, -18f);
@@ -672,21 +736,27 @@ namespace Airtist.Prototype
                 rightCurl.localRotation = Quaternion.Euler(0f, 0f, 18f);
                 rightCurl.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
             }
-            else if (chapterIndex == 1)
+            else if (artifact.Visual == ArtifactVisual.Badge)
             {
                 RectTransform badge = CreatePanel(target, "AnachronisticBadge", new Color(0.25f, 0.92f, 0.84f, 0.96f), Anchor.Center, Vector2.zero, new Vector2(58f, 58f));
                 badge.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
                 CreateLabel(badge, "AI", 18, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(44f, 30f), TextAlignmentOptions.Center, FontStyles.Bold);
             }
-            else
+            else if (artifact.Visual == ArtifactVisual.Signal)
             {
                 RectTransform signal = CreatePanel(target, "AlienHorizonSignal", Coral, Anchor.Center, Vector2.zero, new Vector2(74f, 44f));
                 signal.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
                 CreateLabel(signal, "AI", 17, Cream, Anchor.Center, Vector2.zero, new Vector2(56f, 28f), TextAlignmentOptions.Center, FontStyles.Bold);
             }
+            else
+            {
+                RectTransform tag = CreatePanel(target, "DigitalTimeTag", new Color(0.93f, 0.85f, 0.38f, 0.96f), Anchor.Center, Vector2.zero, new Vector2(70f, 36f));
+                tag.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+                CreateLabel(tag, "2030", 14, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(60f, 24f), TextAlignmentOptions.Center, FontStyles.Bold);
+            }
 
             targetObject.SetActive(false);
-            return new ArtifactTargetView(targetObject, hitArea);
+            return new ArtifactTargetView(targetObject, hitArea, chapterIndex, artifactIndex);
         }
 
         private static Vector2 CalculateArtworkDisplaySize(Sprite artwork)
@@ -703,6 +773,49 @@ namespace Airtist.Prototype
             return artworkAspect >= frameAspect
                 ? new Vector2(maximumWidth, maximumWidth / artworkAspect)
                 : new Vector2(maximumHeight * artworkAspect, maximumHeight);
+        }
+
+        private static bool[][] CreateArtifactState()
+        {
+            bool[][] state = new bool[Chapters.Length][];
+            for (int chapterIndex = 0; chapterIndex < Chapters.Length; chapterIndex++)
+            {
+                state[chapterIndex] = new bool[Chapters[chapterIndex].Artifacts.Length];
+            }
+
+            return state;
+        }
+
+        private int FoundArtifactCount(int chapterIndex)
+        {
+            int found = 0;
+            for (int artifactIndex = 0; artifactIndex < artifactFound[chapterIndex].Length; artifactIndex++)
+            {
+                if (artifactFound[chapterIndex][artifactIndex])
+                {
+                    found++;
+                }
+            }
+
+            return found;
+        }
+
+        private bool IsChapterComplete(int chapterIndex)
+        {
+            return FoundArtifactCount(chapterIndex) == Chapters[chapterIndex].Artifacts.Length;
+        }
+
+        private int GetNextUnfoundArtifactIndex(int chapterIndex)
+        {
+            for (int artifactIndex = 0; artifactIndex < artifactFound[chapterIndex].Length; artifactIndex++)
+            {
+                if (!artifactFound[chapterIndex][artifactIndex])
+                {
+                    return artifactIndex;
+                }
+            }
+
+            return -1;
         }
 
         private Sprite GetChapterArtwork(int chapterIndex)
@@ -1067,11 +1180,41 @@ namespace Airtist.Prototype
         {
             public readonly GameObject Root;
             public readonly UnityEngine.UI.Image HitArea;
+            public readonly int ChapterIndex;
+            public readonly int ArtifactIndex;
 
-            public ArtifactTargetView(GameObject root, UnityEngine.UI.Image hitArea)
+            public ArtifactTargetView(GameObject root, UnityEngine.UI.Image hitArea, int chapterIndex, int artifactIndex)
             {
                 Root = root;
                 HitArea = hitArea;
+                ChapterIndex = chapterIndex;
+                ArtifactIndex = artifactIndex;
+            }
+        }
+
+        private enum ArtifactVisual
+        {
+            Moustache,
+            Badge,
+            Signal,
+            TimeTag
+        }
+
+        private readonly struct ArtifactData
+        {
+            public readonly string Name;
+            public readonly string Hint;
+            public readonly Vector2 NormalizedPosition;
+            public readonly Vector2 HitSize;
+            public readonly ArtifactVisual Visual;
+
+            public ArtifactData(string name, string hint, Vector2 normalizedPosition, Vector2 hitSize, ArtifactVisual visual)
+            {
+                Name = name;
+                Hint = hint;
+                NormalizedPosition = normalizedPosition;
+                HitSize = hitSize;
+                Visual = visual;
             }
         }
 
@@ -1082,14 +1225,16 @@ namespace Airtist.Prototype
             public readonly string FoundDescription;
             public readonly string Fact;
             public readonly string Hint;
+            public readonly ArtifactData[] Artifacts;
 
-            public ChapterData(string title, string objective, string foundDescription, string fact, string hint)
+            public ChapterData(string title, string objective, string foundDescription, string fact, string hint, ArtifactData[] artifacts)
             {
                 Title = title;
                 Objective = objective;
                 FoundDescription = foundDescription;
                 Fact = fact;
                 Hint = hint;
+                Artifacts = artifacts ?? Array.Empty<ArtifactData>();
             }
         }
 
