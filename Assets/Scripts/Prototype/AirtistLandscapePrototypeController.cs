@@ -88,6 +88,9 @@ namespace Airtist.Prototype
         private TextMeshProUGUI foundFact;
         private TextMeshProUGUI foundReward;
         private TextMeshProUGUI foundRewardCaption;
+        private UnityEngine.UI.Button foundCollectionButton;
+        private UnityEngine.UI.Button foundNextButton;
+        private TextMeshProUGUI foundNextButtonLabel;
         private UnityEngine.UI.Button dailyHomeButton;
         private TextMeshProUGUI dailyHomeButtonLabel;
         private TextMeshProUGUI dailyHomeState;
@@ -245,7 +248,9 @@ namespace Airtist.Prototype
             CreatePanel(card, "Reward", Gold, Anchor.Center, new Vector2(330, -62), new Vector2(245, 245));
             foundReward = CreateLabel(card, "+1", 62, DeepTeal, Anchor.Center, new Vector2(330, -36), new Vector2(180, 72), TextAlignmentOptions.Center, FontStyles.Bold);
             foundRewardCaption = CreateLabel(card, "картина в\nколлекцию", 20, DeepTeal, Anchor.Center, new Vector2(330, -104), new Vector2(180, 62), TextAlignmentOptions.Center, FontStyles.Bold);
-            CreateButton(card, "Добавить в коллекцию", Teal, Cream, Anchor.Bottom, new Vector2(0, 48), new Vector2(390, 75), CollectCurrentChapterAndOpenCollection);
+            foundCollectionButton = CreateButton(card, "В коллекцию", Teal, Cream, Anchor.Bottom, new Vector2(-210, 48), new Vector2(340, 75), CollectCurrentChapterAndOpenCollection);
+            foundNextButton = CreateButton(card, "Следующая картина", Coral, Cream, Anchor.Bottom, new Vector2(210, 48), new Vector2(340, 75), CollectCurrentChapterAndOpenNextChapter);
+            foundNextButtonLabel = GetButtonLabel(foundNextButton);
         }
 
         private void BuildDailyBonus()
@@ -375,6 +380,22 @@ namespace Airtist.Prototype
             chapterCollected[selectedChapter] = true;
             UpdateProgressLabels();
             Show(Page.Collection);
+        }
+
+        private void CollectCurrentChapterAndOpenNextChapter()
+        {
+            chapterCollected[selectedChapter] = true;
+            UpdateProgressLabels();
+
+            int nextChapter = selectedChapter + 1;
+            if (nextChapter < Chapters.Length)
+            {
+                OpenChapter(nextChapter);
+            }
+            else
+            {
+                Show(Page.Collection);
+            }
         }
 
         private void UpdateProgressLabels()
@@ -524,6 +545,23 @@ namespace Airtist.Prototype
             foundFact.text = chapter.Fact;
             foundReward.text = "+1";
             foundRewardCaption.text = $"картина\n{FoundChapterCount + (chapterCollected[selectedChapter] ? 0 : 1)} из {Chapters.Length}";
+
+            bool hasNextChapter = selectedChapter + 1 < Chapters.Length;
+            if (foundNextButton != null)
+            {
+                foundNextButton.gameObject.SetActive(hasNextChapter);
+            }
+
+            if (foundNextButtonLabel != null && hasNextChapter)
+            {
+                foundNextButtonLabel.text = $"К картине {selectedChapter + 2:00}";
+            }
+
+            if (foundCollectionButton != null)
+            {
+                RectTransform collectionButtonRect = foundCollectionButton.GetComponent<RectTransform>();
+                collectionButtonRect.anchoredPosition = hasNextChapter ? new Vector2(-210, 48) : new Vector2(0, 48);
+            }
         }
 
         private int FoundChapterCount
