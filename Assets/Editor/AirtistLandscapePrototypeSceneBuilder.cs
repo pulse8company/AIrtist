@@ -17,8 +17,8 @@ namespace Airtist.Prototype.Editor
     public static class AirtistLandscapePrototypeSceneBuilder
     {
         private const string BackgroundPath = "Assets/Art/Prototype/LouvreGalleryBackground.png";
-        private const string HomeBackgroundPath = "Assets/Art/Prototype/Home/HomeMenuBackdrop_v1.png";
-        private const string PortraitPath = "Assets/Art/Prototype/PortraitOfAmelie.png";
+        private const string HomeBackgroundPath = "Assets/Art/Prototype/Home/HomeMenuBackdrop_v2.png";
+        private const string PortraitPath = "Assets/Art/Prototype/Home/AmelieCharacter_v1.png";
         private const string MonaLisaPath = "Assets/Art/Prototype/Louvre/MonaLisa.jpg";
         private const string LibertyLeadingThePeoplePath = "Assets/Art/Prototype/Louvre/LibertyLeadingThePeople.jpg";
         private const string RaftOfTheMedusaPath = "Assets/Art/Prototype/Louvre/RaftOfTheMedusa.jpg";
