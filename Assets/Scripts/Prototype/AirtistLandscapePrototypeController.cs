@@ -82,6 +82,8 @@ namespace Airtist.Prototype
         [SerializeField] private Sprite portrait;
         [SerializeField] private Sprite[] louvrePaintings;
         [SerializeField] private TMP_FontAsset font;
+        [SerializeField] private AirtistHomeScreen homeScreenPrefab;
+        private AirtistHomeScreen illustratedHome;
 
         private readonly Dictionary<Page, GameObject> pages = new();
         private readonly List<TextMeshProUGUI> discoveryBonusLabels = new();
@@ -139,6 +141,11 @@ namespace Airtist.Prototype
             font = uiFont;
         }
 
+        public void ConfigureHomeScreen(AirtistHomeScreen prefab)
+        {
+            homeScreenPrefab = prefab;
+        }
+
         private void Awake()
         {
             if (Application.isPlaying)
@@ -180,6 +187,24 @@ namespace Airtist.Prototype
         private void BuildHome()
         {
             RectTransform page = CreatePage(Page.Home, "Home");
+            if (homeScreenPrefab != null)
+            {
+                page.GetComponent<UnityEngine.UI.Image>().color = DeepTeal;
+                illustratedHome = Instantiate(homeScreenPrefab, page, false);
+                illustratedHome.name = "HomeIllustrated";
+                illustratedHome.Bind(new Action[]
+                {
+                    OpenDailyBonus,
+                    () => Show(Page.WorldMap),
+                    () => Show(Page.Collection),
+                    () => Show(Page.Store),
+                    () => Show(Page.Profile),
+                    () => Show(Page.Museum),
+                    OpenDailyBonus,
+                    () => Show(Page.WorldMap)
+                });
+                return;
+            }
             CreateImage(page, "HomeBackdrop", homeBackground != null ? homeBackground : galleryBackground, Color.white, Anchor.Stretch, Vector2.zero, Vector2.zero, false);
             CreatePanel(page, "HomeWarmthVeil", new Color(1f, 0.95f, 0.83f, 0.10f), Anchor.Stretch, Vector2.zero, Vector2.zero);
             BuildHomeHeader(page);
@@ -600,6 +625,10 @@ namespace Airtist.Prototype
 
         private void UpdateDailyBonusLabels()
         {
+            if (illustratedHome != null)
+            {
+                illustratedHome.SetBonusClaimed(dailyBonusClaimed);
+            }
             if (dailyHomeState != null)
             {
                 dailyHomeState.text = dailyBonusClaimed ? "Ежедневный бонус получен" : "Ежедневный бонус: +1 подсказка";

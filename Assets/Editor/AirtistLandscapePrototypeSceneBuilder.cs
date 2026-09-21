@@ -85,6 +85,9 @@ namespace Airtist.Prototype.Editor
 
             AirtistLandscapePrototypeController controller = safeAreaObject.AddComponent<AirtistLandscapePrototypeController>();
             controller.Configure(homeBackground, background, portrait, louvrePaintings, uiFont);
+            GameObject homePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/UI/Home/HomeScreen.prefab");
+            if (homePrefab != null)
+                controller.ConfigureHomeScreen(homePrefab.GetComponent<AirtistHomeScreen>());
             EditorUtility.SetDirty(controller);
 
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;

@@ -376,6 +376,7 @@ MonoBehaviour:
   - {fileID: 3764684925671821398, guid: d38305be11240d340919e58cc8045968, type: 3}
   - {fileID: 624288954296913384, guid: f03c65182ae4eea48bb77086f16a8bab, type: 3}
   font: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  homeScreenPrefab: {fileID: 5383926143604533345, guid: 4ddff01a4814cdc4999d0ed8b687ee80, type: 3}
 --- !u!1 &1021325808
 GameObject:
   m_ObjectHideFlags: 0
