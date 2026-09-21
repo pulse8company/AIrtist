@@ -73,6 +73,7 @@ namespace Airtist.Prototype
                 })
         };
 
+        [SerializeField] private Sprite homeBackground;
         [SerializeField] private Sprite galleryBackground;
         [SerializeField] private Sprite portrait;
         [SerializeField] private Sprite[] louvrePaintings;
@@ -125,17 +126,13 @@ namespace Airtist.Prototype
         private TextMeshProUGUI rewardedHintButtonLabel;
         private TextMeshProUGUI rewardedHintState;
 
-        public void Configure(Sprite backdrop, Sprite featuredPortrait, Sprite[] featuredPaintings, TMP_FontAsset uiFont)
+        public void Configure(Sprite homeBackdrop, Sprite backdrop, Sprite featuredPortrait, Sprite[] featuredPaintings, TMP_FontAsset uiFont)
         {
+            homeBackground = homeBackdrop;
             galleryBackground = backdrop;
             portrait = featuredPortrait;
             louvrePaintings = featuredPaintings;
             font = uiFont;
-
-            if (Application.isPlaying)
-            {
-                Initialize();
-            }
         }
 
         private void Awake()
@@ -179,27 +176,36 @@ namespace Airtist.Prototype
         private void BuildHome()
         {
             RectTransform page = CreatePage(Page.Home, "Home");
+            CreateImage(page, "HomeBackdrop", homeBackground != null ? homeBackground : galleryBackground, Color.white, Anchor.Stretch, Vector2.zero, Vector2.zero, false);
+            CreatePanel(page, "HomeWarmthVeil", new Color(1f, 0.95f, 0.83f, 0.17f), Anchor.Stretch, Vector2.zero, Vector2.zero);
             BuildHeader(page, "Париж · первая выставка");
 
-            CreateLabel(page, "Старинные картины.\nСовременные следы.", 64, Ink, Anchor.TopLeft, new Vector2(82, -188), new Vector2(760, 150), TextAlignmentOptions.Left, FontStyles.Bold);
-            CreateLabel(page, "На полотнах появляются детали, которых художник никогда не рисовал.\nПомоги Амели вернуть историю искусству.", 27, Ink * new Color(1f, 1f, 1f, 0.76f), Anchor.TopLeft, new Vector2(84, -356), new Vector2(700, 90), TextAlignmentOptions.Left);
+            RectTransform headlinePlate = CreatePanel(page, "HomeTitlePlate", new Color(1f, 0.97f, 0.89f, 0.84f), Anchor.TopLeft, new Vector2(72, -144), new Vector2(840, 222));
+            CreatePanel(headlinePlate, "ChapterPill", Teal, Anchor.TopLeft, new Vector2(28, -26), new Vector2(190, 34));
+            CreateLabel(headlinePlate, "ГЛАВА 1 · ЛУВР", 15, Cream, Anchor.TopLeft, new Vector2(42, -31), new Vector2(160, 24), TextAlignmentOptions.Left, FontStyles.Bold);
+            CreateLabel(headlinePlate, "Старинные картины.\nСовременные следы.", 52, Ink, Anchor.TopLeft, new Vector2(28, -68), new Vector2(780, 112), TextAlignmentOptions.Left, FontStyles.Bold);
+            CreateLabel(headlinePlate, "Найди AI-дорисовки и верни картинам их историю.", 18, Ink * new Color(1f, 1f, 1f, 0.76f), Anchor.TopLeft, new Vector2(30, -190), new Vector2(740, 26), TextAlignmentOptions.Left);
 
-            RectTransform routeCard = CreatePanel(page, "TodayRoute", new Color(1f, 1f, 1f, 0.78f), Anchor.BottomLeft, new Vector2(84, 84), new Vector2(780, 260));
-            CreateLabel(routeCard, "СЕГОДНЯШНИЙ МАРШРУТ", 18, Teal, Anchor.TopLeft, new Vector2(34, -28), new Vector2(360, 32), TextAlignmentOptions.Left, FontStyles.Bold);
-            CreateLabel(routeCard, "Музей у Сены", 37, Ink, Anchor.TopLeft, new Vector2(34, -78), new Vector2(430, 52), TextAlignmentOptions.Left, FontStyles.Bold);
-            CreateLabel(routeCard, "3 картины · 3 AI-следа · 1 коллекция", 21, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.TopLeft, new Vector2(34, -132), new Vector2(520, 34), TextAlignmentOptions.Left);
-            CreateButton(routeCard, "Продолжить поиск", Coral, Cream, Anchor.BottomLeft, new Vector2(34, 30), new Vector2(330, 70), () => Show(Page.Museum));
-            dailyHomeState = CreateLabel(routeCard, "Ежедневный бонус: +1 подсказка", 16, Teal, Anchor.BottomRight, new Vector2(-40, 111), new Vector2(330, 28), TextAlignmentOptions.Right, FontStyles.Bold);
-            dailyHomeButton = CreateButton(routeCard, "Забрать", Gold, DeepTeal, Anchor.BottomRight, new Vector2(-34, 30), new Vector2(190, 62), OpenDailyBonus, 18);
+            RectTransform routeCard = CreatePanel(page, "TodayRoute", new Color(1f, 0.98f, 0.91f, 0.91f), Anchor.BottomLeft, new Vector2(76, 62), new Vector2(850, 292));
+            RectTransform routeThumbnailFrame = CreatePanel(routeCard, "RouteThumbnailFrame", Gold, Anchor.TopLeft, new Vector2(28, -32), new Vector2(214, 140));
+            CreateImage(routeThumbnailFrame, "RouteThumbnail", GetChapterArtwork(0), Color.white, Anchor.Center, Vector2.zero, new Vector2(194, 120), true);
+            CreateLabel(routeCard, "СЕГОДНЯШНИЙ МАРШРУТ", 17, Teal, Anchor.TopLeft, new Vector2(268, -32), new Vector2(360, 28), TextAlignmentOptions.Left, FontStyles.Bold);
+            CreateLabel(routeCard, "Музей у Сены", 36, Ink, Anchor.TopLeft, new Vector2(266, -74), new Vector2(440, 48), TextAlignmentOptions.Left, FontStyles.Bold);
+            CreateLabel(routeCard, "3 картины · 9 AI-следов · 1 коллекция", 19, Ink * new Color(1f, 1f, 1f, 0.72f), Anchor.TopLeft, new Vector2(268, -124), new Vector2(470, 28), TextAlignmentOptions.Left);
+            CreateButton(routeCard, "Продолжить поиск", Coral, Cream, Anchor.BottomLeft, new Vector2(28, 26), new Vector2(352, 72), () => Show(Page.Museum));
+            RectTransform dailyBonusPill = CreatePanel(routeCard, "DailyBonusPill", new Color(Gold.r, Gold.g, Gold.b, 0.91f), Anchor.BottomRight, new Vector2(-26, 101), new Vector2(312, 44));
+            dailyHomeState = CreateLabel(dailyBonusPill, "Ежедневный бонус: +1 подсказка", 15, DeepTeal, Anchor.Center, Vector2.zero, new Vector2(284, 26), TextAlignmentOptions.Center, FontStyles.Bold);
+            dailyHomeButton = CreateButton(routeCard, "Забрать", Gold, DeepTeal, Anchor.BottomRight, new Vector2(-26, 26), new Vector2(216, 66), OpenDailyBonus, 18);
             dailyHomeButtonLabel = GetButtonLabel(dailyHomeButton);
 
-            RectTransform artCard = CreatePanel(page, "AmelieCard", Gold, Anchor.Right, new Vector2(-150, 0), new Vector2(570, 650));
-            CreateLabel(artCard, "АМЕЛИ\nстудентка живописи", 23, DeepTeal, Anchor.TopLeft, new Vector2(32, -32), new Vector2(300, 65), TextAlignmentOptions.Left, FontStyles.Bold);
-            CreateImage(artCard, "AmeliePortrait", portrait, Color.white, Anchor.Bottom, new Vector2(0, 42), new Vector2(430, 455), true);
-            CreatePanel(artCard, "Sticker", Cream, Anchor.BottomRight, new Vector2(-32, 30), new Vector2(195, 62));
-            CreateLabel(artCard, "ИСКАТЕЛЬНИЦА", 16, DeepTeal, Anchor.BottomRight, new Vector2(-40, 48), new Vector2(180, 28), TextAlignmentOptions.Center, FontStyles.Bold);
+            RectTransform artCard = CreatePanel(page, "AmelieCard", Gold, Anchor.Right, new Vector2(-96, 8), new Vector2(548, 624));
+            RectTransform artInner = CreatePanel(artCard, "AmeliePortraitMat", new Color(1f, 0.97f, 0.89f, 0.96f), Anchor.Center, new Vector2(0, -10), new Vector2(510, 555));
+            CreateLabel(artCard, "АМЕЛИ\nстудентка живописи", 22, DeepTeal, Anchor.TopLeft, new Vector2(28, -28), new Vector2(290, 58), TextAlignmentOptions.Left, FontStyles.Bold);
+            CreateImage(artInner, "AmeliePortrait", portrait, Color.white, Anchor.Bottom, new Vector2(0, 14), new Vector2(478, 488), true);
+            CreatePanel(artCard, "RolePill", Cream, Anchor.BottomRight, new Vector2(-26, 24), new Vector2(205, 54));
+            CreateLabel(artCard, "ИСКАТЕЛЬНИЦА", 15, DeepTeal, Anchor.BottomRight, new Vector2(-38, 39), new Vector2(180, 24), TextAlignmentOptions.Center, FontStyles.Bold);
 
-            CreateButton(page, "Открыть карту мира", Teal, Cream, Anchor.BottomRight, new Vector2(-760, 106), new Vector2(335, 70), () => Show(Page.WorldMap));
+            CreateButton(page, "Открыть карту мира", Teal, Cream, Anchor.BottomRight, new Vector2(-690, 70), new Vector2(350, 72), () => Show(Page.WorldMap));
         }
 
         private void BuildWorldMap()

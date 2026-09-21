@@ -17,6 +17,7 @@ namespace Airtist.Prototype.Editor
     public static class AirtistLandscapePrototypeSceneBuilder
     {
         private const string BackgroundPath = "Assets/Art/Prototype/LouvreGalleryBackground.png";
+        private const string HomeBackgroundPath = "Assets/Art/Prototype/Home/HomeMenuBackdrop_v1.png";
         private const string PortraitPath = "Assets/Art/Prototype/PortraitOfAmelie.png";
         private const string MonaLisaPath = "Assets/Art/Prototype/Louvre/MonaLisa.jpg";
         private const string LibertyLeadingThePeoplePath = "Assets/Art/Prototype/Louvre/LibertyLeadingThePeople.jpg";
@@ -27,12 +28,14 @@ namespace Airtist.Prototype.Editor
         public static string Build()
         {
             AssetDatabase.ImportAsset(BackgroundPath, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(HomeBackgroundPath, ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset(PortraitPath, ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset(MonaLisaPath, ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset(LibertyLeadingThePeoplePath, ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset(RaftOfTheMedusaPath, ImportAssetOptions.ForceUpdate);
 
             Sprite background = AssetDatabase.LoadAssetAtPath<Sprite>(BackgroundPath);
+            Sprite homeBackground = LoadSprite(HomeBackgroundPath);
             Sprite portrait = AssetDatabase.LoadAssetAtPath<Sprite>(PortraitPath);
             Sprite[] louvrePaintings =
             {
@@ -41,7 +44,7 @@ namespace Airtist.Prototype.Editor
                 LoadSprite(RaftOfTheMedusaPath)
             };
             TMP_FontAsset uiFont = TMP_Settings.defaultFontAsset ?? AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FallbackFontPath);
-            if (background == null || portrait == null || louvrePaintings[0] == null || louvrePaintings[1] == null || louvrePaintings[2] == null || uiFont == null)
+            if (homeBackground == null || background == null || portrait == null || louvrePaintings[0] == null || louvrePaintings[1] == null || louvrePaintings[2] == null || uiFont == null)
             {
                 throw new InvalidOperationException("AIrtist prototype art or TextMeshPro resources are not available.");
             }
@@ -81,7 +84,8 @@ namespace Airtist.Prototype.Editor
             eventSystemObject.transform.SetParent(root.transform, false);
 
             AirtistLandscapePrototypeController controller = safeAreaObject.AddComponent<AirtistLandscapePrototypeController>();
-            controller.Configure(background, portrait, louvrePaintings, uiFont);
+            controller.Configure(homeBackground, background, portrait, louvrePaintings, uiFont);
+            EditorUtility.SetDirty(controller);
 
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
             PlayerSettings.allowedAutorotateToPortrait = false;
