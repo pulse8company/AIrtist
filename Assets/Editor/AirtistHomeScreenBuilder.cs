@@ -17,7 +17,7 @@ namespace Airtist.Prototype.Editor
     /// </summary>
     public static class AirtistHomeScreenBuilder
     {
-        public const string ArtPath = "Assets/Art/Prototype/Home/HomeApprovedReference.png";
+        public const string ArtPath = "Assets/Art/Prototype/Home/HomeTextless.png";
         public const string PrefabPath = "Assets/UI/Home/HomeScreen.prefab";
         private const float Width = 1672f;
         private const float Height = 941f;
@@ -104,7 +104,7 @@ namespace Airtist.Prototype.Editor
                 {
                     var graphic = MakeImage(rootRect, Names[i], ControlRects[i], sprites[Names[i]], true);
                     // More vertical hit room helps landscape phones; avoid overlapping neighbours.
-                    graphic.raycastPadding = new Vector4(-2f, -9f, -2f, -9f);
+                    graphic.raycastPadding = new Vector4(-2f, -23f, -2f, -23f);
                     var button = graphic.gameObject.AddComponent<UnityEngine.UI.Button>();
                     button.targetGraphic = graphic;
                     var colors = button.colors;
@@ -112,32 +112,36 @@ namespace Airtist.Prototype.Editor
                     colors.highlightedColor = new Color(1.06f, 1.04f, 1f, 1f);
                     colors.pressedColor = new Color(0.79f, 0.75f, 0.67f, 1f);
                     colors.selectedColor = Color.white;
-                    colors.disabledColor = new Color(0.65f, 0.65f, 0.65f, 1f);
+                    colors.disabledColor = Color.white;
                     colors.fadeDuration = 0.09f;
                     button.colors = colors;
                     controls[i] = button;
                 }
 
-                var badge = MakeImage(rootRect, "DailyRewardClaimed", new Rect(642, 747, 282, 48), null, false);
-                badge.color = new Color(0.97f, 0.84f, 0.51f, 1f);
-                var labelObject = new GameObject("ClaimedLabel", typeof(RectTransform), typeof(TextMeshProUGUI));
-                labelObject.transform.SetParent(badge.transform, false);
-                var labelRect = labelObject.GetComponent<RectTransform>();
-                labelRect.anchorMin = Vector2.zero;
-                labelRect.anchorMax = Vector2.one;
-                labelRect.offsetMin = labelRect.offsetMax = Vector2.zero;
-                var label = labelObject.GetComponent<TextMeshProUGUI>();
-                label.font = TMP_Settings.defaultFontAsset;
-                label.text = "Бонус получен";
-                label.fontSize = 27f;
-                label.enableAutoSizing = true;
-                label.fontSizeMin = 12f;
-                label.fontSizeMax = 27f;
-                label.color = new Color(0.18f, 0.12f, 0.05f, 1f);
-                label.alignment = TextAlignmentOptions.Center;
-                label.raycastTarget = false;
-                badge.gameObject.SetActive(false);
-                root.GetComponent<AirtistHomeScreen>().Configure(controls, badge.gameObject);
+                var values = AirtistLocalizationBuilder.ReadWorkbook();
+                var ink = new Color(.025f, .16f, .20f);
+                var cream = new Color(1, .97f, .86f);
+                void Label(string key, Rect rect, float size, Color color, bool center = false, bool bold = false)
+                    => MakeLabel(rootRect, key, values[key], rect, size, color, center, bold);
+                Label("home.location", new Rect(421, 30, 274, 38), 22, ink);
+                Label("nav.map", new Rect(1020, 55, 111, 31), 19, ink, true);
+                Label("nav.collection", new Rect(1148, 55, 130, 31), 18, ink, true);
+                Label("nav.store", new Rect(1298, 55, 130, 31), 19, ink, true);
+                Label("nav.profile", new Rect(1448, 55, 125, 31), 19, ink, true);
+                Label("home.title.old", new Rect(170, 145, 675, 88), 66, ink, false, true);
+                Label("home.title.modern", new Rect(192, 221, 669, 80), 62, new Color(.67f,.22f,.10f));
+                Label("home.subtitle", new Rect(211, 320, 570, 68), 26, ink);
+                Label("home.route.caption", new Rect(218, 536, 600, 37), 22, ink);
+                Label("home.route.title", new Rect(379, 579, 560, 61), 44, ink, false, true);
+                Label("home.route.summary", new Rect(379, 641, 575, 42), 24, ink);
+                Label("home.continue", new Rect(222, 738, 300, 62), 28, cream, true, true);
+                Label("home.daily.description", new Rect(651, 719, 292, 33), 16, ink, true);
+                Label("home.daily.claim", new Rect(654, 751, 282, 49), 30, ink, true, true);
+                Label("home.character.name", new Rect(1180, 630, 215, 34), 26, ink, true, true);
+                Label("home.character.role", new Rect(1172, 665, 258, 27), 18, ink, true);
+                Label("home.map.open", new Rect(1168, 749, 333, 55), 28, cream, true, true);
+                var claim = root.transform.Find("Text_home.daily.claim").GetComponent<UnityEngine.Localization.Components.LocalizeStringEvent>();
+                root.GetComponent<AirtistHomeScreen>().Configure(controls, null, claim);
                 PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
             }
             finally { UnityEngine.Object.DestroyImmediate(root); }
@@ -201,6 +205,25 @@ namespace Airtist.Prototype.Editor
         private static void EnsureFolder(string parent, string child)
         {
             if (!AssetDatabase.IsValidFolder(parent + "/" + child)) AssetDatabase.CreateFolder(parent, child);
+        }
+
+        private static void MakeLabel(RectTransform parent, string key, string value, Rect area, float size, Color color, bool center, bool bold)
+        {
+            var go = new GameObject("Text_" + key, typeof(RectTransform), typeof(TextMeshProUGUI), typeof(AirtistScaledLabel));
+            go.transform.SetParent(parent, false);
+            var rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(area.xMin / Width, 1 - area.yMax / Height);
+            rect.anchorMax = new Vector2(area.xMax / Width, 1 - area.yMin / Height);
+            rect.offsetMin = rect.offsetMax = Vector2.zero;
+            var text = go.GetComponent<TextMeshProUGUI>();
+            text.font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(AirtistLocalizationBuilder.FontPath);
+            text.text = value; text.fontSize = size; text.color = color; text.raycastTarget = false;
+            text.fontStyle = bold ? FontStyles.Bold : FontStyles.Normal;
+            text.alignment = center ? TextAlignmentOptions.Center : TextAlignmentOptions.MidlineLeft;
+            text.textWrappingMode = TextWrappingModes.NoWrap;
+            text.overflowMode = TextOverflowModes.Ellipsis;
+            var scale = go.GetComponent<AirtistScaledLabel>(); scale.artboard = parent; scale.designFontSize = size;
+            AirtistLocalizationBuilder.Bind(text, key);
         }
     }
 }

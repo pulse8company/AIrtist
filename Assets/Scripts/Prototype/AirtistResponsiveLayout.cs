@@ -26,7 +26,18 @@ namespace Airtist.Prototype
 
         private void Awake()
         {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            Screen.fullScreen = true;
+#endif
             ApplyLayout();
+        }
+
+        private void OnApplicationFocus(bool focused)
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            if(focused) Screen.fullScreen=true;
+#endif
+            if(focused) ApplyLayout();
         }
 
         private void Update()

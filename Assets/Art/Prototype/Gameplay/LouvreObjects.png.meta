@@ -1,0 +1,605 @@
+fileFormatVersion: 2
+guid: 77af8a2ad6d28c94a91d316890c9184b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4504257416820131843
+    second: LouvreObjects_0
+  - first:
+      213: -7446589253839989329
+    second: LouvreObjects_1
+  - first:
+      213: 289365647511691274
+    second: LouvreObjects_2
+  - first:
+      213: -2518392377875352560
+    second: LouvreObjects_3
+  - first:
+      213: 2985612188731813798
+    second: LouvreObjects_4
+  - first:
+      213: -326536547004103571
+    second: LouvreObjects_5
+  - first:
+      213: 2441857577907445824
+    second: LouvreObjects_6
+  - first:
+      213: -7737508800873808510
+    second: LouvreObjects_7
+  - first:
+      213: -3589103041905436996
+    second: LouvreObjects_8
+  - first:
+      213: 1463027933627815320
+    second: LouvreObjects_9
+  - first:
+      213: -5632689507409743367
+    second: LouvreObjects_10
+  - first:
+      213: 3435342485469252474
+    second: LouvreObjects_11
+  - first:
+      213: 8552448646885999669
+    second: LouvreObjects_12
+  - first:
+      213: -7693746377891995987
+    second: LouvreObjects_13
+  - first:
+      213: 7006581312491136953
+    second: LouvreObjects_14
+  - first:
+      213: 5629888594347385458
+    second: LouvreObjects_15
+  - first:
+      213: -2904976799159039641
+    second: LouvreObjects_16
+  - first:
+      213: 6868553144807157269
+    second: LouvreObjects_17
+  - first:
+      213: -2284958890695138011
+    second: LouvreObjects_18
+  - first:
+      213: 7486832267385304192
+    second: LouvreObjects_19
+  - first:
+      213: -22869880146653731
+    second: LouvreObjects_20
+  - first:
+      213: 2024801398965959098
+    second: LouvreObjects_21
+  - first:
+      213: 8138130001712942346
+    second: LouvreObjects_22
+  - first:
+      213: -3683999423638381900
+    second: LouvreObjects_23
+  - first:
+      213: -5845204581848222365
+    second: LouvreObjects_24
+  - first:
+      213: -5178833193889738168
+    second: LouvreObjects_25
+  - first:
+      213: 3663515004054202755
+    second: LouvreObjects_26
+  - first:
+      213: 7438849260029371958
+    second: LouvreObjects_27
+  - first:
+      213: -1094248608266337450
+    second: LouvreObjects_28
+  - first:
+      213: -9221451326557146497
+    second: LouvreObjects_29
+  - first:
+      213: 6388255307576757493
+    second: LouvreObjects_30
+  - first:
+      213: 3211306417625956614
+    second: LouvreObjects_31
+  - first:
+      213: 800576773938885751
+    second: LouvreObjects_32
+  - first:
+      213: -8843464153313454338
+    second: LouvreObjects_33
+  - first:
+      213: 26333513167631021
+    second: LouvreObjects_34
+  - first:
+      213: 1220036867503517684
+    second: LouvreObjects_35
+  - first:
+      213: 1646520791646889582
+    second: LouvreObjects_36
+  - first:
+      213: -4427352987107515659
+    second: LouvreObjects_37
+  - first:
+      213: -8044844123239529352
+    second: LouvreObjects_38
+  - first:
+      213: -1895344705702187016
+    second: LouvreObjects_39
+  - first:
+      213: 2843936052598628413
+    second: LouvreObjects_40
+  - first:
+      213: 6491894347737626090
+    second: LouvreObjects_41
+  - first:
+      213: 6104281603163680421
+    second: LouvreObjects_42
+  - first:
+      213: -3036896607179178227
+    second: LouvreObjects_43
+  - first:
+      213: -9002002709155326066
+    second: LouvreObjects_44
+  - first:
+      213: 1499718833819934267
+    second: LouvreObjects_45
+  - first:
+      213: -8240750589041739694
+    second: LouvreObjects_46
+  - first:
+      213: -2408420968813331496
+    second: LouvreObjects_47
+  - first:
+      213: 3978837280543970444
+    second: LouvreObjects_48
+  - first:
+      213: -3802924844381558018
+    second: LouvreObjects_49
+  - first:
+      213: -6228965471537406613
+    second: LouvreObjects_50
+  - first:
+      213: -7009600392242914817
+    second: LouvreObjects_51
+  - first:
+      213: 5790786634550841771
+    second: LouvreObjects_52
+  - first:
+      213: 4593870029058371539
+    second: LouvreObjects_53
+  - first:
+      213: -2654959079750564622
+    second: LouvreObjects_54
+  - first:
+      213: 545706749394476447
+    second: LouvreObjects_55
+  - first:
+      213: -5257368012529758996
+    second: LouvreObjects_56
+  - first:
+      213: 3067175871678577612
+    second: LouvreObjects_57
+  - first:
+      213: -4379878158630435650
+    second: LouvreObjects_58
+  - first:
+      213: -2358943514854588815
+    second: LouvreObjects_59
+  - first:
+      213: -793310353682639000
+    second: LouvreObjects_60
+  - first:
+      213: -8167298693174009316
+    second: LouvreObjects_61
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LouvreObject00
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 802
+        width: 307
+        height: 296
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94432f4f893a9dc4f8392e86f1da94d0
+      internalID: -1875569391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject01
+      rect:
+        serializedVersion: 2
+        x: 369
+        y: 826
+        width: 250
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce8734ce0a030c14d809d0678bfcd7ba
+      internalID: -521643627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject02
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 810
+        width: 272
+        height: 305
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6096bb1f04bdbce408c855d9185089bb
+      internalID: 1913643071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject03
+      rect:
+        serializedVersion: 2
+        x: 1005
+        y: 820
+        width: 240
+        height: 242
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 429d038ed95e3de4ea55822b832b91e7
+      internalID: 517309799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject04
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 447
+        width: 197
+        height: 225
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53d297d601d55734b8567e6a39cdfa32
+      internalID: 1170180605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject05
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 447
+        width: 285
+        height: 237
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c0c6920edbaa3e488b973d8654001da
+      internalID: -905642551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject06
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 444
+        width: 225
+        height: 308
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60a2ad23e0eff5e4dba6fac27e2e713d
+      internalID: -593941314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject07
+      rect:
+        serializedVersion: 2
+        x: 991
+        y: 448
+        width: 220
+        height: 212
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0473969ade4032245b96d9cbe2067b09
+      internalID: 1923170786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject08
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 125
+        width: 236
+        height: 198
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cc7195e254a75b4c862d6b8f911db5b
+      internalID: 2008515211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject09
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 109
+        width: 186
+        height: 262
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e4e9e47773d9284d8ee648d217fa45d
+      internalID: -1285160688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject10
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 138
+        width: 229
+        height: 183
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4f827833d2dc044d8df5c6e4aa1775e
+      internalID: -1782784424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LouvreObject11
+      rect:
+        serializedVersion: 2
+        x: 1005
+        y: 123
+        width: 189
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8420434b9195d343aee92fb231a4ed3
+      internalID: 465223853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: ac743b4de61fedf4497b097699aa8204
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      LouvreObject00: -1875569391
+      LouvreObject01: -521643627
+      LouvreObject02: 1913643071
+      LouvreObject03: 517309799
+      LouvreObject04: 1170180605
+      LouvreObject05: -905642551
+      LouvreObject06: -593941314
+      LouvreObject07: 1923170786
+      LouvreObject08: 2008515211
+      LouvreObject09: -1285160688
+      LouvreObject10: -1782784424
+      LouvreObject11: 465223853
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

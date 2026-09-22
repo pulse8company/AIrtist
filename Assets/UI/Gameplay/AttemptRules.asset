@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 699ec1f33c4157f45a38d81c4ccaf8c9, type: 3}
+  m_Name: AttemptRules
+  m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistAttemptRules
+  paintings:
+  - chapterId: mona-lisa
+    mode: 0
+    clicks: 12
+    seconds: 180
+    continuationClicks: 3
+    continuationSeconds: 30
+    starSeconds: 135
+    starChecks: 4
+  - chapterId: liberty
+    mode: 1
+    clicks: 8
+    seconds: 120
+    continuationClicks: 3
+    continuationSeconds: 30
+    starSeconds: 90
+    starChecks: 6
+  - chapterId: medusa
+    mode: 2
+    clicks: 9
+    seconds: 150
+    continuationClicks: 3
+    continuationSeconds: 30
+    starSeconds: 113
+    starChecks: 7
+  - chapterId: recamier
+    mode: 2
+    clicks: 10
+    seconds: 180
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 135
+    starChecks: 5
+  - chapterId: lacemaker
+    mode: 2
+    clicks: 10
+    seconds: 180
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 135
+    starChecks: 5
+  - chapterId: astronomer
+    mode: 2
+    clicks: 10
+    seconds: 210
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 158
+    starChecks: 6
+  - chapterId: moneylender
+    mode: 2
+    clicks: 9
+    seconds: 210
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 158
+    starChecks: 6
+  - chapterId: card-sharp
+    mode: 2
+    clicks: 9
+    seconds: 210
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 158
+    starChecks: 6
+  - chapterId: coronation
+    mode: 2
+    clicks: 10
+    seconds: 240
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 180
+    starChecks: 7
+  - chapterId: cana
+    mode: 2
+    clicks: 9
+    seconds: 240
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 180
+    starChecks: 7
+  - chapterId: ferronniere
+    mode: 2
+    clicks: 9
+    seconds: 210
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 158
+    starChecks: 6
+  - chapterId: castiglione
+    mode: 2
+    clicks: 9
+    seconds: 210
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 158
+    starChecks: 6
+  - chapterId: virgin-rocks
+    mode: 2
+    clicks: 10
+    seconds: 240
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 180
+    starChecks: 7
+  - chapterId: ship-fools
+    mode: 2
+    clicks: 10
+    seconds: 270
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 203
+    starChecks: 7
+  - chapterId: horatii
+    mode: 2
+    clicks: 11
+    seconds: 270
+    continuationClicks: 3
+    continuationSeconds: 45
+    starSeconds: 203
+    starChecks: 8

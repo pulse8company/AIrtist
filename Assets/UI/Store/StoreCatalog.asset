@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f05f2fb9cc14f644a05f8502a9f1b7a, type: 3}
+  m_Name: StoreCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistStoreCatalog
+  products:
+  - id: remove_ads
+    kind: 0
+    title: "\u0411\u0435\u0437 \u0440\u0435\u043A\u043B\u0430\u043C\u044B"
+    description: "\u041E\u0442\u043A\u043B\u044E\u0447\u0430\u0435\u0442 \u043E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\u0443\u044E
+      \u0440\u0435\u043A\u043B\u0430\u043C\u0443 \u043D\u0430\u0432\u0441\u0435\u0433\u0434\u0430.
+      \u0420\u0430\u0437\u043E\u0432\u0430\u044F \u043F\u043E\u043A\u0443\u043F\u043A\u0430.
+      \u0412\u0438\u0434\u0435\u043E \u0437\u0430 \u043D\u0430\u0433\u0440\u0430\u0434\u0443
+      \u043E\u0441\u0442\u0430\u0451\u0442\u0441\u044F \u0434\u043E\u0431\u0440\u043E\u0432\u043E\u043B\u044C\u043D\u044B\u043C."
+    amount: 0
+    previewPrice: "499 \u20BD"
+    icon: {fileID: 1058259011, guid: a9494800a416f3444a9eb53b07529758, type: 3}
+  - id: gold_500
+    kind: 1
+    title: "500 \u0437\u043E\u043B\u043E\u0442\u0430"
+    description: "\u041D\u0430\u0431\u043E\u0440 \u0438\u0433\u0440\u043E\u0432\u043E\u0439
+      \u0432\u0430\u043B\u044E\u0442\u044B: 500 \u0437\u043E\u043B\u043E\u0442\u0430."
+    amount: 500
+    previewPrice: "99 \u20BD"
+    icon: {fileID: -1992393299, guid: a9494800a416f3444a9eb53b07529758, type: 3}
+  - id: gold_1200
+    kind: 1
+    title: "1 200 \u0437\u043E\u043B\u043E\u0442\u0430"
+    description: "\u041D\u0430\u0431\u043E\u0440 \u0438\u0433\u0440\u043E\u0432\u043E\u0439
+      \u0432\u0430\u043B\u044E\u0442\u044B: 1 200 \u0437\u043E\u043B\u043E\u0442\u0430."
+    amount: 1200
+    previewPrice: "199 \u20BD"
+    icon: {fileID: 2022965170, guid: a9494800a416f3444a9eb53b07529758, type: 3}
+  - id: gold_3000
+    kind: 1
+    title: "3 000 \u0437\u043E\u043B\u043E\u0442\u0430"
+    description: "\u041D\u0430\u0431\u043E\u0440 \u0438\u0433\u0440\u043E\u0432\u043E\u0439
+      \u0432\u0430\u043B\u044E\u0442\u044B: 3 000 \u0437\u043E\u043B\u043E\u0442\u0430."
+    amount: 3000
+    previewPrice: "449 \u20BD"
+    icon: {fileID: -976295023, guid: a9494800a416f3444a9eb53b07529758, type: 3}
+  - id: hints_3
+    kind: 2
+    title: "3 \u043F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0438"
+    description: "\u041F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0438 \u0434\u043B\u044F
+      \u043F\u043E\u0438\u0441\u043A\u0430 AI-\u0434\u043E\u0440\u0438\u0441\u043E\u0432\u043E\u043A:
+      3."
+    amount: 3
+    previewPrice: "99 \u20BD"
+    icon: {fileID: -1276753423, guid: a9494800a416f3444a9eb53b07529758, type: 3}
+  - id: hints_10
+    kind: 2
+    title: "10 \u043F\u043E\u0434\u0441\u043A\u0430\u0437\u043E\u043A"
+    description: "\u041F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0438 \u0434\u043B\u044F
+      \u043F\u043E\u0438\u0441\u043A\u0430 AI-\u0434\u043E\u0440\u0438\u0441\u043E\u0432\u043E\u043A:
+      10."
+    amount: 10
+    previewPrice: "249 \u20BD"
+    icon: {fileID: -1449213628, guid: a9494800a416f3444a9eb53b07529758, type: 3}
+  - id: hints_25
+    kind: 2
+    title: "25 \u043F\u043E\u0434\u0441\u043A\u0430\u0437\u043E\u043A"
+    description: "\u041F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0438 \u0434\u043B\u044F
+      \u043F\u043E\u0438\u0441\u043A\u0430 AI-\u0434\u043E\u0440\u0438\u0441\u043E\u0432\u043E\u043A:
+      25."
+    amount: 25
+    previewPrice: "499 \u20BD"
+    icon: {fileID: 1420358637, guid: a9494800a416f3444a9eb53b07529758, type: 3}

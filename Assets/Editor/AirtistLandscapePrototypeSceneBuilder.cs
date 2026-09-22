@@ -88,6 +88,16 @@ namespace Airtist.Prototype.Editor
             GameObject homePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/UI/Home/HomeScreen.prefab");
             if (homePrefab != null)
                 controller.ConfigureHomeScreen(homePrefab.GetComponent<AirtistHomeScreen>());
+            GameObject mapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/UI/WorldMap/WorldMapScreen.prefab");
+            if (mapPrefab != null)
+                controller.ConfigureWorldMap(mapPrefab.GetComponent<AirtistWorldMapScreen>());
+            if (AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Prototype/Museums/Louvre.png") != null)
+                AirtistMuseumJourneySetup.Configure(controller);
+            AirtistMyGalleryBuilder.Connect(controller);
+            AirtistStoreBuilder.Connect(controller);
+            AirtistGameplayBuilder.Connect(controller);
+            AirtistHiddenObjectBuilder.Connect(controller);
+            AirtistLouvreExpansionBuilder.Connect(controller);
             EditorUtility.SetDirty(controller);
 
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;

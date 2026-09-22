@@ -1,0 +1,476 @@
+fileFormatVersion: 2
+guid: 508bb414c079abe48a9da5e88f4e1524
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4421056953104687282
+    second: HiddenObjects_0
+  - first:
+      213: -3988058435798919470
+    second: HiddenObjects_1
+  - first:
+      213: 436711571637949262
+    second: HiddenObjects_2
+  - first:
+      213: 895687328553817946
+    second: HiddenObjects_3
+  - first:
+      213: -6208779546671817102
+    second: HiddenObjects_4
+  - first:
+      213: -4746182716420305931
+    second: HiddenObjects_5
+  - first:
+      213: 6195902377515200423
+    second: HiddenObjects_6
+  - first:
+      213: 4903764591321669605
+    second: HiddenObjects_7
+  - first:
+      213: -2402422809142838175
+    second: HiddenObjects_8
+  - first:
+      213: 4863336639534846476
+    second: HiddenObjects_9
+  - first:
+      213: 2872868155522948889
+    second: HiddenObjects_10
+  - first:
+      213: 2825666115822391458
+    second: HiddenObjects_11
+  - first:
+      213: 5740758840943696263
+    second: HiddenObjects_12
+  - first:
+      213: -2130615296839042901
+    second: HiddenObjects_13
+  - first:
+      213: 9130405601075774121
+    second: HiddenObjects_14
+  - first:
+      213: -4714269407385195151
+    second: HiddenObjects_15
+  - first:
+      213: -4080514488343491293
+    second: HiddenObjects_16
+  - first:
+      213: 631531274697145433
+    second: HiddenObjects_17
+  - first:
+      213: 918256953307399809
+    second: HiddenObjects_18
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: HiddenObject00
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 912
+        width: 294
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30f197e19036b954c835a0cd6fd7b73f
+      internalID: -983517084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject01
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 828
+        width: 217
+        height: 325
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 994ae5621cf02134191a51e18439258e
+      internalID: -268152023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject02
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 845
+        width: 262
+        height: 251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c709ed00087fb445b4a92fdb2857eb1
+      internalID: -1176607287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject03
+      rect:
+        serializedVersion: 2
+        x: 945
+        y: 838
+        width: 265
+        height: 313
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26f6ec213ff8d0745a6435e91644895a
+      internalID: 1601228913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject04
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 467
+        width: 211
+        height: 305
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5042f46643ec2434bb5ef934e7135e91
+      internalID: -282069316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject05
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 504
+        width: 303
+        height: 233
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bfdbcd5dd569d248869a92c90b9084c
+      internalID: -1441790450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject06
+      rect:
+        serializedVersion: 2
+        x: 616
+        y: 506
+        width: 314
+        height: 195
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e855f4d35b6f5d439a9c44c53a27c9a
+      internalID: -517058687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject07
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 470
+        width: 296
+        height: 299
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28e2bf74dddc3984ca603f475390b59a
+      internalID: -1571837698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject08
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 88
+        width: 137
+        height: 346
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6872b7ba781f9fc4a97ed3a544827415
+      internalID: -1384771033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject09
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 116
+        width: 266
+        height: 270
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e90e163f5f4d47346a304fe63dd0d135
+      internalID: -235704082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject10
+      rect:
+        serializedVersion: 2
+        x: 630
+        y: 127
+        width: 343
+        height: 186
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70b140fee629dcc4eb0525e197afa1b1
+      internalID: -1089435590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HiddenObject11
+      rect:
+        serializedVersion: 2
+        x: 976
+        y: 85
+        width: 238
+        height: 345
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 887d09ea8e562814c94820e9493f29ce
+      internalID: -342405512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: fc029ebb4573f0046bec3f63dbfd9686
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      HiddenObject00: -983517084
+      HiddenObject01: -268152023
+      HiddenObject02: -1176607287
+      HiddenObject03: 1601228913
+      HiddenObject04: -282069316
+      HiddenObject05: -1441790450
+      HiddenObject06: -517058687
+      HiddenObject07: -1571837698
+      HiddenObject08: -1384771033
+      HiddenObject09: -235704082
+      HiddenObject10: -1089435590
+      HiddenObject11: -342405512
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

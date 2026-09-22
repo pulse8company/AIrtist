@@ -1,0 +1,12 @@
+# ninja log v5
+59	203	8117187384213589	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	5e28c2fec160aad0
+205	332	8117187385354584	C:/Airtist/Airtist/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/1147164k/obj/arm64-v8a/libswappywrapper.so	32cc30f8434e14cf
+26	900	8117187390576270	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	d6f40b89468d0bff
+41	905	8117187391122211	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	80dfe9c0e76e78ee
+19	906	8117187391122211	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	ac47b07859d56170
+1	908	8117187391122211	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	b65496dea5efc821
+14	909	8117187391147332	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	40f55b93cbfbc6f4
+49	915	8117187391288333	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	c2f6e21181c45dd5
+33	942	8117187391529859	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	f76d36b038939be9
+8	981	8117187391923358	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	3ca2fcdcfbf176c1
+981	1067	8117187392789511	C:/Airtist/Airtist/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/1147164k/obj/arm64-v8a/libgame.so	a22a6d9124b1d97e
