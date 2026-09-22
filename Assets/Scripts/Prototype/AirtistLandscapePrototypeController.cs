@@ -1260,7 +1260,11 @@ namespace Airtist.Prototype
             RectTransform rect = go.GetComponent<RectTransform>();
             SetAnchor(rect, anchor, position, dimensions);
             TextMeshProUGUI label = go.GetComponent<TextMeshProUGUI>();
-            label.font = font;
+            // Runtime dialogs must use the same Cyrillic-capable font as the themed
+            // screens, rather than the legacy scene font and its fallback atlas.
+            var themeFont = AirtistApprovedTheme.Current?.font;
+            label.font = themeFont != null ? themeFont : font;
+            if (label.font != null) label.fontSharedMaterial = label.font.material;
             label.text = value;
             label.fontSize = size;
             label.color = color;
