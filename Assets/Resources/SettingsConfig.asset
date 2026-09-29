@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd544e770ae9b948bf5d661ebdec94a, type: 3}
+  m_Name: SettingsConfig
+  m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistSettingsConfig
+  privacyPolicyUrl: https://www.pulse8gaming.com/privacy-policy
+  instagramUrl: 
+  facebookUrl: 
+  supportEmail: 
+  socialRewardCoins: 50
+  publishedLocaleCodes:
+  - ru
+  menuClick: {fileID: 8300000, guid: 1523c720f85562b47b7c343c16ae7c69, type: 3}
+  menuClickVolume: 0.55
+  paintingComplete: {fileID: 8300000, guid: 392f4d1883fa4e24f8793e4230c4a56f, type: 3}
+  paintingCompleteVolume: 0.65

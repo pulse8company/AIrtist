@@ -16,6 +16,20 @@ MonoBehaviour:
   homeBackdrop: {fileID: 21300000, guid: eb2a60d88339fa943b5fdc3d362dd8a4, type: 3}
   museumBackdrop: {fileID: 21300000, guid: 40a9a745e5c36184ebad5fe4a96e03ea, type: 3}
   amelie: {fileID: 21300000, guid: 5e39d10b9df012c40a3011213a073d8e, type: 3}
+  dailyGift: {fileID: 21300000, guid: e6b454eec183ada4f8997c6fd1d0f372, type: 3}
+  woodFrame: {fileID: 21300000, guid: 2cc9b393ef45840438fdef631fa61b12, type: 3}
+  woodenMap: {fileID: 3198948164027086841, guid: d4bf13b58c247b248b6af87b791a6206, type: 3}
+  settingsGear: {fileID: 21300000, guid: 00d9a16088378ac4898d934afa5fe0f0, type: 3}
+  settingsIcons:
+  - {fileID: 1666712381, guid: 77e8dab72d483f94da0ed54d681eff30, type: 3}
+  - {fileID: -1113884016, guid: 77e8dab72d483f94da0ed54d681eff30, type: 3}
+  - {fileID: -1758856752, guid: 77e8dab72d483f94da0ed54d681eff30, type: 3}
+  - {fileID: -2119896539, guid: 77e8dab72d483f94da0ed54d681eff30, type: 3}
+  - {fileID: -1482241668, guid: 77e8dab72d483f94da0ed54d681eff30, type: 3}
+  - {fileID: 841740367, guid: 77e8dab72d483f94da0ed54d681eff30, type: 3}
+  - {fileID: 2006195288, guid: 77e8dab72d483f94da0ed54d681eff30, type: 3}
+  - {fileID: -452299894, guid: 77e8dab72d483f94da0ed54d681eff30, type: 3}
+  - {fileID: 277591009, guid: 77e8dab72d483f94da0ed54d681eff30, type: 3}
   icons:
   - {fileID: 979208095, guid: 39fabcc74b627ac41b592d60bb6a36bc, type: 3}
   - {fileID: 1893922523, guid: 39fabcc74b627ac41b592d60bb6a36bc, type: 3}

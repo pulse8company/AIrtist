@@ -33,8 +33,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6352265056868008490}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.04, y: 0.07000001}
-  m_AnchorMax: {x: 0.96000004, y: 0.31}
+  m_AnchorMin: {x: 0.02, y: 0.03999999}
+  m_AnchorMax: {x: 0.97999996, y: 0.32999998}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 24
+  designFontSize: 21
   designWidth: 1672
 --- !u!1 &665201089917893764
 GameObject:
@@ -762,8 +762,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.114, y: 0.338}
-  m_AnchorMax: {x: 0.192, y: 0.39}
+  m_AnchorMin: {x: 0.019, y: 0.33499998}
+  m_AnchorMax: {x: 0.167, y: 0.40499997}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -826,8 +826,8 @@ MonoBehaviour:
   m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 20
-  m_fontSizeMax: 25
+  m_fontSizeMin: 15.2
+  m_fontSizeMax: 19
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
@@ -880,7 +880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 19
+  designFontSize: 25
   designWidth: 1672
 --- !u!1 &1232723059879510489
 GameObject:
@@ -1072,8 +1072,8 @@ RectTransform:
   - {fileID: 6942339285953205687}
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.278, y: 0.017999992}
-  m_AnchorMax: {x: 0.393, y: 0.195}
+  m_AnchorMin: {x: 0.402, y: 0.012000032}
+  m_AnchorMax: {x: 0.497, y: 0.13200003}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1481,8 +1481,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7878996850216027602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.04, y: 0.07000001}
-  m_AnchorMax: {x: 0.96000004, y: 0.31}
+  m_AnchorMin: {x: 0.02, y: 0.03999999}
+  m_AnchorMax: {x: 0.97999996, y: 0.32999998}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1599,7 +1599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 24
+  designFontSize: 21
   designWidth: 1672
 --- !u!1 &1449366702122958335
 GameObject:
@@ -2009,8 +2009,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.024, y: 0.29200003}
-  m_AnchorMax: {x: 0.192, y: 0.33200002}
+  m_AnchorMin: {x: 0.019, y: 0.25199997}
+  m_AnchorMax: {x: 0.167, y: 0.31699997}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2075,7 +2075,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18.4
   m_fontSizeMax: 23
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
@@ -2127,7 +2127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 23
+  designFontSize: 27
   designWidth: 1672
 --- !u!1 &1958777694781126600
 GameObject:
@@ -2452,8 +2452,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.000000014901161}
-  m_AnchorMax: {x: 1, y: 0.20300001}
+  m_AnchorMin: {x: 0.185, y: -0.000000014901161}
+  m_AnchorMax: {x: 1, y: 0.14499998}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2599,8 +2599,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.002, y: 0.49}
-  m_AnchorMax: {x: 0.202, y: 0.89}
+  m_AnchorMin: {x: 0.002, y: 0.6}
+  m_AnchorMax: {x: 0.177, y: 0.90999997}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2675,8 +2675,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2510855990981048703}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.04, y: 0.07000001}
-  m_AnchorMax: {x: 0.96000004, y: 0.31}
+  m_AnchorMin: {x: 0.02, y: 0.03999999}
+  m_AnchorMax: {x: 0.97999996, y: 0.32999998}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2793,7 +2793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 24
+  designFontSize: 21
   designWidth: 1672
 --- !u!1 &2524408337659416528
 GameObject:
@@ -2978,8 +2978,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.024, y: 0.435}
-  m_AnchorMax: {x: 0.192, y: 0.5}
+  m_AnchorMin: {x: 0.019, y: 0.516}
+  m_AnchorMax: {x: 0.167, y: 0.59099996}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3096,7 +3096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 29
+  designFontSize: 27
   designWidth: 1672
 --- !u!1 &2813192332068492035
 GameObject:
@@ -3284,8 +3284,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.024, y: 0.338}
-  m_AnchorMax: {x: 0.09900001, y: 0.39}
+  m_AnchorMin: {x: 0.019, y: 0.425}
+  m_AnchorMax: {x: 0.167, y: 0.495}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3348,8 +3348,8 @@ MonoBehaviour:
   m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 20
-  m_fontSizeMax: 25
+  m_fontSizeMin: 15.2
+  m_fontSizeMax: 19
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
@@ -3402,7 +3402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 19
+  designFontSize: 27
   designWidth: 1672
 --- !u!1 &3241389841949728487
 GameObject:
@@ -3515,8 +3515,8 @@ RectTransform:
   - {fileID: 1845272193343726673}
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.8, y: 0.017999992}
-  m_AnchorMax: {x: 0.906, y: 0.195}
+  m_AnchorMin: {x: 0.815, y: 0.012000032}
+  m_AnchorMax: {x: 0.904, y: 0.13200003}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3804,8 +3804,8 @@ RectTransform:
   - {fileID: 2882390575944213310}
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.153, y: 0.017999992}
-  m_AnchorMax: {x: 0.268, y: 0.195}
+  m_AnchorMin: {x: 0.299, y: 0.012000032}
+  m_AnchorMax: {x: 0.394, y: 0.13200003}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4354,7 +4354,7 @@ RectTransform:
   - {fileID: 535103504374128096}
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.215, y: 0.21000001}
+  m_AnchorMin: {x: 0.185, y: 0.155}
   m_AnchorMax: {x: 0.99, y: 0.915}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -4678,8 +4678,8 @@ RectTransform:
   - {fileID: 2384963921513935329}
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.688, y: 0.017999992}
-  m_AnchorMax: {x: 0.794, y: 0.195}
+  m_AnchorMin: {x: 0.718, y: 0.012000032}
+  m_AnchorMax: {x: 0.807, y: 0.13200003}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5158,8 +5158,8 @@ RectTransform:
   - {fileID: 5229725207188182960}
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.024, y: 0.017999992}
-  m_AnchorMax: {x: 0.139, y: 0.195}
+  m_AnchorMin: {x: 0.196, y: 0.012000032}
+  m_AnchorMax: {x: 0.291, y: 0.13200003}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5455,8 +5455,8 @@ RectTransform:
   - {fileID: 5881452751513218524}
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.464, y: 0.017999992}
-  m_AnchorMax: {x: 0.57, y: 0.195}
+  m_AnchorMin: {x: 0.524, y: 0.012000032}
+  m_AnchorMax: {x: 0.613, y: 0.13200003}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6095,8 +6095,8 @@ RectTransform:
   - {fileID: 135326930765451482}
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.576, y: 0.017999992}
-  m_AnchorMax: {x: 0.682, y: 0.195}
+  m_AnchorMin: {x: 0.621, y: 0.012000032}
+  m_AnchorMax: {x: 0.71, y: 0.13200003}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6215,7 +6215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5815514369600462699
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6385,8 +6385,8 @@ RectTransform:
   - {fileID: 737420911687520562}
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.924, y: 0.03099998}
-  m_AnchorMax: {x: 0.984, y: 0.13599998}
+  m_AnchorMin: {x: 0.925, y: 0.025000013}
+  m_AnchorMax: {x: 0.985, y: 0.110000014}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7345,8 +7345,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 9147765443926653840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.04, y: 0.07000001}
-  m_AnchorMax: {x: 0.96000004, y: 0.31}
+  m_AnchorMin: {x: 0.02, y: 0.03999999}
+  m_AnchorMax: {x: 0.97999996, y: 0.32999998}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7463,7 +7463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 24
+  designFontSize: 21
   designWidth: 1672
 --- !u!1 &7467926340944661081
 GameObject:
@@ -7788,8 +7788,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.008, y: 0.20999998}
-  m_AnchorMax: {x: 0.204, y: 0.515}
+  m_AnchorMin: {x: 0.008, y: 0.15}
+  m_AnchorMax: {x: 0.178, y: 0.61}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7864,8 +7864,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 408727595789568980}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.04, y: 0.07000001}
-  m_AnchorMax: {x: 0.96000004, y: 0.31}
+  m_AnchorMin: {x: 0.02, y: 0.03999999}
+  m_AnchorMax: {x: 0.97999996, y: 0.32999998}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7982,7 +7982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 24
+  designFontSize: 21
   designWidth: 1672
 --- !u!1 &7891666554765027886
 GameObject:
@@ -8689,8 +8689,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.399, y: 0.055000007}
-  m_AnchorMax: {x: 0.458, y: 0.143}
+  m_AnchorMin: {x: 0.02, y: 0.045}
+  m_AnchorMax: {x: 0.16, y: 0.120000005}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8992,8 +8992,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8188661931087044212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.024, y: 0.21700001}
-  m_AnchorMax: {x: 0.192, y: 0.287}
+  m_AnchorMin: {x: 0.019, y: 0.165}
+  m_AnchorMax: {x: 0.167, y: 0.24000001}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9218,8 +9218,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6998810074063729705}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.04, y: 0.07000001}
-  m_AnchorMax: {x: 0.96000004, y: 0.31}
+  m_AnchorMin: {x: 0.02, y: 0.03999999}
+  m_AnchorMax: {x: 0.97999996, y: 0.32999998}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9336,7 +9336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 24
+  designFontSize: 21
   designWidth: 1672
 --- !u!1 &9007615456403496175
 GameObject:
@@ -9447,8 +9447,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5906999101292712288}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.04, y: 0.07000001}
-  m_AnchorMax: {x: 0.96000004, y: 0.31}
+  m_AnchorMin: {x: 0.02, y: 0.03999999}
+  m_AnchorMax: {x: 0.97999996, y: 0.32999998}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9565,7 +9565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistScaledLabel
   artboard: {fileID: 8188661931087044212}
-  designFontSize: 24
+  designFontSize: 21
   designWidth: 1672
 --- !u!1 &9089243679864281480
 GameObject:

@@ -330,6 +330,7 @@ GameObject:
   m_Component:
   - component: {fileID: 390117946}
   - component: {fileID: 390117947}
+  - component: {fileID: 390117948}
   m_Layer: 0
   m_Name: SafeArea
   m_TagString: Untagged
@@ -369,9 +370,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistLandscapePrototypeController
   attemptRules: {fileID: 11400000, guid: 700d053928da81849a9e1167ac59d01b, type: 2}
-  continuationAds: {fileID: 0}
-  searchEnergyCost: 2
-  completionEnergyReward: 2
+  continuationAds: {fileID: 390117948}
+  areaBrushCost: 1
+  exactBrushCost: 2
+  removeBrushCost: 3
+  videoBonusMinimum: 1
+  videoBonusMaximum: 3
+  economyBalance: {fileID: 0}
   gameplayPrefab: {fileID: 254139301946493667, guid: 22041af46a7e3f0408588cb389ae93a2, type: 3}
   hiddenObjects: {fileID: 11400000, guid: 68ca656998778be42867dbfac25c056c, type: 2}
   homeBackground: {fileID: -5014308030232552368, guid: a5184ab3c3fe9314cbe4be7875a57e19, type: 3}
@@ -412,6 +417,20 @@ MonoBehaviour:
   journeyFont: {fileID: 11400000, guid: 3c215acc752a89040a7d5ac446a056ed, type: 2}
   journeyPanel: {fileID: 21300000, guid: ab29cdbe62a3c614fbcd3046ff0184b2, type: 3}
   museumSearchBackground: {fileID: 21300000, guid: bc219ce78d3933a43987a980b920f1e8, type: 3}
+--- !u!114 &390117948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390117945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c7aab66d232c3240ac16e0da5ee6ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistMaxAdProvider
+  rewardedId: ff2aeb83c4c4b91f
+  interstitialId: 2cfef6840c15a3b3
 --- !u!1 &1021325808
 GameObject:
   m_ObjectHideFlags: 0

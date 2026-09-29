@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39eb312f0a68be14dba66437f8b422b6, type: 3}
+  m_Name: IntroductionArt
+  m_EditorClassIdentifier: Assembly-CSharp::Airtist.Prototype.AirtistIntroArt
+  portraits: {fileID: 2800000, guid: a3a7a27c8edb63e4c852992d89719251, type: 3}
+  comic: {fileID: 2800000, guid: 988cc49aafb89da459d453520d03f75b, type: 3}
+  heroSprites:
+  - {fileID: 21300000, guid: 5e39d10b9df012c40a3011213a073d8e, type: 3}
+  - {fileID: 21300000, guid: b5fd85ebe7fd9134183b778de29799af, type: 3}
+  - {fileID: 21300000, guid: 556ab8d24ad966e498e0e7a5f953f48f, type: 3}

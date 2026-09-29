@@ -12,15 +12,27 @@ namespace Airtist.Prototype
 
         private void SelectWorkingTool(bool mark)
         {
+            if(SettingsOpen)return;
             markingMode=mark;
             overviewMode=false; galleryPanZoom?.SetNavigationMode(false);
             if(gameplayScreen==null) return;
             RefreshToolSelection();
             galleryFeedback.text=mark ? "Пометка бесплатна. Нажми ещё раз, чтобы убрать её." : $"Проверка: {SearchEnergyCost} энергии. Промах тоже расходует энергию.";
+            if(TutorialRunning && tutorialStage==5 && !mark && !artifactFound[0][1])
+            {
+                // The visible Check button must work even if the player skipped the brush tap.
+                exactHintTargets[0]=2;
+                galleryPanZoom?.ResetView();
+                galleryPanZoom?.FocusOn(HintPoint(1));
+                UpdateArtifactTargets(false,true);
+                SaveProgress();
+                galleryFeedback.text="Коснись выделенных часов. Учебная проверка бесплатна.";
+            }
         }
 
         private void SelectOverview()
         {
+            if(SettingsOpen)return;
             overviewMode=true; markingMode=false; galleryPanZoom?.SetNavigationMode(true);
             RefreshToolSelection();
             galleryFeedback.text="Обзор: двигай картину и своди/разводи два пальца. Проверки отключены.";
@@ -39,7 +51,8 @@ namespace Airtist.Prototype
 
         private void HandleArtworkPointer(PointerEventData e, int chapter, int artifact)
         {
-            if(chapter!=selectedChapter) return;
+            if(SettingsOpen || EnergyShopOpen || chapter!=selectedChapter) return;
+            if(TutorialRunning && !TutorialAllowsArtwork(artifact))return;
             if(overviewMode || (galleryPanZoom!=null && galleryPanZoom.SuppressChecks)) return;
             TickAttemptClock();
             if(!galleryOpen || appPaused || appUnfocused || adPending || AttemptBlocked) return;
@@ -69,6 +82,7 @@ namespace Airtist.Prototype
             markRect.anchorMin=markRect.anchorMax=uv; markRect.sizeDelta=new Vector2(26,26); markRect.anchoredPosition=Vector2.zero;
             var image=go.GetComponent<UnityEngine.UI.Image>(); image.sprite=roundedSprite; image.color=new Color(1,.75f,.2f,.65f); image.raycastTarget=false;
             temporaryMarks.Add(markRect);
+            if(TutorialRunning && tutorialStage==2)SetTutorialStage(3);
         }
 
         private void ClearTemporaryMarks()

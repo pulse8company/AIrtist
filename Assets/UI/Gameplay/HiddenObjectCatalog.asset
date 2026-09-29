@@ -640,3 +640,11 @@ MonoBehaviour:
     widthFraction: 0.02
     rotation: 0
     tint: {r: 0.88, g: 0.84, b: 0.77, a: 1}
+  - chapterId: mona-lisa
+    artifactIndex: 3
+    title: "\u041F\u043E\u0442\u0435\u043C\u043D\u0435\u0432\u0448\u0430\u044F \u0431\u0440\u043E\u0448\u044C"
+    sprite: {fileID: 21300000, guid: 4a644d08813b06d4c8229c1af2b817de, type: 3}
+    position: {x: 0.665, y: 0.465}
+    widthFraction: 0.078
+    rotation: -14
+    tint: {r: 0.66, g: 0.61, b: 0.5, a: 1}

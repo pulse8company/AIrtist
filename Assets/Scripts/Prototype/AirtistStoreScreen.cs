@@ -10,6 +10,7 @@ namespace Airtist.Prototype
         public GameObject dialog;
         public TMP_Text dialogTitle, dialogBody, dialogPrice;
         public UnityEngine.UI.Button confirm;
+        public UnityEngine.UI.Image dialogIcon;
         private int selectedProduct = -1;
 
         private void OnEnable()
@@ -23,6 +24,7 @@ namespace Airtist.Prototype
             if (catalog == null || catalog.products == null || index < 0 || index >= catalog.products.Length || catalog.products[index] == null) return;
             selectedProduct = index;
             var product = catalog.products[index];
+            if(dialogIcon!=null){dialogIcon.sprite=index<offers.Length?offers[index].icon.sprite:null;dialogIcon.gameObject.SetActive(dialogIcon.sprite!=null);}
             dialogTitle.text = product.title;
             dialogBody.text = product.description + "\n\nДемонстрация интерфейса. Реальные покупки ещё не подключены.";
             dialogPrice.text = "Примерная цена: " + product.previewPrice;
@@ -39,6 +41,7 @@ namespace Airtist.Prototype
         public void RestorePurchases()
         {
             selectedProduct = -1;
+            if(dialogIcon!=null)dialogIcon.gameObject.SetActive(false);
             dialogTitle.text = "Восстановить покупки";
             dialogBody.text = "Восстановление будет доступно после подключения магазина платформы.\nСейчас сохранённый прогресс не изменён.";
             dialogPrice.text = "Платёжный сервис не подключён";

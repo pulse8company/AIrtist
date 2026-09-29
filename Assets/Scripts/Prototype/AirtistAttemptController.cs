@@ -85,7 +85,7 @@ namespace Airtist.Prototype
         {
             double now=Time.realtimeSinceStartupAsDouble;
             float elapsed=(float)Math.Max(0,now-clockStamp); clockStamp=now;
-            if(!galleryOpen || appPaused || appUnfocused || adPending || EnergyShopOpen || AttemptBlocked || energy<SearchEnergyCost) return;
+            if(!galleryOpen || appPaused || appUnfocused || adPending || EnergyShopOpen || SettingsOpen || TutorialRunning || AttemptBlocked || energy<SearchEnergyCost) return;
             EnsureAttempt();
             var attempt=attempts[selectedChapter];
             if(attempt==null) return;
@@ -99,7 +99,9 @@ namespace Airtist.Prototype
             TickAttemptClock(); RefreshEnergy();
             RefreshHeaderWallet();
             RefreshEnergyShop();
+            UpdateSettingsInput();
             if(galleryOpen) RefreshAttemptHud();
+            RefreshTutorial();
             double now=Time.realtimeSinceStartupAsDouble;
             if(now-saveStamp>=5) { saveStamp=now; SaveProgress(); }
         }
@@ -117,7 +119,8 @@ namespace Airtist.Prototype
         private bool TrySpendCheck()
         {
             TickAttemptClock(); EnsureAttempt();
-            if(!galleryOpen || appPaused || appUnfocused || adPending || EnergyShopOpen || AttemptBlocked) { RefreshAttemptHud(); return false; }
+            if(TutorialRunning)return galleryOpen && !appPaused && !appUnfocused && !adPending && !EnergyShopOpen && !SettingsOpen && tutorialStage==1;
+            if(!galleryOpen || appPaused || appUnfocused || adPending || EnergyShopOpen || SettingsOpen || AttemptBlocked) { RefreshAttemptHud(); return false; }
             RefreshEnergy();
             if(energy<SearchEnergyCost) { RefreshAttemptHud(); return false; }
             if(!attempts[selectedChapter].TryCheck()) return false;
@@ -214,7 +217,7 @@ namespace Airtist.Prototype
             bool lowEnergy=!completed && energy<SearchEnergyCost;
             bool limitEnded=!completed && a!=null && a.Exhausted;
             bool failed=limitEnded || lowEnergy;
-            attemptHud.endPanel.SetActive(galleryOpen && failed && !EnergyShopOpen);
+            attemptHud.endPanel.SetActive(galleryOpen && failed && !EnergyShopOpen && !SettingsOpen);
             if(failed)
             {
                 if(lowEnergy)

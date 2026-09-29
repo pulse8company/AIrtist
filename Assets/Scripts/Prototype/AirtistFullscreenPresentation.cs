@@ -86,11 +86,22 @@ namespace Airtist.Prototype
 
         private void UpdateFullscreenBackground(Page target)
         {
-            if(fullBleedHome!=null) fullBleedHome.SetActive(studioBackgroundPages.Contains(target));
+            var theme=AirtistApprovedTheme.Current;
+            if(fullBleedHome!=null)
+            {
+                var image=fullBleedHome.GetComponent<UnityEngine.UI.Image>();
+                var sprite=theme!=null?(target==Page.Home?theme.homeBackdrop:target==Page.WorldMap?theme.woodenMap:theme.museumBackdrop):homeBackground;
+                fullBleedHome.SetActive(sprite!=null);
+                if(sprite!=null)
+                {
+                    image.sprite=sprite;
+                    fullBleedHome.GetComponent<UnityEngine.UI.AspectRatioFitter>().aspectRatio=sprite.rect.width/sprite.rect.height;
+                }
+            }
             if(fullBleedPaper!=null && pages.TryGetValue(target,out var page))
             {
                 var background=page.GetComponent<UnityEngine.UI.Image>();
-                fullBleedPaper.color=background!=null ? background.color : Parchment;
+                fullBleedPaper.color=target==Page.WorldMap?new Color(.68f,.48f,.28f):Parchment;
             }
         }
 

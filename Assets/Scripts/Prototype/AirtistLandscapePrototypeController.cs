@@ -42,15 +42,16 @@ namespace Airtist.Prototype
         {
             new ChapterData(
                 "Мона Лиза",
-                "Найди 3 AI-дорисовки",
-                "Усик, часы и игрушка больше не отвлекают от портрета. Работа восстановлена.",
+                "Найди 4 AI-дорисовки",
+                "Усик, часы, игрушка и потемневшая брошь убраны. Работа восстановлена.",
                 "Лувр показывает «Мону Лизу» Леонардо да Винчи в зале 711. Её мягкие переходы светотени называют сфумато.",
                 "Начни с лица: у сфумато нет жёстких, чужеродных контуров.",
                 new[]
                 {
                     new ArtifactData("накладной усик", "Присмотрись к верхней губе Моны Лизы.", new Vector2(.46f,.697f), new Vector2(80,64), ArtifactVisual.Moustache),
                     new ArtifactData("наручные часы", "Современные часы оказались рядом с запястьем.", new Vector2(.335f,.24f), new Vector2(80,80), ArtifactVisual.TimeTag),
-                    new ArtifactData("резиновая уточка", "Проверь воду в пейзаже слева от фигуры.", new Vector2(.165f,.59f), new Vector2(80,70), ArtifactVisual.Badge)
+                    new ArtifactData("резиновая уточка", "Проверь воду в пейзаже слева от фигуры.", new Vector2(.165f,.59f), new Vector2(80,70), ArtifactVisual.Badge),
+                    new ArtifactData("потемневшая брошь", "Увеличь складки тёмной накидки справа от выреза платья.", new Vector2(.665f,.465f), new Vector2(72,64), ArtifactVisual.Badge)
                 }),
             new ChapterData(
                 "Свобода, ведущая народ",
@@ -161,6 +162,10 @@ namespace Airtist.Prototype
         private void LoadProgress()
         {
             var state = AirtistProgress.Load();
+            socialRewardsClaimed=state.socialRewardsClaimed;
+            LoadIntroduction(state);
+            tutorialStage=state.tutorialDataVersion==1?Mathf.Clamp(state.tutorialStage,-1,8):-1;
+            tutorialVersion=state.tutorialVersion;
             selectedChapter = Mathf.Clamp(state.selectedChapter, 0, Chapters.Length - 1);
             hintCount = Mathf.Clamp(state.hints, 0, 9999);
             dailyClaimUtc = state.dailyUtc ?? "";
@@ -177,6 +182,7 @@ namespace Airtist.Prototype
                 int oldCount=state.contentVersion<2 ? 3 : i==0 ? 3 : i==1 ? 4 : 5;
                 int oldMask=(1<<oldCount)-1;
                 bool legacyCompleted=i<3 && state.contentVersion<3 && (entry.collected || (entry.foundMask & oldMask)==oldMask);
+                if(i==0 && state.contentVersion<4 && !entry.replaying && (entry.collected || (entry.foundMask&7)==7))legacyCompleted=true;
                 for (int j = 0; j < artifactFound[i].Length; j++) artifactFound[i][j] = legacyCompleted || (entry.foundMask & (1 << j)) != 0;
                 replaying[i]=entry.replaying && entry.collected;
                 chapterCollected[i] = entry.collected && (IsChapterComplete(i) || replaying[i]);
@@ -192,7 +198,8 @@ namespace Airtist.Prototype
         private void SaveProgress()
         {
             if (!initialized) return;
-            var state = new AirtistProgress { contentVersion = 3, selectedChapter = selectedChapter, hints = hintCount,
+            var state = new AirtistProgress { contentVersion = 4, selectedChapter = selectedChapter, hints = hintCount,
+                socialRewardsClaimed=socialRewardsClaimed,
                 dailyUtc = dailyClaimUtc, rewardedHintClaimed = rewardedHintClaimed,
                 chapters = new AirtistProgress.ChapterProgress[Chapters.Length] };
             for (int i = 0; i < Chapters.Length; i++)
@@ -205,6 +212,8 @@ namespace Airtist.Prototype
                     areaHintTarget=areaHintTargets[i],exactHintTarget=exactHintTargets[i] };
             }
             SaveAttemptProgress(state);
+            SaveIntroduction(state);
+            state.tutorialStage=tutorialStage;state.tutorialVersion=tutorialVersion;state.tutorialDataVersion=1;
             state.Save();
         }
 
@@ -242,8 +251,11 @@ namespace Airtist.Prototype
             initialized = true;
             Application.targetFrameRate = 60;
             LoadProgress();
+            InitializeSettingsPreferences();
             BuildInterface();
             Show(Page.Home);
+            ShowIntroductionIfNeeded();
+            if(!IntroductionOpen && tutorialStage>=0){selectedChapter=0;OpenChapter(0);RefreshTutorial();}
         }
 
         private void BuildInterface()
@@ -266,7 +278,10 @@ namespace Airtist.Prototype
             BuildDeveloperReset();
             ApplyApprovedPresentation();
             BuildEnergyShop();
+            BuildSettings();
             UpdateProgressLabels();
+            BuildIntroduction();
+            BuildTutorial();
         }
 
         private void BuildHome()
@@ -786,7 +801,9 @@ namespace Airtist.Prototype
             if (dailyClaimButton != null)
             {
                 dailyClaimButton.interactable = !dailyBonusClaimed;
-                dailyClaimButton.image.color = dailyBonusClaimed ? Sand : Teal;
+                dailyClaimButton.image.color = AirtistApprovedTheme.Current!=null
+                    ? (dailyBonusClaimed?AirtistApprovedTheme.Paper:AirtistApprovedTheme.Sage)
+                    : (dailyBonusClaimed ? Sand : Teal);
             }
 
             if (dailyClaimButtonLabel != null)
@@ -881,6 +898,7 @@ namespace Airtist.Prototype
 
             if(!TrySpendCheck()) return;
             artifactFound[chapterIndex][artifactIndex] = true;
+            TutorialObjectFound(artifactIndex);
             AwardFirstCompletion();
             SaveProgress();
             UpdateProgressLabels();
@@ -1071,7 +1089,8 @@ namespace Airtist.Prototype
 
         private void Show(Page target)
         {
-            if(adPending)return;
+            if(adPending || settingsPrivacyBusy)return;
+            if(SettingsOpen)CloseSettings();
             if(energyShop!=null)energyShop.gameObject.SetActive(false);
             ChangeAttemptPage(target);
             if (target == Page.Profile && myGalleryPrefab != null) target = Page.Collection;
@@ -1100,6 +1119,7 @@ namespace Airtist.Prototype
             {
                 pair.Value.SetActive(pair.Key == target);
             }
+            if(target==Page.Found)PresentRestorationCompletion();
             BringDeveloperResetToFront();
         }
 
@@ -1300,6 +1320,7 @@ namespace Airtist.Prototype
             {
                 button.onClick.AddListener(() => click());
             }
+            AirtistMenuAudio.Wire(button);
 
             var buttonLabel = CreateLabel(rect, caption, fontSize, textColor, Anchor.Center, Vector2.zero, size - new Vector2(18, 10), TextAlignmentOptions.Center, FontStyles.Bold);
             string navKey = caption switch { "Главная" => "nav.home", "Карта" => "nav.map", "Коллекция" => "nav.collection", "Магазин" => "nav.store", "Профиль" => "nav.profile", _ => null };
@@ -1318,10 +1339,9 @@ namespace Airtist.Prototype
             return button != null ? button.GetComponentInChildren<TextMeshProUGUI>() : null;
         }
 
-        private static Sprite CreateRoundedSprite()
+        private static Sprite CreateRoundedSprite(float radius=14f)
         {
             const int textureSize = 64;
-            const float radius = 14f;
             Texture2D texture = new Texture2D(textureSize, textureSize, TextureFormat.RGBA32, false)
             {
                 filterMode = FilterMode.Bilinear,

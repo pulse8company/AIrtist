@@ -32,9 +32,10 @@ namespace Airtist.Prototype
             image.sprite=developerResetCircle; image.type=UnityEngine.UI.Image.Type.Simple; image.raycastPadding=Vector4.zero;
             var shade=CreatePanel(developerResetRoot,"ResetConfirmation",new Color(0,0,0,.8f),Anchor.Stretch,Vector2.zero,Vector2.zero);
             Stretch(shade);
-            var dialog=CreatePanel(shade,"Dialog",Cream,Anchor.Center,Vector2.zero,new Vector2(700,330));
-            CreateLabel(dialog,"Сбросить прогресс?",32,Ink,Anchor.Top,new Vector2(0,-30),new Vector2(620,50),TextAlignmentOptions.Center);
-            CreateLabel(dialog,"Картины и находки — с начала.\nЭнергия: 100 · Монеты: 0 · Подсказки: 3",23,Ink,Anchor.Center,new Vector2(0,10),new Vector2(620,100),TextAlignmentOptions.Center);
+            var dialog=CreatePanel(shade,"Dialog",Cream,Anchor.Center,Vector2.zero,new Vector2(700,440));
+            CreateLabel(dialog,"DEV · Тестирование",32,Ink,Anchor.Top,new Vector2(0,-30),new Vector2(620,50),TextAlignmentOptions.Center);
+            CreateButton(dialog,"+100 тестовых монет",Teal,Color.white,Anchor.Top,new Vector2(0,-100),new Vector2(600,64),AddDeveloperCoins,25);
+            CreateLabel(dialog,"Монеты добавляются без сброса.\n«Сбросить» удалит находки и коллекцию:\nэнергия 100 · монеты 0 · подсказки 3",23,Ink,Anchor.Center,new Vector2(0,-30),new Vector2(620,110),TextAlignmentOptions.Center);
             CreateButton(dialog,"Отмена",Teal,Color.white,Anchor.Bottom,new Vector2(-165,30),new Vector2(280,64),()=>developerResetConfirmation.SetActive(false));
             CreateButton(dialog,"Сбросить",Coral,Color.white,Anchor.Bottom,new Vector2(165,30),new Vector2(280,64),ConfirmDeveloperReset);
             developerResetConfirmation=shade.gameObject; developerResetConfirmation.SetActive(false);
@@ -47,6 +48,14 @@ namespace Airtist.Prototype
             if(developerResetRoot!=null) developerResetRoot.SetAsLastSibling();
             if(developerResetButton!=null)
             {
+                if(universalHeader!=null && AirtistApprovedTheme.Current!=null)
+                {
+                    // Debug tools must not cover tutorial OK, gallery actions, or map zoom controls.
+                    developerResetButton.SetParent(universalHeader,false);
+                    AirtistApprovedTheme.Rect(developerResetButton,.345f,.017f,.040f,.071f);
+                    developerResetButton.SetAsLastSibling();
+                    return;
+                }
                 // Use the fitted landscape artboard, not the outer window/letterbox.
                 var parent=galleryOpen && gameplayScreen!=null ? (RectTransform)gameplayScreen.transform : developerResetRoot;
                 developerResetButton.SetParent(parent,false);
@@ -57,6 +66,15 @@ namespace Airtist.Prototype
         }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private void AddDeveloperCoins()
+        {
+            if(adPending || developerResetConfirmation==null || !developerResetConfirmation.activeSelf)return;
+            coins=(int)Math.Min(int.MaxValue,(long)coins+100);
+            SaveProgress();
+            developerResetConfirmation.SetActive(false);
+            UpdateProgressLabels();RefreshHeaderWallet();RefreshEnergyShop();
+        }
+
         private void OpenDeveloperReset()
         {
             if(adPending) return;

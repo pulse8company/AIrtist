@@ -6,9 +6,10 @@ namespace Airtist.Prototype
     public sealed partial class AirtistLandscapePrototypeController
     {
         [SerializeField,Min(1)] private int areaBrushCost=1, exactBrushCost=2, removeBrushCost=3;
+        [SerializeField,Min(1)] private int videoBonusMinimum=1, videoBonusMaximum=3;
         private readonly int[] areaHintTargets=new int[Chapters.Length], exactHintTargets=new int[Chapters.Length];
         private RectTransform areaHintVisual;
-        private bool ToolsAvailable => galleryOpen && !appPaused && !appUnfocused && !adPending && !EnergyShopOpen && !AttemptBlocked;
+        private bool ToolsAvailable => galleryOpen && !appPaused && !appUnfocused && !adPending && !EnergyShopOpen && !SettingsOpen && !AttemptBlocked;
         private bool ActiveHint(int encoded) => encoded>0 && encoded<=artifactFound[selectedChapter].Length && !artifactFound[selectedChapter][encoded-1];
         private int BrushTarget(bool excludeExact=false)
         {
@@ -23,6 +24,7 @@ namespace Airtist.Prototype
         }
         private void UseBonusBrush(int kind)
         {
+            if(TutorialRunning){UseTutorialBrush(kind);return;}
             TickAttemptClock(); EnsureAttempt();
             if(!ToolsAvailable) return;
             if(kind==3) {ShowBrushVideo();return;}
@@ -48,8 +50,9 @@ namespace Airtist.Prototype
         {
             if(!ToolsAvailable || index<0 || index>=artifactFound[selectedChapter].Length || artifactFound[selectedChapter][index]) return;
             // Bonus finding is not charged as a paid check. A physical confirmation still counts for accuracy.
-            if(tapped && attempts[selectedChapter]!=null) attempts[selectedChapter].checksUsed++;
+            if(tapped && !TutorialRunning && attempts[selectedChapter]!=null) attempts[selectedChapter].checksUsed++;
             artifactFound[selectedChapter][index]=true;
+            TutorialObjectFound(index);
             hintUsedForChapter[selectedChapter]=true;
             if(exactHintTargets[selectedChapter]==index+1) exactHintTargets[selectedChapter]=0;
             if(areaHintTargets[selectedChapter]==index+1) areaHintTargets[selectedChapter]=0;
@@ -59,10 +62,8 @@ namespace Airtist.Prototype
         }
         private void ShowBrushVideo()
         {
-            if(!ToolsAvailable || ActiveHint(exactHintTargets[selectedChapter])) return;
+            if(!ToolsAvailable) return;
             if(continuationAds==null || !continuationAds.IsReady) {galleryFeedback.text="Рекламное видео пока недоступно.";return;}
-            int chapter=selectedChapter;
-            var attempt=attempts[chapter];
             adPending=true; RefreshAttemptHud();
             bool resolved=false;
             try
@@ -72,20 +73,24 @@ namespace Airtist.Prototype
                     if(resolved) return; resolved=true;
                     if(this==null) return;
                     adPending=false;
-                    if(earned && attempts[chapter]==attempt && !IsChapterComplete(chapter))
+                    int granted=0;
+                    if(earned)
                     {
-                        int target=-1;
-                        for(int i=0;i<artifactFound[chapter].Length;i++) if(!artifactFound[chapter][i]) {target=i;break;}
-                        if(target>=0)
-                        {
-                            exactHintTargets[chapter]=target+1;hintUsedForChapter[chapter]=true;
-                            SaveProgress();
-                            if(chapter==selectedChapter) {SelectWorkingTool(false);galleryPanZoom?.FocusOn(HintPoint(target));}
-                        }
+                        int minimum=Mathf.Clamp(videoBonusMinimum,1,100);
+                        int maximum=Mathf.Clamp(videoBonusMaximum,minimum,100);
+                        int rolled=UnityEngine.Random.Range(minimum,maximum+1);
+                        int before=hintCount;
+                        hintCount=(int)Math.Min(int.MaxValue,(long)Math.Max(0,hintCount)+rolled);
+                        granted=hintCount-before;
+                        // Inventory reward belongs to the player, not to a particular painting.
+                        // resolved above prevents duplicate callbacks from granting it twice.
+                        SaveProgress();
                     }
                     clockStamp=Time.realtimeSinceStartupAsDouble;
                     UpdateProgressLabels(); RefreshAttemptHud();
-                    if(galleryFeedback!=null) galleryFeedback.text=earned?"Подсказка получена: тапни по выделенному предмету.":"Просмотр не завершён. Подсказка не списана.";
+                    string message=earned?$"Бонус за видео: +{granted} подсказок в запас.":"Просмотр не завершён. Бонус не получен.";
+                    if(galleryFeedback!=null) galleryFeedback.text=message;
+                    ShowBrushRewardNotice(message);
                 });
             }
             catch(Exception e)
@@ -105,10 +110,10 @@ namespace Airtist.Prototype
                 bool usable=i==0?!exact && !ActiveHint(areaHintTargets[selectedChapter]):i==1?!exact:BrushTarget(true)>=0;
                 gameplayScreen.brushes[i].interactable=available && usable && hintCount>=costs[i];
                 if(gameplayScreen.brushCosts!=null && i<gameplayScreen.brushCosts.Length && gameplayScreen.brushCosts[i]!=null)
-                    gameplayScreen.brushCosts[i].text=AirtistApprovedTheme.Current!=null?costs[i].ToString():$"{costs[i]} / {hintCount}";
+                    gameplayScreen.brushCosts[i].text=AirtistApprovedTheme.Current!=null?$"Цена {costs[i]}":$"{costs[i]} / {hintCount}";
             }
             bool video=continuationAds!=null && continuationAds.IsReady;
-            gameplayScreen.brushes[3].interactable=available && !exact && video;
+            gameplayScreen.brushes[3].interactable=available && video;
             if(gameplayScreen.brushCosts!=null && gameplayScreen.brushCosts.Length>3 && gameplayScreen.brushCosts[3]!=null)
                 gameplayScreen.brushCosts[3].text=AirtistApprovedTheme.Current!=null?(video?"▶":"—"):(video?"Видео":"Нет видео");
             gameplayScreen.mainTool.interactable=galleryOpen && !adPending;
@@ -116,7 +121,8 @@ namespace Airtist.Prototype
             gameplayScreen.zoomTool.interactable=galleryOpen && !adPending;
             gameplayScreen.help.interactable=!adPending;
             var stock=gameplayScreen.transform.Find("HintStock")?.GetComponent<TMPro.TMP_Text>();
-            if(stock!=null)stock.text="Запас:\n"+hintCount;
+            if(stock!=null)stock.text="Подсказки: "+hintCount;
+            if(TutorialRunning)RefreshTutorialTools();
         }
         private void RefreshAreaHintVisual()
         {
@@ -146,7 +152,7 @@ namespace Airtist.Prototype
                 if(existing!=null){existing.gameObject.SetActive(true);existing.SetAsLastSibling();return;}
                 var panel=CreatePanel(root,"ApprovedToolHelp",AirtistApprovedTheme.Paper,Anchor.Center,Vector2.zero,new Vector2(1000,560));
                 AirtistApprovedTheme.Rect(panel,.25f,.15f,.68f,.60f);theme.Surface(panel.GetComponent<UnityEngine.UI.Image>(),AirtistApprovedTheme.Paper);
-                var text=CreateLabel(panel,"Проверка — ищет предмет и расходует энергию.\nПометка — оставляет временную заметку.\nОбзор — движение и зум без проверок.\n\nОбласть — показывает зону. Точно — находит предмет.\nУбрать — исключает предмет. Видео — помощь за ролик.\nЧисло у кисти — цена в подсказках.",25,AirtistApprovedTheme.Ink,Anchor.Center,Vector2.zero,new Vector2(900,440),TMPro.TextAlignmentOptions.Left);
+                var text=CreateLabel(panel,$"Проверка — поиск: {SearchEnergyCost} энергии за касание.\nПометка — бесплатная заметка. Обзор — зум без проверок.\n\nПодсказки — общий запас для трёх бонусных кистей.\nОбласть: {areaBrushCost} · Точно: {exactBrushCost} · Убрать: {removeBrushCost}.\nЧисло на кисти — её стоимость, не остаток.\n\nЗапас пополняется подарком дня и покупками после подключения магазина.\nВидео — случайные подсказки после просмотра, когда реклама доступна.",25,AirtistApprovedTheme.Ink,Anchor.Center,Vector2.zero,new Vector2(900,440),TMPro.TextAlignmentOptions.Left);
                 AirtistApprovedTheme.Rect(text.rectTransform,.06f,.12f,.88f,.80f);theme.Typography(text,root,25);
                 var close=CreateButton(panel,"×",AirtistApprovedTheme.Paper,AirtistApprovedTheme.Ink,Anchor.TopRight,Vector2.zero,new Vector2(64,64),()=>panel.gameObject.SetActive(false),32);
                 AirtistApprovedTheme.Rect((RectTransform)close.transform,.92f,.02f,.065f,.10f);theme.Button(close,AirtistApprovedTheme.Paper);

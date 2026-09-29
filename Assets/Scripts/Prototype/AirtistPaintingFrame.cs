@@ -35,15 +35,21 @@ namespace Airtist.Prototype
                 area=new Rect(area.center-new Vector2(width,height)*.5f,new Vector2(width,height));
             }
             float t=thickness;
-            Quad(area.xMin-t,area.yMin-t,area.xMax+t,area.yMin);
-            Quad(area.xMin-t,area.yMax,area.xMax+t,area.yMax+t);
-            Quad(area.xMin-t,area.yMin,area.xMin,area.yMax);
-            Quad(area.xMax,area.yMin,area.xMax+t,area.yMax);
+            Color band=color;
+            for(int layer=0;layer<4;layer++)
+            {
+                float outer=t*(1-layer*.25f),inner=t*(.75f-layer*.25f);
+                band=layer==0?new Color(.30f,.17f,.07f):layer==1?new Color(.77f,.53f,.25f):layer==2?new Color(.55f,.33f,.14f):new Color(.88f,.68f,.36f);
+                Quad(area.xMin-outer,area.yMin-outer,area.xMax+outer,area.yMin-inner);
+                Quad(area.xMin-outer,area.yMax+inner,area.xMax+outer,area.yMax+outer);
+                Quad(area.xMin-outer,area.yMin-inner,area.xMin-inner,area.yMax+inner);
+                Quad(area.xMax+inner,area.yMin-inner,area.xMax+outer,area.yMax+inner);
+            }
             void Quad(float x0,float y0,float x1,float y1)
             {
                 int v=mesh.currentVertCount;
-                mesh.AddVert(new Vector3(x0,y0),color,Vector2.zero); mesh.AddVert(new Vector3(x0,y1),color,Vector2.zero);
-                mesh.AddVert(new Vector3(x1,y1),color,Vector2.zero); mesh.AddVert(new Vector3(x1,y0),color,Vector2.zero);
+                mesh.AddVert(new Vector3(x0,y0),band,Vector2.zero); mesh.AddVert(new Vector3(x0,y1),band,Vector2.zero);
+                mesh.AddVert(new Vector3(x1,y1),band,Vector2.zero); mesh.AddVert(new Vector3(x1,y0),band,Vector2.zero);
                 mesh.AddTriangle(v,v+1,v+2); mesh.AddTriangle(v+2,v+3,v);
             }
         }

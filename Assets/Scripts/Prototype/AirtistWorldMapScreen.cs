@@ -12,6 +12,8 @@ namespace Airtist.Prototype
         private float zoom = 1;
         private Vector2 previousViewport;
         public RectTransform MapContent => map;
+        public RectTransform Viewport => viewport;
+        public float Zoom => zoom;
         public UnityEngine.UI.Button[] Controls => buttons;
         public void UseUniversalNavigation()
         {
@@ -22,11 +24,12 @@ namespace Airtist.Prototype
         public void Bind(Action home, Action collection, Action profile)
         {
             // The map occupies all space below shared navigation, without the old wide frame.
-            viewport.anchorMin=Vector2.zero; viewport.anchorMax=new Vector2(1,831f/941);
+            viewport.anchorMin=Vector2.zero; viewport.anchorMax=new Vector2(1,.895f);
             viewport.offsetMin=viewport.offsetMax=Vector2.zero;
             var frame=transform.Find("WoodenFrame");
             if(frame!=null) frame.gameObject.SetActive(false);
             viewport.GetComponent<UnityEngine.UI.Image>().raycastTarget=true;
+            viewport.GetComponent<UnityEngine.UI.Image>().color=new Color(.68f,.48f,.28f);
             buttons[0].onClick.AddListener(() => home());
             buttons[1].onClick.AddListener(() => collection());
             buttons[2].onClick.AddListener(() => profile());
@@ -36,11 +39,17 @@ namespace Airtist.Prototype
         }
         private void SetZoom(float value)
         {
-            zoom = Mathf.Clamp(value, 1, 3);
+            zoom = Mathf.Clamp(value, 1, 6);
             map.localScale = Vector3.one * zoom;
             Clamp();
             buttons[3].interactable = zoom > 1;
-            buttons[4].interactable = zoom < 3;
+            buttons[4].interactable = zoom < 6;
+        }
+        public void FocusOn(Vector2 location,float targetZoom)
+        {
+            RefreshLayout();SetZoom(targetZoom);
+            map.anchoredPosition=-Vector2.Scale(location-map.pivot,map.rect.size)*zoom;
+            Clamp();
         }
         public void OnBeginDrag(PointerEventData e) { e.eligibleForClick=false; }
         public void OnDrag(PointerEventData e)
@@ -51,9 +60,20 @@ namespace Airtist.Prototype
             Clamp();
         }
         public void OnScroll(PointerEventData e) => SetZoom(zoom + e.scrollDelta.y * .15f);
-        private void LateUpdate()
+        private void LateUpdate() => RefreshLayout();
+        public void RefreshLayout()
         {
             if(map==null || viewport==null) return;
+            // The atlas itself reaches the physical screen edges. Zoom controls stay in SafeArea.
+            var canvas=GetComponentInParent<Canvas>();
+            if(canvas!=null && viewport.parent is RectTransform parent)
+            {
+                var canvasRect=(RectTransform)canvas.transform;
+                Vector3 lower=parent.InverseTransformPoint(canvasRect.TransformPoint(new Vector3(canvasRect.rect.xMin,canvasRect.rect.yMin,0)));
+                Vector3 upper=parent.InverseTransformPoint(canvasRect.TransformPoint(new Vector3(canvasRect.rect.xMax,canvasRect.rect.yMax,0)));
+                viewport.offsetMin=new Vector2(lower.x-parent.rect.xMin,lower.y-parent.rect.yMin);
+                viewport.offsetMax=new Vector2(upper.x-parent.rect.xMax,0);
+            }
             if((previousViewport-viewport.rect.size).sqrMagnitude>.01f)
             {
                 previousViewport=viewport.rect.size;

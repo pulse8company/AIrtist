@@ -1,0 +1,470 @@
+fileFormatVersion: 2
+guid: 77e8dab72d483f94da0ed54d681eff30
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7881658334391501880
+    second: SettingsIcons_0
+  - first:
+      213: -9015007665768789201
+    second: SettingsIcons_1
+  - first:
+      213: -1003313080589959963
+    second: SettingsIcons_2
+  - first:
+      213: 211871180629291677
+    second: SettingsIcons_3
+  - first:
+      213: -8419751542767139993
+    second: SettingsIcons_4
+  - first:
+      213: -5188393754813470841
+    second: SettingsIcons_5
+  - first:
+      213: -721906295655787143
+    second: SettingsIcons_6
+  - first:
+      213: 422339033887572668
+    second: SettingsIcons_7
+  - first:
+      213: 8025346049656954851
+    second: SettingsIcons_8
+  - first:
+      213: 6251136704718812561
+    second: SettingsIcons_9
+  - first:
+      213: -6968720786722746445
+    second: SettingsIcons_10
+  - first:
+      213: -702635619416028635
+    second: SettingsIcons_11
+  - first:
+      213: 1758569800567823058
+    second: SettingsIcons_12
+  - first:
+      213: 3242278364955645892
+    second: SettingsIcons_13
+  - first:
+      213: 2748967164772991156
+    second: SettingsIcons_14
+  - first:
+      213: 4517171892258361725
+    second: SettingsIcons_15
+  - first:
+      213: -1374328011582850952
+    second: SettingsIcons_16
+  - first:
+      213: -7042399547033488277
+    second: SettingsIcons_17
+  - first:
+      213: -5352538111789208725
+    second: SettingsIcons_18
+  - first:
+      213: -8858317839880222322
+    second: SettingsIcons_19
+  - first:
+      213: -849883627142587156
+    second: SettingsIcons_20
+  - first:
+      213: 5858805691011491633
+    second: SettingsIcons_21
+  - first:
+      213: 4399603096152770448
+    second: SettingsIcons_22
+  - first:
+      213: 3971340499616657633
+    second: SettingsIcons_23
+  - first:
+      213: 6932227741534214895
+    second: SettingsIcons_24
+  - first:
+      213: -5561157569691664194
+    second: SettingsIcons_25
+  - first:
+      213: 6548927833443740679
+    second: SettingsIcons_26
+  - first:
+      213: -7559316021165098169
+    second: SettingsIcons_27
+  - first:
+      213: 2084066898116779556
+    second: SettingsIcons_28
+  - first:
+      213: -7198375705563253654
+    second: SettingsIcons_29
+  - first:
+      213: 5017197020061910324
+    second: SettingsIcons_30
+  - first:
+      213: 3361973995195826986
+    second: SettingsIcons_31
+  - first:
+      213: 5950504837605142083
+    second: SettingsIcons_32
+  - first:
+      213: -3958945575413931682
+    second: SettingsIcons_33
+  - first:
+      213: -4271976844829686217
+    second: SettingsIcons_34
+  - first:
+      213: 6823719696102760811
+    second: SettingsIcons_35
+  - first:
+      213: 2414374204115053251
+    second: SettingsIcons_36
+  - first:
+      213: 7403413145344772295
+    second: SettingsIcons_37
+  - first:
+      213: 3080062464019349789
+    second: SettingsIcons_38
+  - first:
+      213: 4211276751895749127
+    second: SettingsIcons_39
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: 50
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Sound
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 840
+        width: 304
+        height: 296
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 058118d1a07ede54faeb7456466f3cd6
+      internalID: 1666712381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Language
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 839
+        width: 292
+        height: 296
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9aad6e3e7303f474bbd1760cd1451722
+      internalID: -1113884016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Restore
+      rect:
+        serializedVersion: 2
+        x: 869
+        y: 842
+        width: 299
+        height: 279
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3094027ca79fb149a944be36deb6d93
+      internalID: -1758856752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Support
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 499
+        width: 312
+        height: 228
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34907f6f465f5554f91d4584d78ef296
+      internalID: -2119896539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Instagram
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 476
+        width: 277
+        height: 282
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 405e1b423b672f5468ea24345cfdbe47
+      internalID: -1482241668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Facebook
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 466
+        width: 298
+        height: 298
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 063007f33c70a1b4b8e47bf231825b7a
+      internalID: 841740367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Privacy
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 89
+        width: 297
+        height: 318
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92fc5d4381fee0447b72acdfede798c0
+      internalID: 2006195288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AdsPreferences
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 115
+        width: 283
+        height: 260
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3be8f9e3f9a60cc45b9e28583359afc4
+      internalID: -452299894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Check
+      rect:
+        serializedVersion: 2
+        x: 877
+        y: 104
+        width: 305
+        height: 259
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1113b8204a256004281f0f36a1f79860
+      internalID: 277591009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: e5cefb8b775fd4045a2062d0896b2fbe
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      AdsPreferences: -452299894
+      Check: 277591009
+      Facebook: 841740367
+      Instagram: -1482241668
+      Language: -1113884016
+      Privacy: 2006195288
+      Restore: -1758856752
+      Sound: 1666712381
+      Support: -2119896539
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

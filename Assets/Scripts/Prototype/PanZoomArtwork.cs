@@ -25,6 +25,7 @@ namespace Airtist.Prototype
         private float previousPinchDistance, blockedUntil;
         private int pinchA=-1,pinchB=-1;
         public bool SuppressChecks => navigationMode || waitForRelease || Time.unscaledTime<blockedUntil;
+        public float ZoomScale => currentScale;
 
         public void SetNavigationMode(bool enabled)
         {

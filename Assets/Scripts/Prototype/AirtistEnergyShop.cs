@@ -41,19 +41,23 @@ namespace Airtist.Prototype
             var paper=CreatePanel(energyShop,"Paper",AirtistApprovedTheme.Paper,Anchor.Center,Vector2.zero,Vector2.one);
             AirtistApprovedTheme.Rect(paper,.22f,.17f,.56f,.68f);
             var theme=AirtistApprovedTheme.Current;theme?.Surface(paper.GetComponent<UnityEngine.UI.Image>(),AirtistApprovedTheme.Paper);
-            Label("Title","Энергия для открытий",.08f,.055f,.80f,.12f,34);
+            theme?.Wood(paper.GetComponent<UnityEngine.UI.Image>());
+            theme?.Picture(paper,"EnergyIllustration",theme.Icon(8),.055f,.20f,.23f,.29f);
+            Label("Title","Пополнить энергию",.08f,.055f,.80f,.12f,38);
             energyShopInfo=Label("Balance","",.08f,.205f,.84f,.16f,25);
             energyShopStatus=Label("Status","",.08f,.39f,.84f,.15f,21);
+            AirtistApprovedTheme.Rect(energyShopInfo.rectTransform,.32f,.205f,.60f,.16f);
+            AirtistApprovedTheme.Rect(energyShopStatus.rectTransform,.32f,.385f,.60f,.16f);
             energyBuy=Action("Buy","",.055f,.58f,.43f,.16f,AirtistApprovedTheme.Honey,BuyEnergy);
             energyVideo=Action("Video","",.515f,.58f,.43f,.16f,AirtistApprovedTheme.Lavender,ShowEnergyVideo);
             energyClose=Action("Wait","Подождать / закрыть",.055f,.795f,.43f,.13f,AirtistApprovedTheme.Paper,CloseEnergyShop);
             energyStore=Action("Store","Магазин монет",.515f,.795f,.43f,.13f,AirtistApprovedTheme.Sage,()=>{CloseEnergyShop();Show(Page.Store);});
-            Action("Close","×",.915f,.025f,.065f,.095f,AirtistApprovedTheme.Paper,CloseEnergyShop);
+            Action("Close","×",.89f,.025f,.085f,.12f,AirtistApprovedTheme.Coral,CloseEnergyShop);
             energyShop.gameObject.SetActive(false);
             if(headerEnergy!=null)
             {
                 var hit=CreateButton(universalHeader,"",Color.clear,Color.clear,Anchor.Center,Vector2.zero,Vector2.one,OpenEnergyShop,1);
-                hit.name="EnergyRefill";AirtistApprovedTheme.Rect((RectTransform)hit.transform,.15f,.008f,.125f,.064f);
+                hit.name="EnergyRefill";AirtistApprovedTheme.Rect((RectTransform)hit.transform,.132f,.008f,.109f,.088f);
                 hit.image.raycastPadding=Vector4.zero;
                 var plus=CreateLabel((RectTransform)hit.transform,"+",22,AirtistApprovedTheme.Ink,Anchor.Center,Vector2.zero,Vector2.one,TextAlignmentOptions.Center);
                 AirtistApprovedTheme.Rect(plus.rectTransform,.85f,.15f,.15f,.7f);theme?.Typography(plus,(RectTransform)transform,22);
@@ -72,7 +76,7 @@ namespace Airtist.Prototype
         }
         private void OpenEnergyShop()
         {
-            if(adPending || energyShop==null) return;
+            if(adPending || SettingsOpen || energyShop==null) return;
             TickAttemptClock();RefreshEnergy();energyShopMessage="";
             energyShop.gameObject.SetActive(true);energyShop.SetAsLastSibling();RefreshEnergyShop();
         }
@@ -86,7 +90,8 @@ namespace Airtist.Prototype
         {
             if(adPending || !EnergyShopOpen) return;
             RefreshEnergy();int price=Mathf.Max(1,Economy.energyPackCoins),amount=Mathf.Max(1,Economy.energyPackAmount);
-            if(coins<price || energy>int.MaxValue-amount){RefreshEnergyShop();return;}
+            if(coins<price){energyShopMessage=$"Не хватает {price-coins} монет для покупки.";RefreshEnergyShop();return;}
+            if(energy>int.MaxValue-amount){energyShopMessage="Запас энергии достиг максимума.";RefreshEnergyShop();return;}
             coins-=price;energy+=amount;
             if(energy>=EnergyCap)energyUpdatedUtc=DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             // Both currencies are saved in the same progress record; rapid double taps cannot repurchase.
@@ -147,8 +152,11 @@ namespace Airtist.Prototype
             energyShopStatus.text=energyShopMessage!=""?energyShopMessage:exhausted
                 ? "Лимит попытки тоже исчерпан. Покупка даёт только энергию. Видео также продолжит попытку, если ещё не использовано."
                 : "Находки сохранены. Таймер на паузе.\nКупленная энергия сохраняется сверх лимита.";
-            GetButtonLabel(energyBuy).text=$"+{amount} энергии\n{price} монет";
-            energyBuy.interactable=!adPending && coins>=price && energy<=int.MaxValue-amount;
+            if(energyShopMessage=="" && coins<price)
+                energyShopStatus.text=$"Не хватает {price-coins} монет.\nЗарабатывай монеты, завершая картины.";
+            GetButtonLabel(energyBuy).text=$"Купить {amount} энергии\n{price} монет";
+            // Keep the action readable and explain insufficient funds on tap.
+            energyBuy.interactable=!adPending;
             int left=Math.Max(0,Economy.rewardedEnergyDailyLimit-energyAdsToday);
             GetButtonLabel(energyVideo).text=adPending?"Ожидаем результат…":left==0?"Лимит видео на сегодня":EnergyVideoAvailable?$"Видео: +{Economy.rewardedEnergy}\nОсталось сегодня: {left}":"Видео недоступно";
             energyVideo.interactable=EnergyVideoAvailable;

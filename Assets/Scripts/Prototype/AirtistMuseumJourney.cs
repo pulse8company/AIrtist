@@ -46,6 +46,9 @@ namespace Airtist.Prototype
         private void BuildMuseumPins(RectTransform content)
         {
             if (content == null) return;
+            var theme=AirtistApprovedTheme.Current;
+            var screen=content.GetComponentInParent<AirtistWorldMapScreen>();
+            var layout=screen.gameObject.AddComponent<AirtistMuseumMapLayout>();layout.Configure(screen);
             for (int i = 0; i < MuseumNames.Length; i++)
             {
                 int museum = i;
@@ -54,13 +57,23 @@ namespace Airtist.Prototype
                 root.anchorMin = root.anchorMax = MuseumMapPoints[i];
                 root.anchoredPosition = Vector2.zero;
                 root.sizeDelta = Vector2.zero;
-                var mini = CreateImage(root, "MuseumMapIcon", museumMapIcons[i], Color.white, Anchor.Center, Vector2.zero, new Vector2(42, 42), true);
-                var button = mini.gameObject.AddComponent<UnityEngine.UI.Button>();
-                button.targetGraphic = mini.GetComponent<UnityEngine.UI.Image>();
-                button.onClick.AddListener(() => OpenMuseumPreview(museum));
-                mini.GetComponent<UnityEngine.UI.Image>().raycastTarget = true;
-                mini.GetComponent<UnityEngine.UI.Image>().raycastPadding = new Vector4(-2, -2, -2, -2);
-                if (i != 0) CreateMiniLock(mini, new Vector2(15, -13)).transform.localScale = Vector3.one * .30f;
+                var tile=CreatePanel(root,"MuseumMapTile",Color.clear,Anchor.Center,new Vector2(0,-18),new Vector2(164,108));
+                tile.GetComponent<UnityEngine.UI.Image>().raycastTarget=true;
+                var mini = CreateImage(tile, "MuseumMapIcon", museumMapIcons[i], Color.white, Anchor.Center, new Vector2(0,18), new Vector2(64,64), true);
+                mini.GetComponent<UnityEngine.UI.Image>().raycastTarget=false;
+                var button = tile.gameObject.AddComponent<UnityEngine.UI.Button>();
+                button.targetGraphic=tile.GetComponent<UnityEngine.UI.Image>();
+                var nameplate=CreatePanel(tile,"MuseumNameplate",AirtistApprovedTheme.Paper,Anchor.Center,new Vector2(0,-34),new Vector2(164,34));
+                theme?.Surface(nameplate.GetComponent<UnityEngine.UI.Image>(),AirtistApprovedTheme.Paper);nameplate.GetComponent<UnityEngine.UI.Image>().raycastTarget=false;
+                var caption=CreateLabel(nameplate,MuseumNames[i],16,AirtistApprovedTheme.Ink,Anchor.Center,Vector2.zero,new Vector2(150,30),TextAlignmentOptions.Center,FontStyles.Bold);
+                caption.textWrappingMode=TextWrappingModes.NoWrap;
+                if(theme!=null && theme.font!=null)caption.font=theme.font;caption.raycastTarget=false;
+                if(i!=0)CreateMiniLock(mini,new Vector2(21,-15)).transform.localScale=Vector3.one*.48f;
+                var badge=CreatePanel(tile,"MuseumCount",AirtistApprovedTheme.Honey,Anchor.Center,new Vector2(30,36),new Vector2(30,30));
+                theme?.Surface(badge.GetComponent<UnityEngine.UI.Image>(),AirtistApprovedTheme.Honey);badge.GetComponent<UnityEngine.UI.Image>().raycastTarget=false;
+                var count=CreateLabel(badge,"",20,AirtistApprovedTheme.Ink,Anchor.Stretch,Vector2.zero,Vector2.zero,TextAlignmentOptions.Center,FontStyles.Bold);
+                if(theme!=null && theme.font!=null)count.font=theme.font;count.raycastTarget=false;
+                layout.Register(root,tile,button,caption,count,badge.gameObject,MuseumNames[i],()=>OpenMuseumPreview(museum));
             }
         }
 
@@ -139,6 +152,8 @@ namespace Airtist.Prototype
         {
             var root = new GameObject("MiniLock", typeof(RectTransform)).GetComponent<RectTransform>();
             root.SetParent(parent, false); SetAnchor(root, Anchor.Center, position, new Vector2(44, 48));
+            var approved=AirtistApprovedTheme.Current;
+            if(approved!=null && approved.Icon(15)!=null){approved.Picture(root,"PaintedLock",approved.Icon(15),0,0,1,1);return root.gameObject;}
             CreatePanel(root, "Shackle", AntiqueGold, Anchor.Center, new Vector2(0, 10), new Vector2(27, 32));
             CreatePanel(root, "ShackleOpening", Parchment, Anchor.Center, new Vector2(0, 11), new Vector2(15, 21));
             CreatePanel(root, "LockBody", Gold, Anchor.Center, new Vector2(0, -8), new Vector2(40, 31));
